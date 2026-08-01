@@ -50,6 +50,7 @@ from app.routes.recommendation import recommendation_bp
 from app.routes.advisor import advisor_bp
 from app.routes.mentor import mentor_bp
 from app.routes.coach import coach_bp
+from app.routes.intelligence import intelligence_bp
 
 
 
@@ -92,6 +93,7 @@ Base.metadata.create_all(
 # ===============================
 # Core Blueprint Registration
 # ===============================
+
 
 app.register_blueprint(
     profile_bp
@@ -145,7 +147,7 @@ app.register_blueprint(
 # ===============================
 
 
-# Skill Gap Intelligence
+# AI Skill Gap Intelligence Engine
 
 app.register_blueprint(
     skill_analysis_bp
@@ -153,7 +155,7 @@ app.register_blueprint(
 
 
 
-# Career Intelligence Report
+# AI Career Intelligence Report Engine
 
 app.register_blueprint(
     career_report_bp
@@ -161,7 +163,7 @@ app.register_blueprint(
 
 
 
-# Decision Intelligence
+# AI Decision Intelligence Engine
 
 app.register_blueprint(
     decision_bp
@@ -169,7 +171,7 @@ app.register_blueprint(
 
 
 
-# Recommendation Engine
+# AI Recommendation Engine
 
 app.register_blueprint(
     recommendation_bp
@@ -177,7 +179,7 @@ app.register_blueprint(
 
 
 
-# Career Advisor Engine
+# AI Career Advisor Engine
 
 app.register_blueprint(
     advisor_bp
@@ -185,7 +187,7 @@ app.register_blueprint(
 
 
 
-# Mentor Engine
+# AI Mentor Engine
 
 app.register_blueprint(
     mentor_bp
@@ -193,10 +195,18 @@ app.register_blueprint(
 
 
 
-# Cybersecurity Coach Engine
+# AI Cybersecurity Coach Engine
 
 app.register_blueprint(
     coach_bp
+)
+
+
+
+# AI User Intelligence Profile Engine
+
+app.register_blueprint(
+    intelligence_bp
 )
 
 
@@ -227,7 +237,7 @@ def home():
 
         "version":
 
-        "1.6",
+        "1.7",
 
 
 
@@ -236,23 +246,33 @@ def home():
 
             "User Intelligence Profile",
 
+
             "AI Decision Engine",
+
 
             "Career Matching",
 
+
             "AI Reports",
+
 
             "AI Mentor",
 
+
             "AI Career Simulation",
+
 
             "AI Career Evolution",
 
+
             "Skill Progress Tracking",
+
 
             "Certification Intelligence",
 
+
             "Learning Roadmap Engine",
+
 
             "Adaptive Learning Progress Engine",
 
@@ -282,7 +302,10 @@ def home():
             "AI Mentor Engine v1",
 
 
-            "AI Cybersecurity Coach Engine v1"
+            "AI Cybersecurity Coach Engine v1",
+
+
+            "AI User Intelligence Profile v2"
 
 
         ]
