@@ -5,9 +5,7 @@ from app.knowledge.career_database import CAREER_DATABASE
 def normalize_skills(skills):
 
     if not skills:
-
         return []
-
 
     return [
         skill.strip().lower()
@@ -16,246 +14,126 @@ def normalize_skills(skills):
 
 
 
+def calculate_match(user_skills, career):
 
-def calculate_skill_score(
-        user_skills,
-        career_skills
-):
+    user_skill_list = normalize_skills(user_skills)
 
-    score = 0
-
-
-    for skill in career_skills:
-
-        if skill.lower() in user_skills:
-
-            score += 10
+    required_skills = [
+        skill.lower()
+        for skill in career["skills"]
+    ]
 
 
-    return score
+    matched = []
+
+    missing = []
 
 
+    for skill in required_skills:
 
+        if skill in user_skill_list:
 
-def calculate_education_score(
-        education,
-        career
-):
+            matched.append(skill)
 
-    if not education:
+        else:
 
-        return 0
-
-
-    education = education.lower()
-
-
-    if "cyber" in education:
-
-        if career["category"] in [
-            "Cybersecurity Operations",
-            "Cybersecurity Engineering",
-            "Cyber Threat Intelligence",
-            "Incident Investigation"
-        ]:
-
-            return 20
-
-
-    if "ai" in education:
-
-        if career["category"] == "Artificial Intelligence Security":
-
-            return 20
-
-
-    return 5
+            missing.append(skill)
 
 
 
+    if len(required_skills) == 0:
 
-def calculate_experience_score(
-        experience
-):
+        score = 0
 
-    if not experience:
+    else:
 
-        return 0
-
-
-    experience = experience.lower()
-
-
-    if "student" in experience:
-
-        return 10
-
-
-    if "professional" in experience:
-
-        return 15
-
-
-    return 5
-
-
-
-
-def calculate_demand_score(
-        demand
-):
-
-    scores = {
-
-        "Very High": 15,
-
-        "High": 12,
-
-        "Medium": 8,
-
-        "Emerging": 10
-
-    }
-
-
-    return scores.get(
-        demand,
-        5
-    )
-
-
-
-
-def generate_reason(
-        profile,
-        career
-):
-
-    reasons = []
-
-
-    if profile.education:
-
-        reasons.append(
-            f"{profile.education} background aligns with {career['category']}."
+        score = round(
+            (len(matched) / len(required_skills)) * 100
         )
 
 
-    reasons.append(
-        f"Your skills match important requirements for {career['name']}."
-    )
+    return {
 
+        "score": score,
 
-    reasons.append(
-        f"Market demand level: {career['demand']}."
-    )
+        "matched_skills": matched,
 
+        "missing_skills": missing
 
-    return reasons
-
+    }
 
 
 
 def analyze_profile(profile):
 
 
-    user_skills = normalize_skills(
-        profile.skills
-    )
-
-
-    career_results = []
-
+    results = []
 
 
     for career in CAREER_DATABASE:
 
 
-        skill_score = calculate_skill_score(
-            user_skills,
-            career["skills"]
-        )
-
-
-        education_score = calculate_education_score(
-            profile.education,
+        evaluation = calculate_match(
+            profile.skills,
             career
         )
 
 
-        experience_score = calculate_experience_score(
-            profile.experience
-        )
-
-
-        demand_score = calculate_demand_score(
-            career["demand"]
-        )
-
-
-
-        total_score = (
-
-            skill_score
-            +
-            education_score
-            +
-            experience_score
-            +
-            demand_score
-
-        )
-
-
-
-        career_results.append({
+        results.append({
 
             "career": career["name"],
 
-            "category": career["category"],
+            "match_score": evaluation["score"],
 
-            "match_score": total_score,
+            "description": career["description"],
 
+            "matched_skills": evaluation["matched_skills"],
 
-            "match_percentage": min(
-                total_score,
-                100
-            ),
+            "missing_skills": evaluation["missing_skills"],
 
-
-            "demand": career["demand"],
-
-
-            "description":
-            career["description"],
-
-
-            "reasoning":
-            generate_reason(
-                profile,
-                career
-            ),
-
-
-            "learning_path":
-            career["learning_path"]
+            "certifications": career.get(
+                "certifications",
+                []
+            )
 
         })
 
 
 
-    career_results.sort(
-
+    results.sort(
         key=lambda x: x["match_score"],
-
         reverse=True
-
     )
 
 
 
-    recommendations = career_results[:3]
+    recommendations = results[:3]
 
+
+
+    top = recommendations[0]
+
+
+
+    reasoning = f"""
+
+{profile.name} is currently studying
+{profile.education}.
+
+The highest career match is
+{top['career']} with a confidence score
+of {top['match_score']}%.
+
+The recommendation is based on:
+
+Matched skills:
+{', '.join(top['matched_skills'])}
+
+Priority improvements:
+
+{', '.join(top['missing_skills'])}
+
+"""
 
 
     return {
@@ -264,62 +142,27 @@ def analyze_profile(profile):
         "user": profile.name,
 
 
-        "current_profile": {
+        "profile": {
 
+            "education": profile.education,
 
-            "education":
-            profile.education,
+            "experience": profile.experience,
 
-
-            "experience":
-            profile.experience,
-
-
-            "skills":
-            profile.skills,
-
-
-            "goals":
-            profile.goals
+            "skills": profile.skills
 
         },
 
 
-
-        "career_recommendations":
-
-        recommendations,
+        "career_recommendations": recommendations,
 
 
-
-        "skill_gap": [
-
-            "Advanced technical skills",
-
-            "Industry certifications",
-
-            "Real-world projects",
-
-            "Cloud security",
-
-            "Threat intelligence"
-
-        ],
+        "skill_gap": top["missing_skills"],
 
 
+        "certifications": top["certifications"],
 
-        "next_steps": [
 
-            "Build cybersecurity portfolio projects",
-
-            "Complete industry certifications",
-
-            "Practice using enterprise security tools",
-
-            "Develop professional network"
-
-        ],
-
+        "ai_reasoning": reasoning,
 
 
         "engine_version":
