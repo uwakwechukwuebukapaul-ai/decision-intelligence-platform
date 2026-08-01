@@ -36,6 +36,8 @@ from app.routes.progress import progress_bp
 from app.routes.certification import certification_bp
 from app.routes.learning import learning_bp
 from app.routes.learning_progress import learning_progress_bp
+from app.routes.skill_analysis import skill_analysis_bp
+from app.routes.career_report import career_report_bp
 
 
 
@@ -77,6 +79,7 @@ Base.metadata.create_all(
 # Blueprint Registration
 # ===============================
 
+
 app.register_blueprint(
     profile_bp
 )
@@ -98,7 +101,7 @@ app.register_blueprint(
 
 
 app.register_blueprint(
-    dashboard_bp
+ dashboard_bp
 )
 
 
@@ -119,6 +122,26 @@ app.register_blueprint(
 
 app.register_blueprint(
     learning_progress_bp
+)
+
+
+# ===============================
+# AI Intelligence Engines
+# ===============================
+
+
+# AI Skill Gap Intelligence Engine
+
+app.register_blueprint(
+    skill_analysis_bp
+)
+
+
+
+# AI Career Intelligence Report Engine
+
+app.register_blueprint(
+    career_report_bp
 )
 
 
@@ -148,7 +171,7 @@ def home():
 
         "version":
 
-        "0.9",
+        "1.1",
 
 
 
@@ -157,25 +180,41 @@ def home():
 
             "User Intelligence Profile",
 
+
             "AI Decision Engine",
+
 
             "Career Matching",
 
+
             "AI Reports",
+
 
             "AI Mentor",
 
+
             "Career Simulation",
+
 
             "Career Evolution",
 
+
             "Skill Progress Tracking",
+
 
             "Certification Intelligence",
 
+
             "Learning Roadmap Engine",
 
-            "Adaptive Learning Progress Engine"
+
+            "Adaptive Learning Progress Engine",
+
+
+            "AI Skill Gap Intelligence Engine",
+
+
+            "AI Career Intelligence Report Engine"
 
 
         ]
@@ -191,6 +230,7 @@ def home():
 # ===============================
 
 if __name__ == "__main__":
+
 
     app.run(
 
