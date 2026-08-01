@@ -180,9 +180,11 @@ margin:25px 0;
 
 
 
+
 <h2>
 AI Reports: {{reports|length}}
 </h2>
+
 
 
 
@@ -192,6 +194,7 @@ AI Reports: {{reports|length}}
 
 
 <div class="card">
+
 
 
 <h2>
@@ -210,9 +213,12 @@ AI Reports: {{reports|length}}
 
 
 
+
+
 <h3>
 🎯 Career Recommendations
 </h3>
+
 
 
 
@@ -225,9 +231,7 @@ AI Reports: {{reports|length}}
 
 
 <h3>
-
 {{career.career}}
-
 </h3>
 
 
@@ -235,6 +239,7 @@ AI Reports: {{reports|length}}
 <p>
 
 <b>Match Score:</b>
+
 
 <span class="badge">
 
@@ -255,6 +260,7 @@ AI Reports: {{reports|length}}
 
 
 
+
 {% if career.matched_skills %}
 
 
@@ -264,6 +270,7 @@ AI Reports: {{reports|length}}
 
 
 <br>
+
 
 
 {% for skill in career.matched_skills %}
@@ -283,6 +290,7 @@ AI Reports: {{reports|length}}
 
 
 {% endif %}
+
 
 
 
@@ -324,6 +332,8 @@ AI Reports: {{reports|length}}
 
 
 
+
+
 <h3>
 ⚠ Skill Gap
 </h3>
@@ -331,21 +341,17 @@ AI Reports: {{reports|length}}
 
 <ul>
 
-
 {% for skill in report.report_content.skill_gap %}
 
-
 <li>
-
 {{skill}}
-
 </li>
-
 
 {% endfor %}
 
-
 </ul>
+
+
 
 
 
@@ -370,12 +376,16 @@ AI Reports: {{reports|length}}
 
 
 
+
+
 {% if report.report_content.ai_reasoning %}
+
 
 
 <h3>
 🧠 AI Reasoning
 </h3>
+
 
 
 <div class="project">
@@ -391,6 +401,7 @@ AI Reports: {{reports|length}}
 </div>
 
 
+
 {% endif %}
 
 
@@ -398,12 +409,14 @@ AI Reports: {{reports|length}}
 
 
 
-{% if report.report_content.roadmap %}
+
+{% if report.report_content.mentor %}
+
 
 
 
 <h3>
-🗺️ AI Career Roadmap
+🧠 AI Mentor Intelligence
 </h3>
 
 
@@ -414,9 +427,11 @@ AI Reports: {{reports|length}}
 
 <p>
 
-<b>Target Career:</b>
+<b>
+Target Career:
+</b>
 
-{{report.report_content.roadmap.target_career}}
+{{report.report_content.mentor.target_career}}
 
 </p>
 
@@ -425,16 +440,63 @@ AI Reports: {{reports|length}}
 
 <p>
 
-<b>Duration:</b>
+<b>
+Readiness Score:
+</b>
 
-{{report.report_content.roadmap.duration}}
+
+<span class="badge">
+
+{{report.report_content.mentor.readiness_score}}%
+
+</span>
+
 
 </p>
 
 
 
 
-{% for step in report.report_content.roadmap.roadmap %}
+
+<h3>
+🎓 Recommended Certifications
+</h3>
+
+
+<ul>
+
+
+{% for cert in report.report_content.mentor.certifications %}
+
+
+<li>
+
+{{cert}}
+
+</li>
+
+
+{% endfor %}
+
+
+</ul>
+
+
+
+
+
+
+
+<h3>
+🛠 Recommended Projects
+</h3>
+
+
+
+
+
+{% for project in report.report_content.mentor.projects %}
+
 
 
 
@@ -443,20 +505,37 @@ AI Reports: {{reports|length}}
 
 <h3>
 
-Month {{step.month}}:
-{{step.title}}
+{{project.name}}
 
 </h3>
 
 
 
 <p>
-<b>Skills Development:</b>
+
+<b>
+Difficulty:
+</b>
+
+{{project.difficulty}}
+
 </p>
 
 
 
-{% for skill in step.skills %}
+
+<p>
+
+<b>
+Skills:
+</b>
+
+</p>
+
+
+
+{% for skill in project.skills %}
+
 
 
 <span class="skill">
@@ -464,6 +543,91 @@ Month {{step.month}}:
 {{skill}}
 
 </span>
+
+
+
+{% endfor %}
+
+
+
+
+</div>
+
+
+
+
+{% endfor %}
+
+
+
+
+
+
+
+<h3>
+🗺️ AI Career Roadmap
+</h3>
+
+
+
+<p>
+
+<b>
+Duration:
+</b>
+
+{{report.report_content.mentor.roadmap.duration}}
+
+</p>
+
+
+
+
+
+
+
+{% for step in report.report_content.mentor.roadmap.months %}
+
+
+
+
+
+<div class="project">
+
+
+<h3>
+
+{{step.month}}
+
+<br>
+
+{{step.focus}}
+
+</h3>
+
+
+
+
+<p>
+
+<b>
+Skills Development:
+</b>
+
+</p>
+
+
+
+{% for skill in step.skills %}
+
+
+
+<span class="skill">
+
+{{skill}}
+
+</span>
+
 
 
 {% endfor %}
@@ -474,7 +638,9 @@ Month {{step.month}}:
 
 <p>
 
-<b>Projects:</b>
+<b>
+Projects:
+</b>
 
 </p>
 
@@ -504,7 +670,10 @@ Month {{step.month}}:
 
 
 
+
 {% endfor %}
+
+
 
 
 
@@ -512,7 +681,9 @@ Month {{step.month}}:
 
 
 
+
 {% endif %}
+
 
 
 
@@ -523,6 +694,8 @@ Month {{step.month}}:
 
 
 {% endfor %}
+
+
 
 
 
