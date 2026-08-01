@@ -11,6 +11,7 @@ def generate_report(profile, analysis):
             "%Y-%m-%d"
         ),
 
+
         "user": {
 
             "name": profile.name,
@@ -25,7 +26,7 @@ def generate_report(profile, analysis):
 
 
         "recommendations": analysis.get(
-            "career_options",
+            "career_recommendations",
             []
         ),
 
@@ -39,6 +40,12 @@ def generate_report(profile, analysis):
         "action_plan": analysis.get(
             "next_steps",
             []
+        ),
+
+
+        "engine_version": analysis.get(
+            "engine_version",
+            "Decision Intelligence Engine"
         )
 
     }
