@@ -4,7 +4,7 @@
 <head>
 
 <title>
-AI Decision Intelligence Dashboard
+AI Career Intelligence Dashboard v14
 </title>
 
 
@@ -21,7 +21,7 @@ padding:40px;
 
 .container {
 
-max-width:1100px;
+max-width:1200px;
 margin:auto;
 
 }
@@ -32,8 +32,8 @@ margin:auto;
 background:white;
 padding:25px;
 margin-bottom:25px;
-border-radius:12px;
-box-shadow:0 4px 10px #ddd;
+border-radius:15px;
+box-shadow:0 4px 15px #ddd;
 
 }
 
@@ -65,15 +65,16 @@ display:inline-block;
 
 background:#e5e7eb;
 
-padding:8px;
+padding:8px 12px;
 
 margin:5px;
 
-border-radius:6px;
+border-radius:8px;
 
 font-size:14px;
 
 }
+
 
 
 .badge {
@@ -82,37 +83,68 @@ background:#2563eb;
 
 color:white;
 
-padding:8px 12px;
+padding:8px 15px;
 
-border-radius:8px;
-
-}
-
-
-.roadmap {
-
-border-left:5px solid #10b981;
-
-padding:15px;
-
-margin-top:15px;
-
-background:#f9fafb;
+border-radius:10px;
 
 }
 
 
-.project {
+
+.progress {
+
+background:#e5e7eb;
+
+border-radius:20px;
+
+height:25px;
+
+overflow:hidden;
+
+}
+
+
+
+.progress-bar {
+
+background:#10b981;
+
+height:100%;
+
+text-align:center;
+
+color:white;
+
+font-weight:bold;
+
+}
+
+
+
+.module {
 
 border-left:5px solid #2563eb;
 
-padding:15px;
+padding:20px;
 
 margin-top:15px;
 
 background:#fafafa;
 
+border-radius:10px;
+
 }
+
+
+
+.timeline {
+
+border-left:5px solid #10b981;
+
+padding-left:20px;
+
+}
+
 
 
 hr {
@@ -121,14 +153,16 @@ border:none;
 
 border-top:1px solid #ddd;
 
-margin:25px 0;
+margin:30px 0;
 
 }
 
 
 </style>
 
+
 </head>
+
 
 
 <body>
@@ -137,8 +171,9 @@ margin:25px 0;
 <div class="container">
 
 
+
 <h1>
-🧠 AI Decision Intelligence Dashboard
+🧠 AI Career Intelligence Dashboard
 </h1>
 
 
@@ -152,26 +187,22 @@ margin:25px 0;
 
 
 <p>
-<b>Name:</b>
-{{user.name}}
+<b>Name:</b> {{user.name}}
 </p>
 
 
 <p>
-<b>Education:</b>
-{{user.education}}
+<b>Education:</b> {{user.education}}
 </p>
 
 
 <p>
-<b>Experience:</b>
-{{user.experience}}
+<b>Experience:</b> {{user.experience}}
 </p>
 
 
 <p>
-<b>Skills:</b>
-{{user.skills}}
+<b>Skills:</b> {{user.skills}}
 </p>
 
 
@@ -189,12 +220,12 @@ AI Reports: {{reports|length}}
 
 
 
+
 {% for report in reports %}
 
 
 
 <div class="card">
-
 
 
 <h2>
@@ -221,13 +252,11 @@ AI Reports: {{reports|length}}
 
 
 
-
-
 {% for career in report.report_content.recommendations %}
 
 
 
-<div class="project">
+<div class="module">
 
 
 <h3>
@@ -235,11 +264,9 @@ AI Reports: {{reports|length}}
 </h3>
 
 
-
 <p>
 
 <b>Match Score:</b>
-
 
 <span class="badge">
 
@@ -247,9 +274,7 @@ AI Reports: {{reports|length}}
 
 </span>
 
-
 </p>
-
 
 
 <p>
@@ -260,117 +285,68 @@ AI Reports: {{reports|length}}
 
 
 
-
-{% if career.matched_skills %}
-
-
 <b>
-✅ Matched Skills
+✅ Completed Skills
 </b>
-
 
 <br>
 
 
-
 {% for skill in career.matched_skills %}
 
-
 <span class="skill">
-
 {{skill}}
-
 </span>
-
 
 {% endfor %}
 
 
+
 <br><br>
-
-
-{% endif %}
-
-
-
-
-
-{% if career.missing_skills %}
 
 
 <b>
 ⚠ Missing Skills
 </b>
 
-
 <br>
 
 
 {% for skill in career.missing_skills %}
 
-
 <span class="skill">
-
 {{skill}}
-
 </span>
 
-
 {% endfor %}
-
-
-{% endif %}
 
 
 
 </div>
 
 
-
 {% endfor %}
 
 
 
 
 
-
 <h3>
-⚠ Skill Gap
+📊 AI Confidence Score
 </h3>
 
 
-<ul>
+<div class="progress">
 
-{% for skill in report.report_content.skill_gap %}
+<div class="progress-bar"
 
-<li>
-{{skill}}
-</li>
-
-{% endfor %}
-
-</ul>
-
-
-
-
-
-
-
-<h3>
-📌 AI Confidence Score
-</h3>
-
-
-<p>
-
-<span class="badge">
+style="width:{{report.report_content.confidence_score}}%">
 
 {{report.report_content.confidence_score}}%
 
-</span>
+</div>
 
-</p>
+</div>
 
 
 
@@ -381,15 +357,12 @@ AI Reports: {{reports|length}}
 {% if report.report_content.ai_reasoning %}
 
 
-
 <h3>
 🧠 AI Reasoning
 </h3>
 
 
-
-<div class="project">
-
+<div class="module">
 
 <p>
 
@@ -397,12 +370,12 @@ AI Reports: {{reports|length}}
 
 </p>
 
-
 </div>
 
 
-
 {% endif %}
+
+
 
 
 
@@ -414,15 +387,12 @@ AI Reports: {{reports|length}}
 
 
 
-
-<h3>
+<h2>
 🧠 AI Mentor Intelligence
-</h3>
+</h2>
 
 
-
-<div class="roadmap">
-
+<div class="module">
 
 
 <p>
@@ -437,106 +407,66 @@ Target Career:
 
 
 
-
 <p>
 
 <b>
 Readiness Score:
 </b>
 
-
-<span class="badge">
-
 {{report.report_content.mentor.readiness_score}}%
-
-</span>
-
 
 </p>
 
 
 
 
-
 <h3>
-🎓 Recommended Certifications
+🎓 Certifications
 </h3>
 
 
 <ul>
 
-
 {% for cert in report.report_content.mentor.certifications %}
 
-
-<li>
-
-{{cert}}
-
-</li>
-
+<li>{{cert}}</li>
 
 {% endfor %}
-
 
 </ul>
 
 
 
 
-
-
-
 <h3>
-🛠 Recommended Projects
+🛠 Projects
 </h3>
-
-
 
 
 
 {% for project in report.report_content.mentor.projects %}
 
 
-
-
-<div class="project">
+<div class="module">
 
 
 <h3>
-
 {{project.name}}
-
 </h3>
 
 
-
 <p>
-
-<b>
 Difficulty:
-</b>
-
 {{project.difficulty}}
-
 </p>
-
-
 
 
 <p>
-
-<b>
 Skills:
-</b>
-
 </p>
-
 
 
 {% for skill in project.skills %}
-
-
 
 <span class="skill">
 
@@ -544,10 +474,13 @@ Skills:
 
 </span>
 
+{% endfor %}
+
+
+</div>
 
 
 {% endfor %}
-
 
 
 
@@ -555,26 +488,124 @@ Skills:
 
 
 
-
-{% endfor %}
-
+{% endif %}
 
 
 
 
 
 
-<h3>
-🗺️ AI Career Roadmap
-</h3>
+
+
+
+{% if report.report_content.evolution %}
+
+
+<h2>
+📈 Career Evolution Intelligence
+</h2>
+
+
+<div class="module">
+
+
+<p>
+Career:
+{{report.report_content.evolution.career}}
+</p>
+
+
+<p>
+Growth Status:
+{{report.report_content.evolution.growth_status}}
+</p>
+
+
+<p>
+Readiness:
+{{report.report_content.evolution.readiness_score}}%
+</p>
+
+
+
+</div>
+
+
+{% endif %}
+
+
+
+
+
+
+
+
+{% if report.report_content.simulation %}
+
+
+
+<h2>
+🔮 Career Simulation Prediction
+</h2>
+
+
+
+<div class="module">
+
+
+{% for stage in report.report_content.simulation.simulation %}
 
 
 
 <p>
 
 <b>
-Duration:
+{{stage.period}}
 </b>
+
+
+<br>
+
+
+Projected Readiness:
+
+{{stage.projected_readiness}}%
+
+</p>
+
+
+
+{% endfor %}
+
+
+</div>
+
+
+{% endif %}
+
+
+
+
+
+
+
+
+{% if report.report_content.mentor.roadmap %}
+
+
+
+<h2>
+🗺️ AI Career Roadmap
+</h2>
+
+
+
+<div class="timeline">
+
+
+<p>
+
+Duration:
 
 {{report.report_content.mentor.roadmap.duration}}
 
@@ -582,17 +613,11 @@ Duration:
 
 
 
-
-
-
-
 {% for step in report.report_content.mentor.roadmap.months %}
 
 
 
-
-
-<div class="project">
+<div class="module">
 
 
 <h3>
@@ -607,19 +632,15 @@ Duration:
 
 
 
-
-<p>
-
 <b>
-Skills Development:
+Skills:
 </b>
 
-</p>
 
+<br>
 
 
 {% for skill in step.skills %}
-
 
 
 <span class="skill">
@@ -629,28 +650,21 @@ Skills Development:
 </span>
 
 
-
 {% endfor %}
 
 
 
+<br><br>
 
-
-<p>
 
 <b>
 Projects:
 </b>
 
-</p>
-
-
 
 <ul>
 
-
 {% for project in step.projects %}
-
 
 <li>
 
@@ -661,7 +675,6 @@ Projects:
 
 {% endfor %}
 
-
 </ul>
 
 
@@ -669,17 +682,10 @@ Projects:
 </div>
 
 
-
-
 {% endfor %}
 
 
-
-
-
 </div>
-
-
 
 
 {% endif %}
@@ -689,7 +695,7 @@ Projects:
 
 
 
-<hr>
+</div>
 
 
 
@@ -698,8 +704,8 @@ Projects:
 
 
 
-
 </div>
+
 
 
 </body>
