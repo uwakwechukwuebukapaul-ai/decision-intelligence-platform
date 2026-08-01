@@ -36,10 +36,14 @@ from app.routes.progress import progress_bp
 from app.routes.certification import certification_bp
 from app.routes.learning import learning_bp
 from app.routes.learning_progress import learning_progress_bp
+
+# AI Intelligence Routes
+
 from app.routes.skill_analysis import skill_analysis_bp
 from app.routes.career_report import career_report_bp
 from app.routes.decision import decision_bp
 from app.routes.recommendation import recommendation_bp
+from app.routes.advisor import advisor_bp
 
 
 
@@ -66,7 +70,7 @@ app = Flask(
 
 
 # ===============================
-# Database Tables
+# Database Initialization
 # ===============================
 
 Base.metadata.create_all(
@@ -78,9 +82,8 @@ Base.metadata.create_all(
 
 
 # ===============================
-# Blueprint Registration
+# Core Blueprint Registration
 # ===============================
-
 
 app.register_blueprint(
     profile_bp
@@ -129,7 +132,7 @@ app.register_blueprint(
 
 
 # ===============================
-# AI Intelligence Engines
+# AI Intelligence Engine Registration
 # ===============================
 
 
@@ -165,8 +168,16 @@ app.register_blueprint(
 
 
 
+# AI Career Advisor Engine
+
+app.register_blueprint(
+    advisor_bp
+)
+
+
+
 # ===============================
-# Platform Health
+# Platform Health Endpoint
 # ===============================
 
 @app.route("/")
@@ -190,7 +201,7 @@ def home():
 
         "version":
 
-        "1.3",
+        "1.4",
 
 
 
@@ -219,6 +230,9 @@ def home():
 
             "Adaptive Learning Progress Engine",
 
+
+            # AI Engines
+
             "AI Skill Gap Intelligence Engine",
 
             "AI Career Intelligence Report Engine",
@@ -227,7 +241,9 @@ def home():
 
             "AI Career Planner Engine v1",
 
-            "AI Recommendation Engine v1"
+            "AI Recommendation Engine v1",
+
+            "AI Career Advisor Engine v1"
 
         ]
 
@@ -235,10 +251,8 @@ def home():
 
 
 
-
-
 # ===============================
-# Run
+# Application Runner
 # ===============================
 
 if __name__ == "__main__":
