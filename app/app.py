@@ -51,8 +51,14 @@ from app.routes.advisor import advisor_bp
 from app.routes.mentor import mentor_bp
 from app.routes.coach import coach_bp
 from app.routes.intelligence import intelligence_bp
-from app.routes.digital_twin import digital_twin_bp
 
+
+
+# =====================================================
+# Advanced AI Simulation Routes
+# =====================================================
+
+from app.routes.digital_twin import digital_twin_bp
 
 
 
@@ -108,10 +114,7 @@ Base.metadata.create_all(
 
 BLUEPRINTS = [
 
-
-    # -------------------------
     # Core Platform
-    # -------------------------
 
     profile_bp,
     analysis_bp,
@@ -124,10 +127,7 @@ BLUEPRINTS = [
     learning_progress_bp,
 
 
-
-    # -------------------------
     # AI Intelligence Layer
-    # -------------------------
 
     skill_analysis_bp,
     career_report_bp,
@@ -139,9 +139,7 @@ BLUEPRINTS = [
     intelligence_bp,
 
 
-    # -------------------------
-    # Advanced AI Simulation
-    # -------------------------
+    # AI Simulation Layer
 
     digital_twin_bp
 
@@ -149,19 +147,18 @@ BLUEPRINTS = [
 
 
 
+# Register all blueprints
+
 for blueprint in BLUEPRINTS:
 
     app.register_blueprint(
-
         blueprint
-
     )
 
 
 
-
 # =====================================================
-# Platform Root Endpoint
+# Root Endpoint
 # =====================================================
 
 @app.route("/")
@@ -170,30 +167,17 @@ def home():
 
     return {
 
+        "name": APP_NAME,
 
-        "name":
+        "status": APP_STATUS,
 
-            APP_NAME,
-
-
-        "status":
-
-            APP_STATUS,
-
-
-        "version":
-
-            APP_VERSION,
-
+        "version": APP_VERSION,
 
         "architecture":
-
             "AI Decision Intelligence Platform",
 
 
-
         "engines":[
-
 
             "User Intelligence Profile Engine",
 
@@ -217,10 +201,6 @@ def home():
 
             "Adaptive Learning Engine",
 
-
-
-            # Advanced AI Layer
-
             "AI Skill Gap Intelligence Engine",
 
             "AI Career Intelligence Report Engine",
@@ -235,9 +215,7 @@ def home():
 
             "AI Digital Twin Engine v1"
 
-
         ],
-
 
 
         "blueprints_loaded":
@@ -249,9 +227,8 @@ def home():
 
 
 
-
 # =====================================================
-# Health Monitoring Endpoint
+# Health Endpoint
 # =====================================================
 
 @app.route("/health")
@@ -259,7 +236,6 @@ def home():
 def health():
 
     return {
-
 
         "application":
 
@@ -285,14 +261,13 @@ def health():
 
             APP_VERSION
 
-
     }
 
 
 
 
 # =====================================================
-# AI Platform Information Endpoint
+# Platform Information
 # =====================================================
 
 @app.route("/api/info")
@@ -329,7 +304,6 @@ def platform_info():
 
             "Digital Twin Simulation"
 
-
         ]
 
     }
@@ -338,7 +312,7 @@ def platform_info():
 
 
 # =====================================================
-# Application Runner
+# Runner
 # =====================================================
 
 if __name__ == "__main__":
