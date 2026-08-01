@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, render_template
 
 from app.database.db import SessionLocal
 from app.models.user import UserProfile
@@ -7,17 +7,15 @@ from app.ai.decision_engine import analyze_profile
 from app.reports.report_generator import generate_report
 
 
-analysis_bp = Blueprint(
-    "analysis",
+dashboard_bp = Blueprint(
+    "dashboard",
     __name__
 )
 
 
-@analysis_bp.route(
-    "/analysis/<int:user_id>",
-    methods=["GET"]
-)
-def create_analysis(user_id):
+
+@dashboard_bp.route("/dashboard/<int:user_id>")
+def dashboard(user_id):
 
     db = SessionLocal()
 
@@ -31,9 +29,7 @@ def create_analysis(user_id):
 
         db.close()
 
-        return jsonify({
-            "error": "User not found"
-        }), 404
+        return "User not found"
 
 
     analysis = analyze_profile(user)
@@ -48,4 +44,7 @@ def create_analysis(user_id):
     db.close()
 
 
-    return jsonify(report)
+    return render_template(
+        "dashboard/index.html",
+        report=report
+    )
