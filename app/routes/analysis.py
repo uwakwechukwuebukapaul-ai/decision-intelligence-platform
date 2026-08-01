@@ -14,6 +14,8 @@ from app.ai.progress.progress_engine import generate_progress
 
 from app.ai.evolution.evolution_engine import calculate_growth
 
+from app.ai.simulation.career_simulator import simulate_career_growth
+
 from app.reports.report_generator import generate_report
 
 
@@ -213,6 +215,68 @@ def create_analysis(user_id):
 
 
                     "error":
+
+                    str(error)
+
+                }
+
+
+
+
+
+
+
+
+            # =================================
+            # AI Career Simulation Engine v13
+            # =================================
+
+
+            try:
+
+
+                simulation = simulate_career_growth(
+
+
+                    top_career["career"],
+
+
+                    analysis.get(
+                        "readiness",
+                        {}
+                    ).get(
+
+                        "readiness_score",
+
+                        0
+
+                    ),
+
+
+                    top_career.get(
+
+                        "missing_skills",
+
+                        []
+
+                    )
+
+                )
+
+
+
+                analysis["simulation"] = simulation
+
+
+
+            except Exception as error:
+
+
+                analysis["simulation"] = {
+
+
+                    "error":
+
                     str(error)
 
                 }
@@ -231,6 +295,8 @@ def create_analysis(user_id):
             analysis["readiness"] = {}
 
             analysis["evolution"] = {}
+
+            analysis["simulation"] = {}
 
 
 
@@ -252,6 +318,7 @@ def create_analysis(user_id):
             analysis
 
         )
+
 
 
 
@@ -295,6 +362,7 @@ def create_analysis(user_id):
 
 
 
+
         return jsonify({
 
 
@@ -322,6 +390,7 @@ def create_analysis(user_id):
 
 
 
+
     except Exception as error:
 
 
@@ -339,6 +408,7 @@ def create_analysis(user_id):
 
 
         }), 500
+
 
 
 
