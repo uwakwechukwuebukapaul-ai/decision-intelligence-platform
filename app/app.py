@@ -96,6 +96,14 @@ from app.routes.decision_orchestrator import decision_orchestrator_bp
 
 
 
+# =====================================================
+# AI Agent Runtime Intelligence Routes
+# =====================================================
+
+from app.routes.agent_runtime import agent_runtime_bp
+
+
+
 
 # =====================================================
 # Application Metadata
@@ -103,7 +111,7 @@ from app.routes.decision_orchestrator import decision_orchestrator_bp
 
 APP_NAME = "Decision Intelligence Platform"
 
-APP_VERSION = "2.3"
+APP_VERSION = "2.4"
 
 APP_STATUS = "running"
 
@@ -222,7 +230,15 @@ BLUEPRINTS = [
     # AI Orchestration Layer
     # -----------------------------
 
-    decision_orchestrator_bp
+    decision_orchestrator_bp,
+
+
+
+    # -----------------------------
+    # AI Agent Runtime Layer
+    # -----------------------------
+
+    agent_runtime_bp
 
 ]
 
@@ -349,7 +365,13 @@ def home():
 
             # Orchestration Layer
 
-            "AI Decision Orchestrator Engine v1"
+            "AI Decision Orchestrator Engine v1",
+
+
+
+            # Agent Layer
+
+            "AI Agent Runtime Engine v1"
 
 
         ],
@@ -458,7 +480,9 @@ def platform_info():
 
             "Decision Reasoning Intelligence",
 
-            "Decision Orchestration Intelligence"
+            "Decision Orchestration Intelligence",
+
+            "Agent Runtime Intelligence"
 
 
         ]
