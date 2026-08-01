@@ -38,6 +38,7 @@ from app.routes.learning import learning_bp
 from app.routes.learning_progress import learning_progress_bp
 from app.routes.skill_analysis import skill_analysis_bp
 from app.routes.career_report import career_report_bp
+from app.routes.decision import decision_bp
 
 
 
@@ -101,7 +102,7 @@ app.register_blueprint(
 
 
 app.register_blueprint(
- dashboard_bp
+    dashboard_bp
 )
 
 
@@ -125,6 +126,7 @@ app.register_blueprint(
 )
 
 
+
 # ===============================
 # AI Intelligence Engines
 # ===============================
@@ -142,6 +144,14 @@ app.register_blueprint(
 
 app.register_blueprint(
     career_report_bp
+)
+
+
+
+# AI Decision Intelligence Engine
+
+app.register_blueprint(
+    decision_bp
 )
 
 
@@ -171,7 +181,7 @@ def home():
 
         "version":
 
-        "1.1",
+        "1.2",
 
 
 
@@ -214,7 +224,10 @@ def home():
             "AI Skill Gap Intelligence Engine",
 
 
-            "AI Career Intelligence Report Engine"
+            "AI Career Intelligence Report Engine",
+
+
+            "AI Decision Intelligence Engine v1"
 
 
         ]
