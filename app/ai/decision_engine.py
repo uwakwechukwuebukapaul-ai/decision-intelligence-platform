@@ -1,7 +1,6 @@
 from app.knowledge.career_database import CAREER_DATABASE
 
 
-
 def normalize_skills(skills):
 
     if not skills:
@@ -10,17 +9,21 @@ def normalize_skills(skills):
     return [
         skill.strip().lower()
         for skill in skills.split(",")
+        if skill.strip()
     ]
 
 
 
 def calculate_match(user_skills, career):
 
-    user_skill_list = normalize_skills(user_skills)
+    user_skill_list = normalize_skills(
+        user_skills
+    )
+
 
     required_skills = [
         skill.lower()
-        for skill in career["skills"]
+        for skill in career.get("skills", [])
     ]
 
 
@@ -41,15 +44,16 @@ def calculate_match(user_skills, career):
 
 
 
-    if len(required_skills) == 0:
-
-        score = 0
-
-    else:
+    if required_skills:
 
         score = round(
             (len(matched) / len(required_skills)) * 100
         )
+
+    else:
+
+        score = 0
+
 
 
     return {
@@ -61,6 +65,22 @@ def calculate_match(user_skills, career):
         "missing_skills": missing
 
     }
+
+
+
+def confidence_level(score):
+
+    if score >= 80:
+
+        return "High"
+
+    elif score >= 50:
+
+        return "Medium"
+
+    else:
+
+        return "Low"
 
 
 
@@ -85,16 +105,28 @@ def analyze_profile(profile):
 
             "match_score": evaluation["score"],
 
-            "description": career["description"],
+            "confidence":
+                confidence_level(
+                    evaluation["score"]
+                ),
 
-            "matched_skills": evaluation["matched_skills"],
+            "description":
+                career["description"],
 
-            "missing_skills": evaluation["missing_skills"],
 
-            "certifications": career.get(
-                "certifications",
-                []
-            )
+            "matched_skills":
+                evaluation["matched_skills"],
+
+
+            "missing_skills":
+                evaluation["missing_skills"],
+
+
+            "certifications":
+                career.get(
+                    "certifications",
+                    []
+                )
 
         })
 
@@ -111,29 +143,72 @@ def analyze_profile(profile):
 
 
 
-    top = recommendations[0]
+    if recommendations:
 
 
+        top = recommendations[0]
 
-    reasoning = f"""
+
+        reasoning = f"""
 
 {profile.name} is currently studying
 {profile.education}.
 
-The highest career match is
-{top['career']} with a confidence score
-of {top['match_score']}%.
+Based on the current skills provided,
+the strongest career direction is:
 
-The recommendation is based on:
+{top['career']}
 
-Matched skills:
-{', '.join(top['matched_skills'])}
+Confidence Score:
+{top['match_score']}%
 
-Priority improvements:
+Confidence Level:
+{top['confidence']}
 
-{', '.join(top['missing_skills'])}
+Why this recommendation:
+
+Matched Skills:
+{', '.join(top['matched_skills']) 
+if top['matched_skills'] 
+else 'No direct matches found'}
+
+Priority Skills To Develop:
+
+{', '.join(top['missing_skills'])
+if top['missing_skills']
+else 'Continue improving existing skills'}
+
+Recommended Certifications:
+
+{', '.join(top['certifications'])
+if top['certifications']
+else 'Industry certifications recommended'}
 
 """
+
+
+        skill_gap = top["missing_skills"]
+
+        certifications = top["certifications"]
+
+
+    else:
+
+
+        reasoning = """
+
+No suitable career matches were found.
+
+The system recommends adding more
+technical skills to improve prediction accuracy.
+
+"""
+
+
+        skill_gap = []
+
+        certifications = []
+
 
 
     return {
@@ -144,29 +219,40 @@ Priority improvements:
 
         "profile": {
 
-            "education": profile.education,
 
-            "experience": profile.experience,
+            "education":
+                profile.education,
 
-            "skills": profile.skills
+
+            "experience":
+                profile.experience,
+
+
+            "skills":
+                profile.skills
+
 
         },
 
 
-        "career_recommendations": recommendations,
+        "career_recommendations":
+            recommendations,
 
 
-        "skill_gap": top["missing_skills"],
+        "skill_gap":
+            skill_gap,
 
 
-        "certifications": top["certifications"],
+        "certifications":
+            certifications,
 
 
-        "ai_reasoning": reasoning,
+        "ai_reasoning":
+            reasoning,
 
 
         "engine_version":
 
-        "Decision Intelligence Engine v3"
+            "Decision Intelligence Engine v3.1"
 
     }
