@@ -60,6 +60,7 @@ from app.routes.intelligence import intelligence_bp
 
 from app.routes.digital_twin import digital_twin_bp
 from app.routes.career_simulation import career_simulation_bp
+from app.routes.career_evolution import career_evolution_bp
 
 
 
@@ -69,7 +70,7 @@ from app.routes.career_simulation import career_simulation_bp
 
 APP_NAME = "Decision Intelligence Platform"
 
-APP_VERSION = "1.9"
+APP_VERSION = "2.0"
 
 APP_STATUS = "running"
 
@@ -143,7 +144,8 @@ BLUEPRINTS = [
     # AI Simulation Layer
 
     digital_twin_bp,
-    career_simulation_bp
+    career_simulation_bp,
+    career_evolution_bp
 
 ]
 
@@ -154,7 +156,9 @@ BLUEPRINTS = [
 for blueprint in BLUEPRINTS:
 
     app.register_blueprint(
+
         blueprint
+
     )
 
 
@@ -168,6 +172,7 @@ for blueprint in BLUEPRINTS:
 def home():
 
     return {
+
 
         "name":
 
@@ -215,7 +220,7 @@ def home():
             "Adaptive Learning Engine",
 
 
-            # Advanced AI Layer
+            # Advanced Intelligence
 
             "AI Skill Gap Intelligence Engine",
 
@@ -234,8 +239,9 @@ def home():
 
             "AI Digital Twin Engine v1",
 
-            "AI Career Simulation Engine v1"
+            "AI Career Simulation Engine v1",
 
+            "AI Career Evolution Engine v1"
 
         ],
 
@@ -258,6 +264,7 @@ def home():
 def health():
 
     return {
+
 
         "application":
 
@@ -282,6 +289,7 @@ def health():
         "version":
 
             APP_VERSION
+
 
     }
 
@@ -326,7 +334,9 @@ def platform_info():
 
             "Digital Twin Simulation",
 
-            "Career Simulation Intelligence"
+            "Career Simulation Intelligence",
+
+            "Career Evolution Intelligence"
 
         ]
 
