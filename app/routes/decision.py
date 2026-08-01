@@ -4,7 +4,9 @@ from app.database.db import SessionLocal
 
 from app.models.user import UserProfile
 
-from app.models.learning_progress import LearningProgress
+from app.data.careers import (
+    get_career_profile
+)
 
 
 
@@ -20,6 +22,7 @@ decision_bp = Blueprint(
     methods=["GET"]
 )
 def decision_engine(user_id):
+
 
     db = SessionLocal()
 
@@ -39,6 +42,7 @@ def decision_engine(user_id):
 
         if not user:
 
+
             return jsonify({
 
                 "error":
@@ -49,48 +53,94 @@ def decision_engine(user_id):
 
 
 
-        modules = db.query(
-            LearningProgress
-        ).filter(
-
-            LearningProgress.user_id == user_id
-
-        ).all()
+        career = user.goals or "SOC Analyst"
 
 
 
-        completed = len(
-            [
-                module
-                for module in modules
-                if module.status == "Completed"
-            ]
+        career_profile = get_career_profile(
+            career
         )
 
 
 
-        total = len(modules)
+        if not career_profile:
 
 
+            career = "SOC Analyst"
 
-        if total > 0:
 
-            progress_score = int(
-                (completed / total) * 100
+            career_profile = get_career_profile(
+                career
             )
 
-        else:
-
-            progress_score = 0
 
 
 
+        user_skills = []
 
-        readiness_score = min(
 
-            40 +
+        if user.skills:
 
-            progress_score,
+
+            user_skills = [
+
+                skill.strip()
+
+                for skill in user.skills.split(",")
+
+            ]
+
+
+
+
+        required_skills = (
+
+            career_profile[
+                "required_skills"
+            ]
+
+        )
+
+
+
+
+        missing_skills = [
+
+            skill
+
+            for skill in required_skills
+
+            if skill not in user_skills
+
+        ]
+
+
+
+        matched_skills = [
+
+            skill
+
+            for skill in required_skills
+
+            if skill in user_skills
+
+        ]
+
+
+
+
+        readiness = int(
+
+            (
+                len(matched_skills)
+
+                /
+
+                len(required_skills)
+
+            )
+
+            *
 
             100
 
@@ -98,7 +148,35 @@ def decision_engine(user_id):
 
 
 
+
+
+        next_actions = []
+
+
+
+        for skill in missing_skills[:5]:
+
+
+            next_actions.append({
+
+                "skill":
+
+                skill,
+
+
+                "action":
+
+                f"Start {skill} training"
+
+            })
+
+
+
+
+
         return jsonify({
+
+
 
             "user":
 
@@ -108,35 +186,28 @@ def decision_engine(user_id):
 
             "career":
 
-            "SOC Analyst",
+            career,
 
 
 
             "readiness_score":
 
-            readiness_score,
+            readiness,
 
 
 
             "analysis":{
 
 
-                "strengths":[
+                "strengths":
 
-                    user.skills
-
-                ],
+                matched_skills,
 
 
-                "gaps":[
+                "gaps":
 
-                    "SIEM",
+                missing_skills
 
-                    "Incident Response",
-
-                    "Threat Hunting"
-
-                ]
 
             },
 
@@ -147,26 +218,60 @@ def decision_engine(user_id):
 
                 "priority":
 
-                "Build SIEM investigation skills first",
+                (
+
+                f"Improve {missing_skills[0]} first"
+
+                if missing_skills
+
+                else
+
+                "Continue advanced training"
+
+                ),
 
 
 
-                "next_actions":[
+                "next_actions":
 
-                    "Complete SIEM fundamentals",
+                next_actions
 
-                    "Practice log analysis",
 
-                    "Create detection rules"
+            },
 
+
+
+            "career_requirements":{
+
+
+                "level":
+
+                career_profile["level"],
+
+
+                "tools":
+
+                career_profile[
+                    "recommended_tools"
+                ],
+
+
+                "certifications":
+
+                career_profile[
+                    "certifications"
                 ]
 
             }
+
 
         })
 
 
 
+
+
     finally:
+
 
         db.close()
