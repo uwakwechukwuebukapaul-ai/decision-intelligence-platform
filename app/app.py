@@ -9,6 +9,7 @@ import os
 from app.database.db import engine, Base
 
 
+
 # ===============================
 # Register All Models First
 # ===============================
@@ -18,6 +19,7 @@ from app.models import (
     AIReport,
     SkillProgress
 )
+
 
 
 # ===============================
@@ -31,6 +33,8 @@ from app.routes.reports import reports_bp
 from app.routes.dashboard import dashboard_bp
 from app.routes.progress import progress_bp
 from app.routes.certification import certification_bp
+from app.routes.learning import learning_bp
+
 
 
 
@@ -56,19 +60,24 @@ app = Flask(
 
 
 
+
 # ===============================
 # Database Create Tables
 # ===============================
 
 Base.metadata.create_all(
+
     bind=engine
+
 )
+
 
 
 
 # ===============================
 # Blueprint Registration
 # ===============================
+
 
 app.register_blueprint(
     profile_bp
@@ -105,6 +114,13 @@ app.register_blueprint(
 )
 
 
+app.register_blueprint(
+    learning_bp
+)
+
+
+
+
 
 # ===============================
 # Platform Status
@@ -116,51 +132,78 @@ def home():
 
     return {
 
+
         "name":
+
         "Decision Intelligence Platform",
 
 
+
         "status":
+
         "running",
 
 
+
         "version":
-        "0.7",
+
+        "0.8",
+
 
 
         "features": [
 
+
             "User Profile System",
+
 
             "AI Decision Engine",
 
+
             "Career Matching",
+
 
             "LLM Reasoning",
 
+
             "Authentication System",
+
 
             "AI Report History",
 
+
             "Intelligence Dashboard",
+
 
             "AI Mentor Intelligence",
 
+
             "Career Readiness Tracking",
+
 
             "Career Evolution Engine",
 
+
             "Career Simulation Engine",
+
 
             "AI Learning Intelligence",
 
+
             "Skill Progress Tracking API",
 
-            "Certification Intelligence Engine"
+
+            "Certification Intelligence Engine",
+
+
+            "AI Learning Roadmap Engine"
+
 
         ]
 
     }
+
+
 
 
 
@@ -169,6 +212,7 @@ def home():
 # ===============================
 
 if __name__ == "__main__":
+
 
     app.run(
 

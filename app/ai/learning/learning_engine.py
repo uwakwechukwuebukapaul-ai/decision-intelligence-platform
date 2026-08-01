@@ -1,52 +1,70 @@
-from app.ai.learning.learning_database import LEARNING_DATABASE
-
-
-
 def generate_learning_plan(
-    missing_skills
+    career,
+    missing_skills,
+    level="Beginner"
 ):
 
 
-    recommendations = []
+    roadmap = []
+
+
+    week = 1
 
 
 
     for skill in missing_skills:
 
 
-        data = LEARNING_DATABASE.get(
-            skill.lower()
-        )
+        roadmap.append({
+
+            "week": week,
+
+            "skill": skill,
+
+            "objective":
+            f"Master {skill} fundamentals",
+
+            "tasks":[
+
+                f"Study {skill}",
+
+                f"Complete practical labs for {skill}",
+
+                f"Build project related to {skill}"
+
+            ],
+
+            "status":
+            "Not Started"
+
+        })
 
 
-        if data:
+        week += 1
 
-
-            recommendations.append({
-
-                "skill": skill,
-
-                "courses":
-                    data["courses"],
-
-                "certifications":
-                    data["certifications"],
-
-                "projects":
-                    data["projects"]
-
-            })
 
 
 
     return {
 
 
-        "learning_plan":
-            recommendations,
+        "engine":
+        "AI Learning Roadmap Intelligence v1",
 
 
-        "engine_version":
-        "Learning Intelligence Engine v1"
+        "career":
+        career,
+
+
+        "level":
+        level,
+
+
+        "duration_weeks":
+        len(roadmap),
+
+
+        "roadmap":
+        roadmap
 
     }
