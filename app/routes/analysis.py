@@ -12,6 +12,8 @@ from app.ai.mentor.career_mentor import create_career_mentor
 
 from app.ai.progress.progress_engine import generate_progress
 
+from app.ai.evolution.evolution_engine import calculate_growth
+
 from app.reports.report_generator import generate_report
 
 
@@ -23,16 +25,19 @@ analysis_bp = Blueprint(
 
 
 
+
 @analysis_bp.route(
     "/analysis/<int:user_id>",
     methods=["GET"]
 )
 def create_analysis(user_id):
 
+
     db = SessionLocal()
 
 
     try:
+
 
         user = db.query(UserProfile).filter(
             UserProfile.id == user_id
@@ -42,18 +47,23 @@ def create_analysis(user_id):
 
         if not user:
 
+
             return jsonify({
 
-                "error": "User not found"
+                "error":
+                "User not found"
 
             }), 404
 
 
 
 
-        # ---------------------------------
+
+
+        # =================================
         # AI Career Intelligence Analysis
-        # ---------------------------------
+        # =================================
+
 
         analysis = analyze_profile(
             user
@@ -70,17 +80,23 @@ def create_analysis(user_id):
 
 
 
-        # ---------------------------------
-        # AI Mentor Intelligence Engine
-        # ---------------------------------
+
 
         if recommendations:
+
 
 
             top_career = recommendations[0]
 
 
+
+            # =================================
+            # AI Mentor Intelligence Engine
+            # =================================
+
+
             try:
+
 
                 mentor = create_career_mentor(
 
@@ -94,10 +110,12 @@ def create_analysis(user_id):
                 analysis["mentor"] = mentor
 
 
+
             except Exception as error:
 
 
                 analysis["mentor"] = {
+
 
                     "error":
                     str(error)
@@ -107,22 +125,33 @@ def create_analysis(user_id):
 
 
 
-            # ---------------------------------
+
+
+
+
+            # =================================
             # Career Readiness Intelligence
-            # ---------------------------------
+            # =================================
+
 
             try:
+
 
                 readiness = generate_progress(
 
                     top_career["career"],
 
+
                     top_career.get(
+
                         "matched_skills",
+
                         []
+
                     )
 
                 )
+
 
 
                 analysis["readiness"] = readiness
@@ -134,6 +163,7 @@ def create_analysis(user_id):
 
                 analysis["readiness"] = {
 
+
                     "error":
                     str(error)
 
@@ -142,21 +172,78 @@ def create_analysis(user_id):
 
 
 
+
+
+
+
+            # =================================
+            # Career Evolution Intelligence v10
+            # =================================
+
+
+            try:
+
+
+                evolution = calculate_growth(
+
+
+                    top_career["career"],
+
+
+                    top_career.get(
+
+                        "matched_skills",
+
+                        []
+
+                    )
+
+                )
+
+
+
+                analysis["evolution"] = evolution
+
+
+
+            except Exception as error:
+
+
+                analysis["evolution"] = {
+
+
+                    "error":
+                    str(error)
+
+                }
+
+
+
+
+
+
         else:
+
 
 
             analysis["mentor"] = {}
 
             analysis["readiness"] = {}
 
+            analysis["evolution"] = {}
 
 
 
 
 
-        # ---------------------------------
-        # Generate Final AI Report
-        # ---------------------------------
+
+
+
+
+        # =================================
+        # Generate Final Intelligence Report
+        # =================================
+
 
         report = generate_report(
 
@@ -171,25 +258,38 @@ def create_analysis(user_id):
 
 
 
+
         saved_report = AIReport(
+
 
             user_id=user.id,
 
+
             report_content=json.dumps(
+
                 report
+
             )
 
         )
 
 
 
+
+
         db.add(saved_report)
+
 
         db.commit()
 
+
+
         db.refresh(
+
             saved_report
+
         )
+
 
 
 
@@ -197,18 +297,27 @@ def create_analysis(user_id):
 
         return jsonify({
 
+
             "message":
+
             "AI report generated and saved",
 
 
+
             "report_id":
+
             saved_report.id,
 
 
+
             "analysis":
+
             analysis
 
+
         })
+
+
 
 
 
@@ -216,15 +325,23 @@ def create_analysis(user_id):
     except Exception as error:
 
 
+
         db.rollback()
+
 
 
         return jsonify({
 
+
             "error":
+
             str(error)
 
+
         }), 500
+
+
+
 
 
 
