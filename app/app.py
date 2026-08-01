@@ -181,7 +181,7 @@ def home():
 
         "version":
 
-        "1.2",
+        "1.3",
 
 
 
@@ -227,8 +227,13 @@ def home():
             "AI Career Intelligence Report Engine",
 
 
-            "AI Decision Intelligence Engine v1"
+            "AI Decision Intelligence Engine v1",
 
+
+            "AI Career Planner Engine v1",
+
+
+            "AI Recommendation Engine v1"
 
         ]
 
