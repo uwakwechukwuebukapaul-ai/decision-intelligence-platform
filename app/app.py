@@ -72,6 +72,14 @@ from app.routes.memory import memory_bp
 
 
 
+# =====================================================
+# AI Knowledge Intelligence Routes
+# =====================================================
+
+from app.routes.intelligence_graph import intelligence_graph_bp
+
+
+
 
 # =====================================================
 # Application Metadata
@@ -79,7 +87,7 @@ from app.routes.memory import memory_bp
 
 APP_NAME = "Decision Intelligence Platform"
 
-APP_VERSION = "2.0"
+APP_VERSION = "2.1"
 
 APP_STATUS = "running"
 
@@ -174,14 +182,24 @@ BLUEPRINTS = [
     # AI Memory Layer
     # -----------------------------
 
-    memory_bp
+    memory_bp,
+
+
+
+    # -----------------------------
+    # AI Knowledge Graph Layer
+    # -----------------------------
+
+    intelligence_graph_bp
 
 ]
 
 
 
 
+# =====================================================
 # Register Blueprints
+# =====================================================
 
 for blueprint in BLUEPRINTS:
 
@@ -281,7 +299,13 @@ def home():
 
             # Memory Layer
 
-            "AI Decision Memory Engine v1"
+            "AI Decision Memory Engine v1",
+
+
+
+            # Knowledge Layer
+
+            "AI Intelligence Graph Engine v1"
 
 
         ],
@@ -384,7 +408,9 @@ def platform_info():
 
             "Career Evolution Intelligence",
 
-            "Decision Memory Intelligence"
+            "Decision Memory Intelligence",
+
+            "Intelligence Graph Reasoning"
 
 
         ]
