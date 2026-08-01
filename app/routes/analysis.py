@@ -1,10 +1,13 @@
 from flask import Blueprint, jsonify
 import json
 
+
 from app.database.db import SessionLocal
+
 
 from app.models.user import UserProfile
 from app.models.report import AIReport
+
 
 from app.ai.decision_engine import analyze_profile
 
@@ -18,7 +21,17 @@ from app.ai.simulation.career_simulator import simulate_career_growth
 
 from app.ai.analytics.analytics_engine import calculate_career_intelligence
 
+
 from app.reports.report_generator import generate_report
+
+
+# =================================
+# NEW: Skill Intelligence Engine
+# =================================
+
+from app.services.skill_engine import generate_skill_progress
+
+
 
 
 
@@ -26,6 +39,9 @@ analysis_bp = Blueprint(
     "analysis",
     __name__
 )
+
+
+
 
 
 
@@ -45,8 +61,11 @@ def create_analysis(user_id):
     try:
 
 
+
         user = db.query(UserProfile).filter(
+
             UserProfile.id == user_id
+
         ).first()
 
 
@@ -57,6 +76,7 @@ def create_analysis(user_id):
             return jsonify({
 
                 "error":
+
                 "User not found"
 
             }), 404
@@ -73,15 +93,21 @@ def create_analysis(user_id):
 
 
         analysis = analyze_profile(
+
             user
+
         )
 
 
 
 
+
         recommendations = analysis.get(
+
             "career_recommendations",
+
             []
+
         )
 
 
@@ -152,6 +178,7 @@ def create_analysis(user_id):
 
                 readiness = generate_progress(
 
+
                     top_career["career"],
 
 
@@ -216,6 +243,7 @@ def create_analysis(user_id):
                 )
 
 
+
                 analysis["evolution"] = evolution
 
 
@@ -252,6 +280,7 @@ def create_analysis(user_id):
 
 
                     top_career["career"],
+
 
 
                     analysis.get(
@@ -308,7 +337,60 @@ def create_analysis(user_id):
 
 
             # =================================
-            # AI Career Analytics Intelligence v15
+            # AI Skill Progress Intelligence v20
+            # =================================
+
+
+            try:
+
+
+                generated_skills = generate_skill_progress(
+
+
+                    db,
+
+
+                    user.id,
+
+
+                    top_career.get(
+
+                        "missing_skills",
+
+                        []
+
+                    )
+
+                )
+
+
+
+                analysis["skill_progress_generated"] = generated_skills
+
+
+
+            except Exception as error:
+
+
+                analysis["skill_progress_generated"] = {
+
+
+                    "error":
+
+                    str(error)
+
+                }
+
+
+
+
+
+
+
+
+
+            # =================================
+            # AI Career Analytics Intelligence
             # =================================
 
 
@@ -385,6 +467,8 @@ def create_analysis(user_id):
 
             analysis["analytics"] = {}
 
+            analysis["skill_progress_generated"] = {}
+
 
 
 
@@ -425,7 +509,6 @@ def create_analysis(user_id):
             )
 
         )
-
 
 
 
@@ -479,6 +562,7 @@ def create_analysis(user_id):
 
 
 
+
     except Exception as error:
 
 
@@ -496,6 +580,7 @@ def create_analysis(user_id):
 
 
         }), 500
+
 
 
 

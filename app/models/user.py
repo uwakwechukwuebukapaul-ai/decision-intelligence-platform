@@ -49,7 +49,7 @@ class UserProfile(Base):
 
 
     # ==========================
-    # Profile Intelligence Data
+    # User Intelligence Profile
     # ==========================
 
 
@@ -91,20 +91,28 @@ class UserProfile(Base):
 
 
     # ==========================
-    # AI Career Intelligence
+    # AI Intelligence Relations
     # ==========================
 
 
     reports = relationship(
+
         "AIReport",
+
         back_populates="user",
+
         cascade="all, delete-orphan"
+
     )
 
 
 
     skills_progress = relationship(
+
         "SkillProgress",
+
         back_populates="user",
+
         cascade="all, delete-orphan"
+
     )
