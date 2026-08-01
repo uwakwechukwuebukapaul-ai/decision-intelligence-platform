@@ -65,7 +65,7 @@ from app.routes.career_evolution import career_evolution_bp
 
 
 # =====================================================
-# AI Memory Intelligence Routes
+# AI Memory Routes
 # =====================================================
 
 from app.routes.memory import memory_bp
@@ -73,7 +73,7 @@ from app.routes.memory import memory_bp
 
 
 # =====================================================
-# AI Knowledge Intelligence Routes
+# AI Knowledge Graph Routes
 # =====================================================
 
 from app.routes.intelligence_graph import intelligence_graph_bp
@@ -81,7 +81,7 @@ from app.routes.intelligence_graph import intelligence_graph_bp
 
 
 # =====================================================
-# AI Reasoning Intelligence Routes
+# AI Reasoning Routes
 # =====================================================
 
 from app.routes.decision_reasoning import decision_reasoning_bp
@@ -89,7 +89,7 @@ from app.routes.decision_reasoning import decision_reasoning_bp
 
 
 # =====================================================
-# AI Orchestration Intelligence Routes
+# AI Orchestration Routes
 # =====================================================
 
 from app.routes.decision_orchestrator import decision_orchestrator_bp
@@ -97,7 +97,7 @@ from app.routes.decision_orchestrator import decision_orchestrator_bp
 
 
 # =====================================================
-# AI Agent Runtime Intelligence Routes
+# AI Agent Runtime Routes
 # =====================================================
 
 from app.routes.agent_runtime import agent_runtime_bp
@@ -105,10 +105,26 @@ from app.routes.agent_runtime import agent_runtime_bp
 
 
 # =====================================================
-# AI Agent Tool Intelligence Routes
+# AI Agent Tools Routes
 # =====================================================
 
 from app.routes.agent_tools import agent_tools_bp
+
+
+
+# =====================================================
+# AI Agent Planner Routes
+# =====================================================
+
+from app.routes.agent_planner import agent_planner_bp
+
+
+
+# =====================================================
+# AI Agent Supervisor Routes
+# =====================================================
+
+from app.routes.agent_supervisor import agent_supervisor_bp
 
 
 
@@ -119,7 +135,7 @@ from app.routes.agent_tools import agent_tools_bp
 
 APP_NAME = "Decision Intelligence Platform"
 
-APP_VERSION = "2.5"
+APP_VERSION = "2.7"
 
 APP_STATUS = "running"
 
@@ -168,9 +184,8 @@ Base.metadata.create_all(
 
 BLUEPRINTS = [
 
-    # -----------------------------
+
     # Core Platform
-    # -----------------------------
 
     profile_bp,
     analysis_bp,
@@ -183,9 +198,8 @@ BLUEPRINTS = [
     learning_progress_bp,
 
 
-    # -----------------------------
+
     # AI Intelligence Layer
-    # -----------------------------
 
     skill_analysis_bp,
     career_report_bp,
@@ -197,55 +211,45 @@ BLUEPRINTS = [
     intelligence_bp,
 
 
-    # -----------------------------
+
     # AI Simulation Layer
-    # -----------------------------
 
     digital_twin_bp,
     career_simulation_bp,
     career_evolution_bp,
 
 
-    # -----------------------------
+
     # AI Memory Layer
-    # -----------------------------
 
     memory_bp,
 
 
-    # -----------------------------
+
     # AI Knowledge Layer
-    # -----------------------------
 
     intelligence_graph_bp,
 
 
-    # -----------------------------
+
     # AI Reasoning Layer
-    # -----------------------------
 
     decision_reasoning_bp,
 
 
-    # -----------------------------
+
     # AI Orchestration Layer
-    # -----------------------------
 
     decision_orchestrator_bp,
 
 
-    # -----------------------------
-    # AI Agent Runtime Layer
-    # -----------------------------
+
+    # AI Agent Layer
 
     agent_runtime_bp,
-
-
-    # -----------------------------
-    # AI Agent Tool Layer
-    # -----------------------------
-
-    agent_tools_bp
+    agent_tools_bp,
+    agent_planner_bp,
+    agent_supervisor_bp
 
 ]
 
@@ -356,9 +360,16 @@ def home():
 
             "AI Decision Orchestrator Engine v1",
 
+
+
             "AI Agent Runtime Engine v1",
 
-            "AI Agent Tool Execution Engine v1"
+            "AI Agent Tool Execution Engine v1",
+
+            "AI Agent Planning Engine v1",
+
+            "AI Agent Supervisor Engine v1"
+
 
         ],
 
@@ -469,7 +480,12 @@ def platform_info():
 
             "Agent Runtime Intelligence",
 
-            "Agent Tool Execution Intelligence"
+            "Agent Tool Execution Intelligence",
+
+            "Agent Planning Intelligence",
+
+            "Agent Supervisor Intelligence"
+
 
         ]
 
