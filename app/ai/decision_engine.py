@@ -1,77 +1,108 @@
+from app.knowledge.career_database import CAREER_DATABASE
+
+
+
+def calculate_match(user_skills, career_skills):
+
+    score = 0
+
+    user_skills = [
+        skill.strip().lower()
+        for skill in user_skills.split(",")
+    ]
+
+
+    for skill in career_skills:
+
+        if skill.lower() in user_skills:
+
+            score += 1
+
+
+    return score
+
+
+
 def analyze_profile(profile):
-    """
-    Basic Decision Intelligence engine.
 
-    Takes a user profile and generates
-    career recommendations.
-    """
-
-    recommendations = []
-
-    skills = (profile.skills or "").lower()
-
-    goals = (profile.goals or "").lower()
+    user_skills = profile.skills or ""
 
 
-    # Skill-based reasoning
+    career_results = []
 
-    if "python" in skills:
-        recommendations.append(
-            "AI Engineering or Automation roles"
+
+    for career in CAREER_DATABASE:
+
+        score = calculate_match(
+            user_skills,
+            career["skills"]
         )
 
 
-    if "security" in skills or "cyber" in skills:
-        recommendations.append(
-            "Cybersecurity and Security Engineering paths"
-        )
+        career_results.append({
+
+            "career": career["name"],
+
+            "match_score": score,
+
+            "description": career["description"]
+
+        })
 
 
-    if "data" in skills:
-        recommendations.append(
-            "Data Analytics or Data Engineering paths"
-        )
+    career_results.sort(
+        key=lambda x: x["match_score"],
+        reverse=True
+    )
 
 
-    # Default recommendation
-
-    if not recommendations:
-        recommendations.append(
-            "Explore technology careers based on your interests and strengths"
-        )
+    recommendations = career_results[:3]
 
 
-    report = {
+    return {
+
 
         "user": profile.name,
 
+
         "current_profile": {
+
             "education": profile.education,
+
             "experience": profile.experience,
+
             "skills": profile.skills,
+
             "goals": profile.goals
+
         },
 
-        "career_options": recommendations,
+
+        "career_recommendations": recommendations,
 
 
         "skill_gap": [
+
             "Advanced technical skills",
-            "Real-world projects",
-            "Professional portfolio"
+
+            "Industry certifications",
+
+            "Real-world projects"
+
         ],
 
 
         "next_steps": [
-            "Build practical projects",
-            "Develop industry skills",
-            "Track progress regularly"
+
+            "Build portfolio projects",
+
+            "Develop professional network",
+
+            "Gain practical experience"
+
         ],
 
 
-        "confidence": "Initial assessment"
+        "engine_version": "Decision Intelligence Engine v2"
 
     }
-
-
-    return report
