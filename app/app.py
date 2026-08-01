@@ -39,6 +39,7 @@ from app.routes.learning_progress import learning_progress_bp
 from app.routes.skill_analysis import skill_analysis_bp
 from app.routes.career_report import career_report_bp
 from app.routes.decision import decision_bp
+from app.routes.recommendation import recommendation_bp
 
 
 
@@ -156,6 +157,14 @@ app.register_blueprint(
 
 
 
+# AI Recommendation Engine
+
+app.register_blueprint(
+    recommendation_bp
+)
+
+
+
 # ===============================
 # Platform Health
 # ===============================
@@ -190,48 +199,33 @@ def home():
 
             "User Intelligence Profile",
 
-
             "AI Decision Engine",
-
 
             "Career Matching",
 
-
             "AI Reports",
-
 
             "AI Mentor",
 
-
             "Career Simulation",
-
 
             "Career Evolution",
 
-
             "Skill Progress Tracking",
-
 
             "Certification Intelligence",
 
-
             "Learning Roadmap Engine",
-
 
             "Adaptive Learning Progress Engine",
 
-
             "AI Skill Gap Intelligence Engine",
-
 
             "AI Career Intelligence Report Engine",
 
-
             "AI Decision Intelligence Engine v1",
 
-
             "AI Career Planner Engine v1",
-
 
             "AI Recommendation Engine v1"
 
