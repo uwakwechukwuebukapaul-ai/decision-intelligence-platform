@@ -128,6 +128,14 @@ from app.routes.agent_supervisor import agent_supervisor_bp
 
 
 
+# =====================================================
+# AI Agent Memory Routes
+# =====================================================
+
+from app.routes.agent_memory import agent_memory_bp
+
+
+
 
 # =====================================================
 # Application Metadata
@@ -135,7 +143,7 @@ from app.routes.agent_supervisor import agent_supervisor_bp
 
 APP_NAME = "Decision Intelligence Platform"
 
-APP_VERSION = "2.7"
+APP_VERSION = "2.8"
 
 APP_STATUS = "running"
 
@@ -249,7 +257,8 @@ BLUEPRINTS = [
     agent_runtime_bp,
     agent_tools_bp,
     agent_planner_bp,
-    agent_supervisor_bp
+    agent_supervisor_bp,
+    agent_memory_bp
 
 ]
 
@@ -366,12 +375,15 @@ def home():
 
             "AI Agent Tool Execution Engine v1",
 
-            "AI Agent Planning Engine v1",
+            "AI Agent Planner Engine v1",
 
-            "AI Agent Supervisor Engine v1"
+            "AI Agent Supervisor Engine v1",
+
+            "AI Agent Memory Engine v1"
 
 
         ],
+
 
 
         "blueprints_loaded":
@@ -484,7 +496,9 @@ def platform_info():
 
             "Agent Planning Intelligence",
 
-            "Agent Supervisor Intelligence"
+            "Agent Supervisor Intelligence",
+
+            "Agent Memory Intelligence"
 
 
         ]
