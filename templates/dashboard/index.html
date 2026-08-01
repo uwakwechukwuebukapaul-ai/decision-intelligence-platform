@@ -4,7 +4,7 @@
 <head>
 
 <title>
-AI Career Intelligence Dashboard v15
+AI Career Intelligence Dashboard v16
 </title>
 
 
@@ -27,6 +27,7 @@ margin:auto;
 }
 
 
+
 .card {
 
 background:white;
@@ -38,11 +39,13 @@ box-shadow:0 4px 15px #ddd;
 }
 
 
+
 h1 {
 
 color:#111827;
 
 }
+
 
 
 h2 {
@@ -52,11 +55,13 @@ color:#1f2937;
 }
 
 
+
 h3 {
 
 color:#2563eb;
 
 }
+
 
 
 .skill {
@@ -153,8 +158,6 @@ border-left:5px solid #8b5cf6;
 
 padding:20px;
 
-margin-top:15px;
-
 background:#faf5ff;
 
 border-radius:10px;
@@ -169,8 +172,6 @@ border-left:5px solid #f59e0b;
 
 padding:20px;
 
-margin-top:15px;
-
 background:#fffbeb;
 
 border-radius:10px;
@@ -179,15 +180,18 @@ border-radius:10px;
 
 
 
-hr {
+.evolution {
 
-border:none;
+border-left:5px solid #ef4444;
 
-border-top:1px solid #ddd;
+padding:20px;
 
-margin:30px 0;
+background:#fff1f2;
+
+border-radius:10px;
 
 }
+
 
 
 </style>
@@ -203,12 +207,9 @@ margin:30px 0;
 <div class="container">
 
 
-
 <h1>
-🧠 AI Career Intelligence Dashboard
+🧠 AI Career Intelligence Platform
 </h1>
-
-
 
 
 
@@ -236,7 +237,7 @@ margin:30px 0;
 
 
 <p>
-<b>Skills:</b> {{user.skills}}
+<b>Current Skills:</b> {{user.skills}}
 </p>
 
 
@@ -245,23 +246,16 @@ margin:30px 0;
 
 
 
-
-
 <h2>
-AI Reports: {{reports|length}}
+AI Reports Generated: {{reports|length}}
 </h2>
-
-
-
 
 
 
 {% for report in reports %}
 
 
-
 <div class="card">
-
 
 
 <h2>
@@ -271,18 +265,9 @@ AI Reports: {{reports|length}}
 
 
 <p>
-
-<b>
-Generated:
-</b>
-
+<b>Generated:</b>
 {{report.report_content.generated_at}}
-
 </p>
-
-
-
-
 
 
 
@@ -293,20 +278,15 @@ Generated:
 
 
 
-
 {% for career in report.report_content.recommendations %}
-
-
 
 
 <div class="module">
 
 
-
 <h3>
 {{career.career}}
 </h3>
-
 
 
 <p>
@@ -317,13 +297,10 @@ Match Score:
 
 
 <span class="badge">
-
 {{career.match_score}}%
-
 </span>
 
 </p>
-
 
 
 <p>
@@ -332,37 +309,24 @@ Match Score:
 
 
 
-
-
 <b>
 ✅ Completed Skills
 </b>
 
-
 <br>
 
 
-
 {% for skill in career.matched_skills %}
-
 
 <span class="skill">
 {{skill}}
 </span>
 
-
 {% endfor %}
 
 
 
-
-
-
-
 <br><br>
-
-
-
 
 
 <b>
@@ -373,28 +337,20 @@ Match Score:
 <br>
 
 
-
 {% for skill in career.missing_skills %}
-
 
 <span class="skill">
 {{skill}}
 </span>
 
-
 {% endfor %}
-
-
 
 
 
 </div>
 
 
-
 {% endfor %}
-
-
 
 
 
@@ -402,13 +358,12 @@ Match Score:
 
 
 <h3>
-📊 AI Confidence Score
+📊 AI Confidence
 </h3>
 
 
 
 <div class="progress">
-
 
 <div class="progress-bar"
 
@@ -420,11 +375,7 @@ style="width:{{report.report_content.confidence_score}}%">
 
 </div>
 
-
 </div>
-
-
-
 
 
 
@@ -434,32 +385,19 @@ style="width:{{report.report_content.confidence_score}}%">
 {% if report.report_content.ai_reasoning %}
 
 
-
-
 <h3>
 🧠 AI Reasoning
 </h3>
 
 
-
-
 <div class="module">
 
-
-<p>
-
 {{report.report_content.ai_reasoning}}
-
-</p>
-
 
 </div>
 
 
-
 {% endif %}
-
-
 
 
 
@@ -470,20 +408,15 @@ style="width:{{report.report_content.confidence_score}}%">
 {% if report.report_content.mentor %}
 
 
-
 <h2>
 🧠 AI Mentor Intelligence
 </h2>
 
 
-
-
 <div class="module">
 
 
-
 <p>
-
 <b>
 Target Career:
 </b>
@@ -494,21 +427,15 @@ Target Career:
 
 
 
-
 <p>
 
 <b>
 Readiness Score:
 </b>
 
-
 {{report.report_content.mentor.readiness_score}}%
 
 </p>
-
-
-
-
 
 
 
@@ -517,26 +444,15 @@ Readiness Score:
 </h3>
 
 
-
 <ul>
-
 
 {% for cert in report.report_content.mentor.certifications %}
 
-
-<li>
-{{cert}}
-</li>
-
+<li>{{cert}}</li>
 
 {% endfor %}
 
-
 </ul>
-
-
-
-
 
 
 
@@ -546,13 +462,7 @@ Readiness Score:
 </h3>
 
 
-
-
-
 {% for project in report.report_content.mentor.projects %}
-
-
-
 
 
 <div class="module">
@@ -563,57 +473,30 @@ Readiness Score:
 </h3>
 
 
-
 <p>
-<b>
 Difficulty:
-</b>
-
 {{project.difficulty}}
-
-</p>
-
-
-
-
-<p>
-<b>
-Skills:
-</b>
 </p>
 
 
 
 {% for skill in project.skills %}
 
-
-
 <span class="skill">
-
 {{skill}}
-
 </span>
 
+{% endfor %}
+
+
+</div>
 
 
 {% endfor %}
 
 
 
-
 </div>
-
-
-
-
-{% endfor %}
-
-
-
-
-
-</div>
-
 
 
 {% endif %}
@@ -624,12 +507,7 @@ Skills:
 
 
 
-
-
 {% if report.report_content.evolution %}
-
-
-
 
 
 <h2>
@@ -638,8 +516,7 @@ Skills:
 
 
 
-
-<div class="module">
+<div class="evolution">
 
 
 <p>
@@ -651,7 +528,6 @@ Career:
 {{report.report_content.evolution.career}}
 
 </p>
-
 
 
 
@@ -668,27 +544,27 @@ Growth Status:
 
 
 
-<p>
+<div class="progress">
 
-<b>
-Readiness:
-</b>
+<div class="progress-bar"
+
+style="width:{{report.report_content.evolution.readiness_score}}%">
+
 
 {{report.report_content.evolution.readiness_score}}%
 
-</p>
 
+</div>
 
 
 </div>
 
 
 
+</div>
 
 
 {% endif %}
-
-
 
 
 
@@ -699,58 +575,46 @@ Readiness:
 {% if report.report_content.simulation %}
 
 
-
-
-
 <h2>
-🔮 Career Simulation Prediction
+🔮 AI Career Simulation
 </h2>
-
-
 
 
 <div class="simulation">
 
 
-
 {% for stage in report.report_content.simulation.simulation %}
 
 
+<div class="module">
+
+
+<h3>
+{{stage.period}}
+</h3>
 
 
 <p>
 
-
-<b>
-{{stage.period}}
-</b>
-
-
-<br>
-
-
 Projected Readiness:
 
+<b>
 {{stage.projected_readiness}}%
-
+</b>
 
 </p>
-
-
-
-
-{% endfor %}
-
 
 
 </div>
 
 
+{% endfor %}
 
+
+</div>
 
 
 {% endif %}
-
 
 
 
@@ -762,17 +626,12 @@ Projected Readiness:
 {% if report.report_content.mentor.roadmap %}
 
 
-
-
 <h2>
-🗺️ AI Career Roadmap
+🗺️ Career Roadmap
 </h2>
 
 
-
-
 <div class="timeline">
-
 
 
 <p>
@@ -788,17 +647,10 @@ Duration:
 
 
 
-
-
-
 {% for step in report.report_content.mentor.roadmap.months %}
 
 
-
-
-
 <div class="module">
-
 
 
 <h3>
@@ -813,7 +665,6 @@ Duration:
 
 
 
-
 <b>
 Skills:
 </b>
@@ -822,22 +673,15 @@ Skills:
 <br>
 
 
-
-
 {% for skill in step.skills %}
 
 
-
 <span class="skill">
-
 {{skill}}
-
 </span>
 
 
-
 {% endfor %}
-
 
 
 
@@ -845,29 +689,21 @@ Skills:
 <br><br>
 
 
-
-
-
 <b>
 Projects:
 </b>
 
 
-
 <ul>
 
 
-
 {% for project in step.projects %}
-
 
 <li>
 {{project}}
 </li>
 
-
 {% endfor %}
-
 
 
 </ul>
@@ -877,18 +713,11 @@ Projects:
 </div>
 
 
-
-
 {% endfor %}
 
 
 
-
-
 </div>
-
-
-
 
 
 {% endif %}
@@ -900,13 +729,7 @@ Projects:
 
 
 
-
-<!-- AI Learning Intelligence v15 -->
-
-
-
 {% if report.report_content.learning %}
-
 
 
 <h2>
@@ -914,11 +737,7 @@ Projects:
 </h2>
 
 
-
-
 <div class="learning">
-
-
 
 
 
@@ -926,30 +745,24 @@ Projects:
 
 
 
-
 <div class="module">
 
 
-
 <h3>
-📚 Skill: {{item.skill}}
+📚 {{item.skill}}
 </h3>
 
 
 
-
-
 <h4>
-Recommended Courses
+Courses
 </h4>
-
 
 
 <ul>
 
 
 {% for course in item.courses %}
-
 
 <li>
 {{course}}
@@ -959,11 +772,7 @@ Recommended Courses
 {% endfor %}
 
 
-
 </ul>
-
-
-
 
 
 
@@ -973,10 +782,7 @@ Recommended Courses
 </h4>
 
 
-
-
 <ul>
-
 
 
 {% for cert in item.certifications %}
@@ -990,26 +796,17 @@ Recommended Courses
 {% endfor %}
 
 
-
-
 </ul>
 
 
 
 
-
-
-
-
 <h4>
-🛠 Learning Projects
+🛠 Projects
 </h4>
 
 
-
-
 <ul>
-
 
 
 {% for project in item.projects %}
@@ -1023,16 +820,11 @@ Recommended Courses
 {% endfor %}
 
 
-
 </ul>
 
 
 
-
-
 </div>
-
-
 
 
 
@@ -1040,9 +832,7 @@ Recommended Courses
 
 
 
-
 </div>
-
 
 
 
@@ -1052,28 +842,14 @@ Recommended Courses
 
 
 
-
-
-
-<hr>
-
-
-
-
-
 </div>
-
-
 
 
 {% endfor %}
 
 
 
-
-
 </div>
-
 
 
 </body>
