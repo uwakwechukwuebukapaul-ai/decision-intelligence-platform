@@ -5,6 +5,7 @@ from app.database.db import engine, Base
 from app.routes.profile import profile_bp
 from app.routes.analysis import analysis_bp
 from app.routes.auth import auth_bp
+from app.routes.reports import reports_bp
 
 
 app = Flask(__name__)
@@ -34,6 +35,11 @@ app.register_blueprint(
 )
 
 
+app.register_blueprint(
+    reports_bp
+)
+
+
 @app.route("/")
 def home():
 
@@ -43,7 +49,7 @@ def home():
 
         "status": "running",
 
-        "version": "0.2",
+        "version": "0.3",
 
         "features": [
 
@@ -55,7 +61,9 @@ def home():
 
             "LLM Reasoning",
 
-            "Authentication System"
+            "Authentication System",
+
+            "AI Report History"
 
         ]
 
