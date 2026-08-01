@@ -1,6 +1,6 @@
-from flask import Blueprint, render_template
 import json
-import ast
+
+from flask import Blueprint, render_template
 
 from app.database.db import SessionLocal
 from app.models.user import UserProfile
@@ -43,23 +43,14 @@ def dashboard(user_id):
 
     for report in reports:
 
-        try:
-
-            report.report_content = json.loads(
-                report.report_content
-            )
-
-
-        except json.JSONDecodeError:
-
-
-            report.report_content = ast.literal_eval(
-                report.report_content
-            )
+        report.report_content = json.loads(
+            report.report_content
+        )
 
 
 
     db.close()
+
 
 
     return render_template(

@@ -7,89 +7,124 @@
 AI Decision Intelligence Dashboard
 </title>
 
+
 <style>
 
 body {
-    font-family: Arial, sans-serif;
-    background:#f4f6f9;
-    padding:40px;
+
+font-family: Arial, sans-serif;
+background:#f4f6f9;
+padding:40px;
+
 }
 
 
-h1 {
-    color:#111827;
+.container {
+
+max-width:1100px;
+margin:auto;
+
 }
 
 
 .card {
 
-    background:white;
-    padding:25px;
-    border-radius:12px;
-    margin-bottom:25px;
-    box-shadow:0 4px 10px rgba(0,0,0,0.08);
+background:white;
+padding:25px;
+margin-bottom:25px;
+border-radius:12px;
+box-shadow:0 4px 10px #ddd;
 
 }
 
 
-.profile {
+h1 {
 
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:15px;
+color:#111827;
 
 }
 
 
-.report {
+h2 {
 
-    border-left:5px solid #2563eb;
-    padding:20px;
-    background:#fafafa;
-    margin-top:20px;
+color:#1f2937;
 
 }
 
 
-.recommendation {
+h3 {
 
-    background:#eef2ff;
-    padding:15px;
-    border-radius:10px;
-    margin-top:10px;
-
-}
-
-
-.badge {
-
-    background:#2563eb;
-    color:white;
-    padding:5px 10px;
-    border-radius:20px;
+color:#2563eb;
 
 }
 
 
 .skill {
 
-    background:#fee2e2;
-    padding:8px;
-    margin:5px;
-    display:inline-block;
-    border-radius:8px;
+display:inline-block;
+
+background:#e5e7eb;
+
+padding:8px;
+
+margin:5px;
+
+border-radius:6px;
+
+font-size:14px;
 
 }
 
 
-.action {
+.badge {
 
-    background:#dcfce7;
-    padding:12px;
-    margin:8px;
-    border-radius:8px;
+background:#2563eb;
+
+color:white;
+
+padding:8px 12px;
+
+border-radius:8px;
 
 }
+
+
+.roadmap {
+
+border-left:5px solid #10b981;
+
+padding:15px;
+
+margin-top:15px;
+
+background:#f9fafb;
+
+}
+
+
+.project {
+
+border-left:5px solid #2563eb;
+
+padding:15px;
+
+margin-top:15px;
+
+background:#fafafa;
+
+}
+
+
+hr {
+
+border:none;
+
+border-top:1px solid #ddd;
+
+margin:25px 0;
+
+}
+
 
 </style>
 
@@ -97,6 +132,9 @@ h1 {
 
 
 <body>
+
+
+<div class="container">
 
 
 <h1>
@@ -107,54 +145,49 @@ h1 {
 
 <div class="card">
 
+
 <h2>
-User Intelligence Profile
+👤 User Intelligence Profile
 </h2>
 
 
-<div class="profile">
+<p>
+<b>Name:</b>
+{{user.name}}
+</p>
 
 
-<div>
-
-<b>Name</b>
-
-<br>
-
-{{ user.name }}
-
-</div>
+<p>
+<b>Education:</b>
+{{user.education}}
+</p>
 
 
-
-<div>
-
-<b>Education</b>
-
-<br>
-
-{{ user.education }}
-
-</div>
+<p>
+<b>Experience:</b>
+{{user.experience}}
+</p>
 
 
-
-<div>
-
-<b>Skills</b>
-
-<br>
-
-{{ user.skills }}
-
-</div>
+<p>
+<b>Skills:</b>
+{{user.skills}}
+</p>
 
 
 </div>
 
 
-</div>
 
+
+<h2>
+AI Reports: {{reports|length}}
+</h2>
+
+
+
+
+{% for report in reports %}
 
 
 
@@ -162,68 +195,128 @@ User Intelligence Profile
 
 
 <h2>
-AI Reports:
-{{ reports|length }}
+🚀 {{report.report_content.title}}
 </h2>
 
-
-
-{% for report in reports %}
-
-
-<div class="report">
-
-
-<h2>
-{{ report.report_content.title }}
-</h2>
 
 
 <p>
 
-Generated:
-{{ report.report_content.generated_at }}
+<b>Generated:</b>
+
+{{report.report_content.generated_at}}
 
 </p>
 
 
 
 <h3>
-🚀 Career Recommendations
+🎯 Career Recommendations
 </h3>
+
 
 
 
 {% for career in report.report_content.recommendations %}
 
 
-<div class="recommendation">
+
+<div class="project">
+
+
+<h3>
+
+{{career.career}}
+
+</h3>
+
+
+
+<p>
+
+<b>Match Score:</b>
+
+<span class="badge">
+
+{{career.match_score}}%
+
+</span>
+
+
+</p>
+
+
+
+<p>
+
+{{career.description}}
+
+</p>
+
+
+
+{% if career.matched_skills %}
 
 
 <b>
-{{ career.career }}
+✅ Matched Skills
 </b>
 
 
 <br>
 
 
-Match Score:
+{% for skill in career.matched_skills %}
 
-<span class="badge">
 
-{{ career.match_score }}
+<span class="skill">
+
+{{skill}}
 
 </span>
+
+
+{% endfor %}
 
 
 <br><br>
 
 
-{{ career.description }}
+{% endif %}
+
+
+
+
+{% if career.missing_skills %}
+
+
+<b>
+⚠ Missing Skills
+</b>
+
+
+<br>
+
+
+{% for skill in career.missing_skills %}
+
+
+<span class="skill">
+
+{{skill}}
+
+</span>
+
+
+{% endfor %}
+
+
+{% endif %}
+
 
 
 </div>
+
 
 
 {% endfor %}
@@ -236,12 +329,139 @@ Match Score:
 </h3>
 
 
+<ul>
+
+
 {% for skill in report.report_content.skill_gap %}
+
+
+<li>
+
+{{skill}}
+
+</li>
+
+
+{% endfor %}
+
+
+</ul>
+
+
+
+
+
+<h3>
+📌 AI Confidence Score
+</h3>
+
+
+<p>
+
+<span class="badge">
+
+{{report.report_content.confidence_score}}%
+
+</span>
+
+</p>
+
+
+
+
+
+{% if report.report_content.ai_reasoning %}
+
+
+<h3>
+🧠 AI Reasoning
+</h3>
+
+
+<div class="project">
+
+
+<p>
+
+{{report.report_content.ai_reasoning}}
+
+</p>
+
+
+</div>
+
+
+{% endif %}
+
+
+
+
+
+
+{% if report.report_content.roadmap %}
+
+
+
+<h3>
+🗺️ AI Career Roadmap
+</h3>
+
+
+
+<div class="roadmap">
+
+
+
+<p>
+
+<b>Target Career:</b>
+
+{{report.report_content.roadmap.target_career}}
+
+</p>
+
+
+
+
+<p>
+
+<b>Duration:</b>
+
+{{report.report_content.roadmap.duration}}
+
+</p>
+
+
+
+
+{% for step in report.report_content.roadmap.roadmap %}
+
+
+
+<div class="project">
+
+
+<h3>
+
+Month {{step.month}}:
+{{step.title}}
+
+</h3>
+
+
+
+<p>
+<b>Skills Development:</b>
+</p>
+
+
+
+{% for skill in step.skills %}
 
 
 <span class="skill">
 
-{{ skill }}
+{{skill}}
 
 </span>
 
@@ -251,19 +471,37 @@ Match Score:
 
 
 
-<h3>
-📌 Action Plan
-</h3>
+
+<p>
+
+<b>Projects:</b>
+
+</p>
 
 
-{% for step in report.report_content.action_plan %}
+
+<ul>
 
 
-<div class="action">
+{% for project in step.projects %}
 
-✓ {{ step }}
+
+<li>
+
+{{project}}
+
+</li>
+
+
+{% endfor %}
+
+
+</ul>
+
+
 
 </div>
+
 
 
 {% endfor %}
@@ -271,6 +509,17 @@ Match Score:
 
 
 </div>
+
+
+
+{% endif %}
+
+
+
+
+
+<hr>
+
 
 
 {% endfor %}
@@ -281,5 +530,6 @@ Match Score:
 
 
 </body>
+
 
 </html>

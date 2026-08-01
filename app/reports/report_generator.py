@@ -16,9 +16,9 @@ def generate_report(profile, analysis):
 
             "name": "Decision Intelligence Engine",
 
-            "version": "v2",
+            "version": "v5",
 
-            "type": "AI Career Reasoning Engine"
+            "type": "AI Career Intelligence System"
 
         },
 
@@ -56,34 +56,24 @@ def generate_report(profile, analysis):
         ),
 
 
-        "confidence_score": calculate_confidence(
-            analysis
+        "ai_reasoning": analysis.get(
+            "ai_reasoning",
+            ""
+        ),
+
+
+        "roadmap": analysis.get(
+            "roadmap",
+            {}
+        ),
+
+
+        "confidence_score": analysis.get(
+            "confidence_score",
+            90
         )
 
     }
 
 
     return report
-
-
-
-
-def calculate_confidence(analysis):
-
-    recommendations = analysis.get(
-        "career_recommendations",
-        []
-    )
-
-
-    if len(recommendations) >= 3:
-
-        return 90
-
-
-    elif len(recommendations) > 0:
-
-        return 70
-
-
-    return 40
