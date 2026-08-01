@@ -3,7 +3,6 @@ from sqlalchemy import (
     Integer,
     String,
     Text,
-    Boolean,
     DateTime,
     ForeignKey
 )
@@ -21,97 +20,52 @@ class LearningProgress(Base):
     __tablename__ = "learning_progress"
 
 
-
     id = Column(
-
         Integer,
-
         primary_key=True,
-
         index=True
-
     )
 
 
     user_id = Column(
-
         Integer,
-
         ForeignKey(
             "user_profiles.id"
         ),
-
         nullable=False
-
     )
 
 
-    career = Column(
-
+    skill_name = Column(
         String(100),
-
         nullable=False
-
     )
 
 
-    week = Column(
-
+    progress = Column(
         Integer,
-
-        nullable=False
-
+        default=0
     )
 
 
-    skill = Column(
-
-        String(100),
-
-        nullable=False
-
+    status = Column(
+        String(50),
+        default="Not Started"
     )
 
 
-    objective = Column(
-
+    notes = Column(
         Text
-
-    )
-
-
-    completed = Column(
-
-        Boolean,
-
-        default=False
-
-    )
-
-
-    completed_at = Column(
-
-        DateTime,
-
-        nullable=True
-
     )
 
 
     created_at = Column(
-
         DateTime,
-
         default=datetime.utcnow
-
     )
 
 
-
     user = relationship(
-
         "UserProfile",
-
         back_populates="learning_progress"
-
     )

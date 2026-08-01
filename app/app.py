@@ -35,6 +35,7 @@ from app.routes.dashboard import dashboard_bp
 from app.routes.progress import progress_bp
 from app.routes.certification import certification_bp
 from app.routes.learning import learning_bp
+from app.routes.learning_progress import learning_progress_bp
 
 
 
@@ -116,6 +117,11 @@ app.register_blueprint(
 )
 
 
+app.register_blueprint(
+    learning_progress_bp
+)
+
+
 
 # ===============================
 # Platform Health
@@ -129,15 +135,21 @@ def home():
 
 
         "name":
+
         "Decision Intelligence Platform",
 
 
+
         "status":
+
         "running",
 
 
+
         "version":
-        "0.8",
+
+        "0.9",
+
 
 
         "features":[
@@ -161,12 +173,16 @@ def home():
 
             "Certification Intelligence",
 
-            "Learning Roadmap Engine"
+            "Learning Roadmap Engine",
+
+            "Adaptive Learning Progress Engine"
 
 
         ]
 
     }
+
+
 
 
 

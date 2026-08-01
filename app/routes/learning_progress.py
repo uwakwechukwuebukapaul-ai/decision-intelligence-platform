@@ -36,7 +36,6 @@ def start_learning(user_id, week):
         ).first()
 
 
-
         if not module:
 
             return jsonify({
@@ -90,7 +89,6 @@ def complete_learning(user_id, week):
 
     try:
 
-
         module = db.query(
             LearningProgress
         ).filter(
@@ -121,7 +119,6 @@ def complete_learning(user_id, week):
         module.completed_at = datetime.utcnow()
 
 
-
         db.commit()
 
 
@@ -138,7 +135,6 @@ def complete_learning(user_id, week):
             100
 
         })
-
 
 
     finally:
