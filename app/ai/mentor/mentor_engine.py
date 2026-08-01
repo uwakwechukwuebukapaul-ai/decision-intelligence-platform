@@ -1,61 +1,278 @@
-def generate_learning_plan(profile, career):
-
-    roadmap = {
-
-
-        "target_career": career,
+# ==========================================
+# AI Mentor Engine v1
+# Decision Intelligence Platform
+# ==========================================
 
 
-        "phase_1_foundation": [
-
-            "Master Python programming",
-
-            "Learn Linux fundamentals",
-
-            "Understand networking basics"
-
-        ],
+def generate_mentor_guidance(
+    career,
+    skills=None,
+    progress=None,
+    completed_labs=None,
+    certifications=None
+):
 
 
-        "phase_2_security_skills": [
+    # -------------------------------
+    # Normalize Inputs
+    # -------------------------------
 
-            "Learn SIEM platforms",
-
-            "Practice threat detection",
-
-            "Study incident response"
-
-        ],
+    if skills is None:
+        skills = []
 
 
-        "phase_3_professional_growth": [
-
-            "Build cybersecurity projects",
-
-            "Complete industry certifications",
-
-            "Create professional portfolio"
-
-        ],
+    if progress is None:
+        progress = 0
 
 
-        "recommended_projects": [
-
-            "Build a SOC monitoring dashboard",
-
-            "Create threat intelligence automation",
-
-            "Develop security analysis tools"
-
-        ],
+    if completed_labs is None:
+        completed_labs = []
 
 
-        "timeline":
+    if certifications is None:
+        certifications = []
 
-        "6-12 months"
 
+
+    if isinstance(skills, str):
+
+        skills = [
+            item.strip()
+            for item in skills.split(",")
+            if item.strip()
+        ]
+
+
+
+    # -------------------------------
+    # Skill Intelligence
+    # -------------------------------
+
+    required_skills = [
+
+        "SIEM",
+
+        "Log Analysis",
+
+        "Incident Response",
+
+        "Threat Intelligence",
+
+        "MITRE ATT&CK",
+
+        "Detection Engineering"
+
+    ]
+
+
+
+    missing_skills = [
+
+        skill
+
+        for skill in required_skills
+
+        if skill.lower()
+        not in [
+            s.lower()
+            for s in skills
+        ]
+
+    ]
+
+
+
+    strengths = [
+
+        skill
+
+        for skill in skills
+
+        if skill.lower()
+        not in [
+            item.lower()
+            for item in missing_skills
+        ]
+
+    ]
+
+
+
+    # -------------------------------
+    # Mentor Score
+    # -------------------------------
+
+    mentor_score = 0
+
+
+
+    mentor_score += min(
+        len(skills) * 10,
+        40
+    )
+
+
+    mentor_score += min(
+        progress,
+        30
+    )
+
+
+    mentor_score += min(
+        len(certifications) * 10,
+        20
+    )
+
+
+    mentor_score += min(
+        len(completed_labs) * 5,
+        10
+    )
+
+
+    if mentor_score > 100:
+
+        mentor_score = 100
+
+
+
+    # -------------------------------
+    # Daily Focus Generation
+    # -------------------------------
+
+    daily_focus = []
+
+
+    for skill in missing_skills[:3]:
+
+        daily_focus.append(
+
+            f"Improve {skill} skills"
+
+        )
+
+
+
+    if not daily_focus:
+
+        daily_focus = [
+
+            "Practice advanced SOC investigations",
+
+            "Build cybersecurity portfolio projects",
+
+            "Improve threat detection capability"
+
+        ]
+
+
+
+    # -------------------------------
+    # Mentor Message
+    # -------------------------------
+
+    if mentor_score < 40:
+
+
+        message = (
+
+            f"Your {career} journey has started. "
+
+            "Focus on building strong cybersecurity foundations "
+
+            "through practical labs and consistent learning."
+
+        )
+
+
+    elif mentor_score < 70:
+
+
+        message = (
+
+            f"You are making progress toward becoming a {career}. "
+
+            "Continue improving missing technical skills "
+
+            "and document your practical experience."
+
+        )
+
+
+    else:
+
+
+        message = (
+
+            f"You are developing strong readiness for a {career} role. "
+
+            "Focus on advanced investigations, automation, "
+
+            "and real-world SOC scenarios."
+
+        )
+
+
+
+    # -------------------------------
+    # Return Intelligence Report
+    # -------------------------------
+
+    return {
+
+
+        "career":
+
+            career,
+
+
+        "mentor_score":
+
+            mentor_score,
+
+
+        "mentor_message":
+
+            message,
+
+
+        "strengths":
+
+            strengths,
+
+
+        "skill_gaps":
+
+            missing_skills,
+
+
+        "daily_focus":
+
+            daily_focus,
+
+
+        "completed_labs":
+
+            completed_labs,
+
+
+        "certifications":
+
+            certifications,
+
+
+        "next_actions":
+
+            [
+
+                "Complete SOC investigation labs",
+
+                "Practice SIEM detection engineering",
+
+                "Map incidents to MITRE ATT&CK",
+
+                "Build cybersecurity portfolio evidence"
+
+            ]
 
     }
-
-
-    return roadmap

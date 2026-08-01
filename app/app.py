@@ -37,13 +37,19 @@ from app.routes.certification import certification_bp
 from app.routes.learning import learning_bp
 from app.routes.learning_progress import learning_progress_bp
 
+
+
+# ===============================
 # AI Intelligence Routes
+# ===============================
 
 from app.routes.skill_analysis import skill_analysis_bp
 from app.routes.career_report import career_report_bp
 from app.routes.decision import decision_bp
 from app.routes.recommendation import recommendation_bp
 from app.routes.advisor import advisor_bp
+from app.routes.mentor import mentor_bp
+
 
 
 
@@ -81,9 +87,11 @@ Base.metadata.create_all(
 
 
 
+
 # ===============================
 # Core Blueprint Registration
 # ===============================
+
 
 app.register_blueprint(
     profile_bp
@@ -131,12 +139,13 @@ app.register_blueprint(
 
 
 
+
 # ===============================
 # AI Intelligence Engine Registration
 # ===============================
 
 
-# AI Skill Gap Intelligence Engine
+# AI Skill Gap Intelligence
 
 app.register_blueprint(
     skill_analysis_bp
@@ -144,7 +153,7 @@ app.register_blueprint(
 
 
 
-# AI Career Intelligence Report Engine
+# AI Career Intelligence Report
 
 app.register_blueprint(
     career_report_bp
@@ -152,7 +161,7 @@ app.register_blueprint(
 
 
 
-# AI Decision Intelligence Engine
+# AI Decision Intelligence
 
 app.register_blueprint(
     decision_bp
@@ -173,6 +182,15 @@ app.register_blueprint(
 app.register_blueprint(
     advisor_bp
 )
+
+
+
+# AI Mentor Engine
+
+app.register_blueprint(
+    mentor_bp
+)
+
 
 
 
@@ -201,7 +219,7 @@ def home():
 
         "version":
 
-        "1.4",
+        "1.5",
 
 
 
@@ -210,44 +228,66 @@ def home():
 
             "User Intelligence Profile",
 
+
             "AI Decision Engine",
+
 
             "Career Matching",
 
+
             "AI Reports",
+
 
             "AI Mentor",
 
+
             "Career Simulation",
+
 
             "Career Evolution",
 
+
             "Skill Progress Tracking",
+
 
             "Certification Intelligence",
 
+
             "Learning Roadmap Engine",
+
 
             "Adaptive Learning Progress Engine",
 
 
-            # AI Engines
+
+            # AI Intelligence Layer
+
 
             "AI Skill Gap Intelligence Engine",
 
+
             "AI Career Intelligence Report Engine",
+
 
             "AI Decision Intelligence Engine v1",
 
+
             "AI Career Planner Engine v1",
+
 
             "AI Recommendation Engine v1",
 
-            "AI Career Advisor Engine v1"
+
+            "AI Career Advisor Engine v1",
+
+
+            "AI Mentor Engine v1"
+
 
         ]
 
     }
+
 
 
 
