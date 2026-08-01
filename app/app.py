@@ -80,6 +80,14 @@ from app.routes.intelligence_graph import intelligence_graph_bp
 
 
 
+# =====================================================
+# AI Reasoning Intelligence Routes
+# =====================================================
+
+from app.routes.decision_reasoning import decision_reasoning_bp
+
+
+
 
 # =====================================================
 # Application Metadata
@@ -87,7 +95,7 @@ from app.routes.intelligence_graph import intelligence_graph_bp
 
 APP_NAME = "Decision Intelligence Platform"
 
-APP_VERSION = "2.1"
+APP_VERSION = "2.2"
 
 APP_STATUS = "running"
 
@@ -190,7 +198,15 @@ BLUEPRINTS = [
     # AI Knowledge Graph Layer
     # -----------------------------
 
-    intelligence_graph_bp
+    intelligence_graph_bp,
+
+
+
+    # -----------------------------
+    # AI Reasoning Layer
+    # -----------------------------
+
+    decision_reasoning_bp
 
 ]
 
@@ -305,7 +321,13 @@ def home():
 
             # Knowledge Layer
 
-            "AI Intelligence Graph Engine v1"
+            "AI Intelligence Graph Engine v1",
+
+
+
+            # Reasoning Layer
+
+            "AI Decision Reasoning Engine v1"
 
 
         ],
@@ -410,7 +432,9 @@ def platform_info():
 
             "Decision Memory Intelligence",
 
-            "Intelligence Graph Reasoning"
+            "Intelligence Graph Reasoning",
+
+            "Decision Reasoning Intelligence"
 
 
         ]
