@@ -4,7 +4,7 @@
 <head>
 
 <title>
-AI Career Intelligence Dashboard v14
+AI Career Intelligence Dashboard v15
 </title>
 
 
@@ -147,6 +147,38 @@ padding-left:20px;
 
 
 
+.learning {
+
+border-left:5px solid #8b5cf6;
+
+padding:20px;
+
+margin-top:15px;
+
+background:#faf5ff;
+
+border-radius:10px;
+
+}
+
+
+
+.simulation {
+
+border-left:5px solid #f59e0b;
+
+padding:20px;
+
+margin-top:15px;
+
+background:#fffbeb;
+
+border-radius:10px;
+
+}
+
+
+
 hr {
 
 border:none;
@@ -175,6 +207,8 @@ margin:30px 0;
 <h1>
 🧠 AI Career Intelligence Dashboard
 </h1>
+
+
 
 
 
@@ -212,6 +246,7 @@ margin:30px 0;
 
 
 
+
 <h2>
 AI Reports: {{reports|length}}
 </h2>
@@ -228,6 +263,7 @@ AI Reports: {{reports|length}}
 <div class="card">
 
 
+
 <h2>
 🚀 {{report.report_content.title}}
 </h2>
@@ -236,11 +272,16 @@ AI Reports: {{reports|length}}
 
 <p>
 
-<b>Generated:</b>
+<b>
+Generated:
+</b>
 
 {{report.report_content.generated_at}}
 
 </p>
+
+
+
 
 
 
@@ -252,11 +293,14 @@ AI Reports: {{reports|length}}
 
 
 
+
 {% for career in report.report_content.recommendations %}
 
 
 
+
 <div class="module">
+
 
 
 <h3>
@@ -264,9 +308,13 @@ AI Reports: {{reports|length}}
 </h3>
 
 
+
 <p>
 
-<b>Match Score:</b>
+<b>
+Match Score:
+</b>
+
 
 <span class="badge">
 
@@ -277,11 +325,12 @@ AI Reports: {{reports|length}}
 </p>
 
 
+
 <p>
-
 {{career.description}}
-
 </p>
+
+
 
 
 
@@ -289,43 +338,64 @@ AI Reports: {{reports|length}}
 ✅ Completed Skills
 </b>
 
+
 <br>
 
 
+
 {% for skill in career.matched_skills %}
+
 
 <span class="skill">
 {{skill}}
 </span>
 
+
 {% endfor %}
+
+
+
+
 
 
 
 <br><br>
 
 
+
+
+
 <b>
 ⚠ Missing Skills
 </b>
 
+
 <br>
 
 
+
 {% for skill in career.missing_skills %}
+
 
 <span class="skill">
 {{skill}}
 </span>
 
+
 {% endfor %}
+
+
 
 
 
 </div>
 
 
+
 {% endfor %}
+
+
+
 
 
 
@@ -336,17 +406,24 @@ AI Reports: {{reports|length}}
 </h3>
 
 
+
 <div class="progress">
+
 
 <div class="progress-bar"
 
 style="width:{{report.report_content.confidence_score}}%">
 
+
 {{report.report_content.confidence_score}}%
 
-</div>
 
 </div>
+
+
+</div>
+
+
 
 
 
@@ -357,12 +434,17 @@ style="width:{{report.report_content.confidence_score}}%">
 {% if report.report_content.ai_reasoning %}
 
 
+
+
 <h3>
 🧠 AI Reasoning
 </h3>
 
 
+
+
 <div class="module">
+
 
 <p>
 
@@ -370,7 +452,9 @@ style="width:{{report.report_content.confidence_score}}%">
 
 </p>
 
+
 </div>
+
 
 
 {% endif %}
@@ -392,7 +476,10 @@ style="width:{{report.report_content.confidence_score}}%">
 </h2>
 
 
+
+
 <div class="module">
+
 
 
 <p>
@@ -407,15 +494,20 @@ Target Career:
 
 
 
+
 <p>
 
 <b>
 Readiness Score:
 </b>
 
+
 {{report.report_content.mentor.readiness_score}}%
 
 </p>
+
+
+
 
 
 
@@ -425,15 +517,26 @@ Readiness Score:
 </h3>
 
 
+
 <ul>
+
 
 {% for cert in report.report_content.mentor.certifications %}
 
-<li>{{cert}}</li>
+
+<li>
+{{cert}}
+</li>
+
 
 {% endfor %}
 
+
 </ul>
+
+
+
+
 
 
 
@@ -444,7 +547,12 @@ Readiness Score:
 
 
 
+
+
 {% for project in report.report_content.mentor.projects %}
+
+
+
 
 
 <div class="module">
@@ -455,18 +563,30 @@ Readiness Score:
 </h3>
 
 
+
 <p>
+<b>
 Difficulty:
+</b>
+
 {{project.difficulty}}
+
 </p>
+
+
 
 
 <p>
+<b>
 Skills:
+</b>
 </p>
+
 
 
 {% for skill in project.skills %}
+
+
 
 <span class="skill">
 
@@ -474,13 +594,21 @@ Skills:
 
 </span>
 
+
+
 {% endfor %}
+
+
 
 
 </div>
 
 
+
+
 {% endfor %}
+
+
 
 
 
@@ -501,29 +629,53 @@ Skills:
 {% if report.report_content.evolution %}
 
 
+
+
+
 <h2>
 📈 Career Evolution Intelligence
 </h2>
+
+
 
 
 <div class="module">
 
 
 <p>
+
+<b>
 Career:
+</b>
+
 {{report.report_content.evolution.career}}
+
 </p>
 
 
+
+
 <p>
+
+<b>
 Growth Status:
+</b>
+
 {{report.report_content.evolution.growth_status}}
+
 </p>
 
 
+
+
 <p>
+
+<b>
 Readiness:
+</b>
+
 {{report.report_content.evolution.readiness_score}}%
+
 </p>
 
 
@@ -531,7 +683,11 @@ Readiness:
 </div>
 
 
+
+
+
 {% endif %}
+
 
 
 
@@ -544,20 +700,26 @@ Readiness:
 
 
 
+
+
 <h2>
 🔮 Career Simulation Prediction
 </h2>
 
 
 
-<div class="module">
+
+<div class="simulation">
+
 
 
 {% for stage in report.report_content.simulation.simulation %}
 
 
 
+
 <p>
+
 
 <b>
 {{stage.period}}
@@ -571,17 +733,24 @@ Projected Readiness:
 
 {{stage.projected_readiness}}%
 
+
 </p>
+
 
 
 
 {% endfor %}
 
 
+
 </div>
 
 
+
+
+
 {% endif %}
+
 
 
 
@@ -594,18 +763,23 @@ Projected Readiness:
 
 
 
+
 <h2>
 🗺️ AI Career Roadmap
 </h2>
 
 
 
+
 <div class="timeline">
+
 
 
 <p>
 
+<b>
 Duration:
+</b>
 
 {{report.report_content.mentor.roadmap.duration}}
 
@@ -613,11 +787,18 @@ Duration:
 
 
 
+
+
+
+
 {% for step in report.report_content.mentor.roadmap.months %}
 
 
 
+
+
 <div class="module">
+
 
 
 <h3>
@@ -632,6 +813,7 @@ Duration:
 
 
 
+
 <b>
 Skills:
 </b>
@@ -640,7 +822,10 @@ Skills:
 <br>
 
 
+
+
 {% for skill in step.skills %}
+
 
 
 <span class="skill">
@@ -650,11 +835,17 @@ Skills:
 </span>
 
 
+
 {% endfor %}
 
 
 
+
+
 <br><br>
+
+
+
 
 
 <b>
@@ -662,18 +853,22 @@ Projects:
 </b>
 
 
+
 <ul>
+
+
 
 {% for project in step.projects %}
 
+
 <li>
-
 {{project}}
-
 </li>
 
 
 {% endfor %}
+
+
 
 </ul>
 
@@ -682,10 +877,18 @@ Projects:
 </div>
 
 
+
+
 {% endfor %}
 
 
+
+
+
 </div>
+
+
+
 
 
 {% endif %}
@@ -695,11 +898,176 @@ Projects:
 
 
 
+
+
+
+<!-- AI Learning Intelligence v15 -->
+
+
+
+{% if report.report_content.learning %}
+
+
+
+<h2>
+🎓 AI Learning Intelligence
+</h2>
+
+
+
+
+<div class="learning">
+
+
+
+
+
+{% for item in report.report_content.learning.learning_plan %}
+
+
+
+
+<div class="module">
+
+
+
+<h3>
+📚 Skill: {{item.skill}}
+</h3>
+
+
+
+
+
+<h4>
+Recommended Courses
+</h4>
+
+
+
+<ul>
+
+
+{% for course in item.courses %}
+
+
+<li>
+{{course}}
+</li>
+
+
+{% endfor %}
+
+
+
+</ul>
+
+
+
+
+
+
+
+<h4>
+🏆 Certifications
+</h4>
+
+
+
+
+<ul>
+
+
+
+{% for cert in item.certifications %}
+
+
+<li>
+{{cert}}
+</li>
+
+
+{% endfor %}
+
+
+
+
+</ul>
+
+
+
+
+
+
+
+
+<h4>
+🛠 Learning Projects
+</h4>
+
+
+
+
+<ul>
+
+
+
+{% for project in item.projects %}
+
+
+<li>
+{{project}}
+</li>
+
+
+{% endfor %}
+
+
+
+</ul>
+
+
+
+
+
 </div>
 
 
 
+
+
 {% endfor %}
+
+
+
+
+</div>
+
+
+
+
+{% endif %}
+
+
+
+
+
+
+
+
+<hr>
+
+
+
+
+
+</div>
+
+
+
+
+{% endfor %}
+
 
 
 
