@@ -104,6 +104,14 @@ from app.routes.agent_runtime import agent_runtime_bp
 
 
 
+# =====================================================
+# AI Agent Tool Intelligence Routes
+# =====================================================
+
+from app.routes.agent_tools import agent_tools_bp
+
+
+
 
 # =====================================================
 # Application Metadata
@@ -111,7 +119,7 @@ from app.routes.agent_runtime import agent_runtime_bp
 
 APP_NAME = "Decision Intelligence Platform"
 
-APP_VERSION = "2.4"
+APP_VERSION = "2.5"
 
 APP_STATUS = "running"
 
@@ -160,7 +168,6 @@ Base.metadata.create_all(
 
 BLUEPRINTS = [
 
-
     # -----------------------------
     # Core Platform
     # -----------------------------
@@ -174,7 +181,6 @@ BLUEPRINTS = [
     certification_bp,
     learning_bp,
     learning_progress_bp,
-
 
 
     # -----------------------------
@@ -191,7 +197,6 @@ BLUEPRINTS = [
     intelligence_bp,
 
 
-
     # -----------------------------
     # AI Simulation Layer
     # -----------------------------
@@ -201,7 +206,6 @@ BLUEPRINTS = [
     career_evolution_bp,
 
 
-
     # -----------------------------
     # AI Memory Layer
     # -----------------------------
@@ -209,13 +213,11 @@ BLUEPRINTS = [
     memory_bp,
 
 
-
     # -----------------------------
-    # AI Knowledge Graph Layer
+    # AI Knowledge Layer
     # -----------------------------
 
     intelligence_graph_bp,
-
 
 
     # -----------------------------
@@ -225,7 +227,6 @@ BLUEPRINTS = [
     decision_reasoning_bp,
 
 
-
     # -----------------------------
     # AI Orchestration Layer
     # -----------------------------
@@ -233,12 +234,18 @@ BLUEPRINTS = [
     decision_orchestrator_bp,
 
 
-
     # -----------------------------
     # AI Agent Runtime Layer
     # -----------------------------
 
-    agent_runtime_bp
+    agent_runtime_bp,
+
+
+    # -----------------------------
+    # AI Agent Tool Layer
+    # -----------------------------
+
+    agent_tools_bp
 
 ]
 
@@ -319,8 +326,6 @@ def home():
 
 
 
-            # Intelligence Layer
-
             "AI Skill Gap Intelligence Engine",
 
             "AI Career Intelligence Report Engine",
@@ -335,8 +340,6 @@ def home():
 
 
 
-            # Simulation Layer
-
             "AI Digital Twin Engine v1",
 
             "AI Career Simulation Engine v1",
@@ -345,37 +348,19 @@ def home():
 
 
 
-            # Memory Layer
-
             "AI Decision Memory Engine v1",
-
-
-
-            # Knowledge Layer
 
             "AI Intelligence Graph Engine v1",
 
-
-
-            # Reasoning Layer
-
             "AI Decision Reasoning Engine v1",
-
-
-
-            # Orchestration Layer
 
             "AI Decision Orchestrator Engine v1",
 
+            "AI Agent Runtime Engine v1",
 
-
-            # Agent Layer
-
-            "AI Agent Runtime Engine v1"
-
+            "AI Agent Tool Execution Engine v1"
 
         ],
-
 
 
         "blueprints_loaded":
@@ -482,8 +467,9 @@ def platform_info():
 
             "Decision Orchestration Intelligence",
 
-            "Agent Runtime Intelligence"
+            "Agent Runtime Intelligence",
 
+            "Agent Tool Execution Intelligence"
 
         ]
 
