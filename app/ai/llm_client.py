@@ -1,20 +1,45 @@
+import os
+
+from dotenv import load_dotenv
+from openai import OpenAI
+
+
+load_dotenv()
+
+
+client = OpenAI(
+    api_key=os.getenv(
+        "OPENAI_API_KEY"
+    )
+)
+
+
+
 def generate_ai_response(prompt):
 
-    """
-    Future LLM integration point.
+    response = client.chat.completions.create(
 
-    This will connect to:
-    - OpenAI models
-    - Local AI models
-    - Enterprise AI models
-    """
+        model="gpt-4.1-mini",
+
+        messages=[
+
+            {
+                "role": "system",
+                "content":
+                "You are a professional decision intelligence assistant."
+            },
 
 
-    return {
+            {
+                "role": "user",
+                "content": prompt
+            }
 
-        "status": "AI layer ready",
+        ],
 
-        "message":
-        "LLM integration will be connected here."
+        temperature=0.7
 
-    }
+    )
+
+
+    return response.choices[0].message.content
