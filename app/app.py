@@ -11,13 +11,14 @@ from app.database.db import engine, Base
 
 
 # ===============================
-# Register All Models First
+# Register Models
 # ===============================
 
 from app.models import (
     UserProfile,
     AIReport,
-    SkillProgress
+    SkillProgress,
+    LearningProgress
 )
 
 
@@ -34,7 +35,6 @@ from app.routes.dashboard import dashboard_bp
 from app.routes.progress import progress_bp
 from app.routes.certification import certification_bp
 from app.routes.learning import learning_bp
-
 
 
 
@@ -60,9 +60,8 @@ app = Flask(
 
 
 
-
 # ===============================
-# Database Create Tables
+# Database Tables
 # ===============================
 
 Base.metadata.create_all(
@@ -73,11 +72,9 @@ Base.metadata.create_all(
 
 
 
-
 # ===============================
 # Blueprint Registration
 # ===============================
-
 
 app.register_blueprint(
     profile_bp
@@ -120,10 +117,8 @@ app.register_blueprint(
 
 
 
-
-
 # ===============================
-# Platform Status
+# Platform Health
 # ===============================
 
 @app.route("/")
@@ -134,69 +129,39 @@ def home():
 
 
         "name":
-
         "Decision Intelligence Platform",
 
 
-
         "status":
-
         "running",
 
 
-
         "version":
-
         "0.8",
 
 
+        "features":[
 
-        "features": [
 
-
-            "User Profile System",
-
+            "User Intelligence Profile",
 
             "AI Decision Engine",
 
-
             "Career Matching",
 
+            "AI Reports",
 
-            "LLM Reasoning",
+            "AI Mentor",
 
+            "Career Simulation",
 
-            "Authentication System",
+            "Career Evolution",
 
+            "Skill Progress Tracking",
 
-            "AI Report History",
+            "Certification Intelligence",
 
-
-            "Intelligence Dashboard",
-
-
-            "AI Mentor Intelligence",
-
-
-            "Career Readiness Tracking",
-
-
-            "Career Evolution Engine",
-
-
-            "Career Simulation Engine",
-
-
-            "AI Learning Intelligence",
-
-
-            "Skill Progress Tracking API",
-
-
-            "Certification Intelligence Engine",
-
-
-            "AI Learning Roadmap Engine"
+            "Learning Roadmap Engine"
 
 
         ]
@@ -205,14 +170,11 @@ def home():
 
 
 
-
-
 # ===============================
-# Run Application
+# Run
 # ===============================
 
 if __name__ == "__main__":
-
 
     app.run(
 

@@ -3,6 +3,7 @@ from sqlalchemy import (
     Integer,
     String,
     Text,
+    Boolean,
     DateTime,
     ForeignKey
 )
@@ -32,7 +33,6 @@ class LearningProgress(Base):
     )
 
 
-
     user_id = Column(
 
         Integer,
@@ -46,6 +46,14 @@ class LearningProgress(Base):
     )
 
 
+    career = Column(
+
+        String(100),
+
+        nullable=False
+
+    )
+
 
     week = Column(
 
@@ -56,35 +64,29 @@ class LearningProgress(Base):
     )
 
 
+    skill = Column(
 
-    title = Column(
-
-        String(200),
-
-        nullable=False
-
-    )
-
-
-
-    description = Column(
-
-        Text,
+        String(100),
 
         nullable=False
 
     )
 
 
+    objective = Column(
 
-    status = Column(
-
-        String(50),
-
-        default="Pending"
+        Text
 
     )
 
+
+    completed = Column(
+
+        Boolean,
+
+        default=False
+
+    )
 
 
     completed_at = Column(
@@ -94,7 +96,6 @@ class LearningProgress(Base):
         nullable=True
 
     )
-
 
 
     created_at = Column(
