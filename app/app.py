@@ -59,6 +59,7 @@ from app.routes.intelligence import intelligence_bp
 # =====================================================
 
 from app.routes.digital_twin import digital_twin_bp
+from app.routes.career_simulation import career_simulation_bp
 
 
 
@@ -68,7 +69,7 @@ from app.routes.digital_twin import digital_twin_bp
 
 APP_NAME = "Decision Intelligence Platform"
 
-APP_VERSION = "1.8"
+APP_VERSION = "1.9"
 
 APP_STATUS = "running"
 
@@ -141,7 +142,8 @@ BLUEPRINTS = [
 
     # AI Simulation Layer
 
-    digital_twin_bp
+    digital_twin_bp,
+    career_simulation_bp
 
 ]
 
@@ -167,17 +169,28 @@ def home():
 
     return {
 
-        "name": APP_NAME,
+        "name":
 
-        "status": APP_STATUS,
+            APP_NAME,
 
-        "version": APP_VERSION,
+
+        "status":
+
+            APP_STATUS,
+
+
+        "version":
+
+            APP_VERSION,
+
 
         "architecture":
+
             "AI Decision Intelligence Platform",
 
 
         "engines":[
+
 
             "User Intelligence Profile Engine",
 
@@ -201,6 +214,9 @@ def home():
 
             "Adaptive Learning Engine",
 
+
+            # Advanced AI Layer
+
             "AI Skill Gap Intelligence Engine",
 
             "AI Career Intelligence Report Engine",
@@ -213,7 +229,13 @@ def home():
 
             "AI User Intelligence Profile v2",
 
-            "AI Digital Twin Engine v1"
+
+            # Simulation Layer
+
+            "AI Digital Twin Engine v1",
+
+            "AI Career Simulation Engine v1"
+
 
         ],
 
@@ -302,7 +324,9 @@ def platform_info():
 
             "Learning Intelligence",
 
-            "Digital Twin Simulation"
+            "Digital Twin Simulation",
+
+            "Career Simulation Intelligence"
 
         ]
 
