@@ -56,6 +56,15 @@ from app.routes.intelligence import intelligence_bp
 
 
 # ===============================
+# Application Metadata
+# ===============================
+
+APP_NAME = "Decision Intelligence Platform"
+APP_VERSION = "1.7"
+
+
+
+# ===============================
 # Flask Application
 # ===============================
 
@@ -89,125 +98,45 @@ Base.metadata.create_all(
 
 
 
-
 # ===============================
-# Core Blueprint Registration
-# ===============================
-
-
-app.register_blueprint(
-    profile_bp
-)
-
-
-app.register_blueprint(
-    analysis_bp
-)
-
-
-app.register_blueprint(
-    auth_bp
-)
-
-
-app.register_blueprint(
-    reports_bp
-)
-
-
-app.register_blueprint(
-    dashboard_bp
-)
-
-
-app.register_blueprint(
-    progress_bp
-)
-
-
-app.register_blueprint(
-    certification_bp
-)
-
-
-app.register_blueprint(
-    learning_bp
-)
-
-
-app.register_blueprint(
-    learning_progress_bp
-)
-
-
-
-
-# ===============================
-# AI Engine Registration
+# Blueprint Registry
 # ===============================
 
+BLUEPRINTS = [
 
-# AI Skill Gap Intelligence Engine
+    # Core Platform
 
-app.register_blueprint(
-    skill_analysis_bp
-)
-
-
-
-# AI Career Intelligence Report Engine
-
-app.register_blueprint(
-    career_report_bp
-)
-
+    profile_bp,
+    analysis_bp,
+    auth_bp,
+    reports_bp,
+    dashboard_bp,
+    progress_bp,
+    certification_bp,
+    learning_bp,
+    learning_progress_bp,
 
 
-# AI Decision Intelligence Engine
+    # AI Intelligence Layer
 
-app.register_blueprint(
-    decision_bp
-)
-
-
-
-# AI Recommendation Engine
-
-app.register_blueprint(
-    recommendation_bp
-)
-
-
-
-# AI Career Advisor Engine
-
-app.register_blueprint(
-    advisor_bp
-)
-
-
-
-# AI Mentor Engine
-
-app.register_blueprint(
-    mentor_bp
-)
-
-
-
-# AI Cybersecurity Coach Engine
-
-app.register_blueprint(
-    coach_bp
-)
-
-
-
-# AI User Intelligence Profile Engine
-
-app.register_blueprint(
+    skill_analysis_bp,
+    career_report_bp,
+    decision_bp,
+    recommendation_bp,
+    advisor_bp,
+    mentor_bp,
+    coach_bp,
     intelligence_bp
-)
+
+]
+
+
+
+for blueprint in BLUEPRINTS:
+
+    app.register_blueprint(
+        blueprint
+    )
 
 
 
@@ -225,90 +154,94 @@ def home():
 
         "name":
 
-        "Decision Intelligence Platform",
-
+            APP_NAME,
 
 
         "status":
 
-        "running",
-
+            "running",
 
 
         "version":
 
-        "1.7",
+            APP_VERSION,
+
+
+        "architecture":
+
+            "AI Decision Intelligence Platform",
 
 
 
-        "features":[
+        "engines":[
 
 
-            "User Intelligence Profile",
+            "User Intelligence Profile Engine",
 
+            "Decision Intelligence Engine",
 
-            "AI Decision Engine",
+            "Career Matching Engine",
 
+            "AI Report Engine",
 
-            "Career Matching",
+            "AI Mentor Engine",
 
+            "AI Career Simulation Engine",
 
-            "AI Reports",
+            "AI Career Evolution Engine",
 
+            "Skill Progress Engine",
 
-            "AI Mentor",
-
-
-            "AI Career Simulation",
-
-
-            "AI Career Evolution",
-
-
-            "Skill Progress Tracking",
-
-
-            "Certification Intelligence",
-
+            "Certification Intelligence Engine",
 
             "Learning Roadmap Engine",
 
-
-            "Adaptive Learning Progress Engine",
-
-
-
-            # AI Intelligence Layer
-
+            "Adaptive Learning Engine",
 
             "AI Skill Gap Intelligence Engine",
 
-
             "AI Career Intelligence Report Engine",
 
+            "AI Recommendation Engine",
 
-            "AI Decision Intelligence Engine v1",
+            "AI Career Advisor Engine",
 
-
-            "AI Career Planner Engine v1",
-
-
-            "AI Recommendation Engine v1",
-
-
-            "AI Career Advisor Engine v1",
-
-
-            "AI Mentor Engine v1",
-
-
-            "AI Cybersecurity Coach Engine v1",
-
+            "AI Cybersecurity Coach Engine",
 
             "AI User Intelligence Profile v2"
 
-
         ]
+
+    }
+
+
+
+
+# ===============================
+# Health Check
+# ===============================
+
+@app.route("/health")
+
+def health():
+
+    return {
+
+
+        "application":
+
+            APP_NAME,
+
+
+        "status":
+
+            "healthy",
+
+
+        "database":
+
+            "connected"
+
 
     }
 
