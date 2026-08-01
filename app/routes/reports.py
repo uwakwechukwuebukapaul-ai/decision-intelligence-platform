@@ -1,0 +1,1 @@
+GET /reports/<user_id>

@@ -1,7 +1,9 @@
 from flask import Blueprint, jsonify
 
 from app.database.db import SessionLocal
+
 from app.models.user import UserProfile
+from app.models.report import AIReport
 
 from app.ai.decision_engine import analyze_profile
 from app.reports.report_generator import generate_report
@@ -36,6 +38,11 @@ def create_analysis(user_id):
         }), 404
 
 
+    # Store ID before session closes
+
+    current_user_id = user.id
+
+
     analysis = analyze_profile(user)
 
 
@@ -45,7 +52,38 @@ def create_analysis(user_id):
     )
 
 
+    saved_report = AIReport(
+
+        user_id=current_user_id,
+
+        report_content=str(report)
+
+    )
+
+
+    db.add(saved_report)
+
+    db.commit()
+
+
+    report_id = saved_report.id
+
+
     db.close()
 
 
-    return jsonify(report)
+    return jsonify({
+
+        "message":
+        "AI report generated and saved successfully",
+
+        "report_id":
+        report_id,
+
+        "user_id":
+        current_user_id,
+
+        "report":
+        report
+
+    })
