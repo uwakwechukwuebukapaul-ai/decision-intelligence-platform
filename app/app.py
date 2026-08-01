@@ -30,6 +30,7 @@ from app.routes.auth import auth_bp
 from app.routes.reports import reports_bp
 from app.routes.dashboard import dashboard_bp
 from app.routes.progress import progress_bp
+from app.routes.certification import certification_bp
 
 
 
@@ -73,24 +74,34 @@ app.register_blueprint(
     profile_bp
 )
 
+
 app.register_blueprint(
     analysis_bp
 )
+
 
 app.register_blueprint(
     auth_bp
 )
 
+
 app.register_blueprint(
     reports_bp
 )
+
 
 app.register_blueprint(
     dashboard_bp
 )
 
+
 app.register_blueprint(
     progress_bp
+)
+
+
+app.register_blueprint(
+    certification_bp
 )
 
 
@@ -114,7 +125,7 @@ def home():
 
 
         "version":
-        "0.6",
+        "0.7",
 
 
         "features": [
@@ -143,7 +154,9 @@ def home():
 
             "AI Learning Intelligence",
 
-            "Skill Progress Tracking API"
+            "Skill Progress Tracking API",
+
+            "Certification Intelligence Engine"
 
         ]
 
