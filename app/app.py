@@ -65,6 +65,15 @@ from app.routes.career_evolution import career_evolution_bp
 
 
 # =====================================================
+# AI Memory Intelligence Routes
+# =====================================================
+
+from app.routes.memory import memory_bp
+
+
+
+
+# =====================================================
 # Application Metadata
 # =====================================================
 
@@ -73,6 +82,7 @@ APP_NAME = "Decision Intelligence Platform"
 APP_VERSION = "2.0"
 
 APP_STATUS = "running"
+
 
 
 
@@ -98,6 +108,7 @@ app = Flask(
 
 
 
+
 # =====================================================
 # Database Initialization
 # =====================================================
@@ -110,13 +121,17 @@ Base.metadata.create_all(
 
 
 
+
 # =====================================================
 # Blueprint Registry
 # =====================================================
 
 BLUEPRINTS = [
 
+
+    # -----------------------------
     # Core Platform
+    # -----------------------------
 
     profile_bp,
     analysis_bp,
@@ -129,7 +144,10 @@ BLUEPRINTS = [
     learning_progress_bp,
 
 
+
+    # -----------------------------
     # AI Intelligence Layer
+    # -----------------------------
 
     skill_analysis_bp,
     career_report_bp,
@@ -141,17 +159,29 @@ BLUEPRINTS = [
     intelligence_bp,
 
 
+
+    # -----------------------------
     # AI Simulation Layer
+    # -----------------------------
 
     digital_twin_bp,
     career_simulation_bp,
-    career_evolution_bp
+    career_evolution_bp,
+
+
+
+    # -----------------------------
+    # AI Memory Layer
+    # -----------------------------
+
+    memory_bp
 
 ]
 
 
 
-# Register all blueprints
+
+# Register Blueprints
 
 for blueprint in BLUEPRINTS:
 
@@ -160,6 +190,7 @@ for blueprint in BLUEPRINTS:
         blueprint
 
     )
+
 
 
 
@@ -194,6 +225,7 @@ def home():
             "AI Decision Intelligence Platform",
 
 
+
         "engines":[
 
 
@@ -220,7 +252,8 @@ def home():
             "Adaptive Learning Engine",
 
 
-            # Advanced Intelligence
+
+            # Intelligence Layer
 
             "AI Skill Gap Intelligence Engine",
 
@@ -235,15 +268,24 @@ def home():
             "AI User Intelligence Profile v2",
 
 
+
             # Simulation Layer
 
             "AI Digital Twin Engine v1",
 
             "AI Career Simulation Engine v1",
 
-            "AI Career Evolution Engine v1"
+            "AI Career Evolution Engine v1",
+
+
+
+            # Memory Layer
+
+            "AI Decision Memory Engine v1"
+
 
         ],
+
 
 
         "blueprints_loaded":
@@ -288,8 +330,12 @@ def health():
 
         "version":
 
-            APP_VERSION
+            APP_VERSION,
 
+
+        "blueprints":
+
+            len(BLUEPRINTS)
 
     }
 
@@ -336,7 +382,10 @@ def platform_info():
 
             "Career Simulation Intelligence",
 
-            "Career Evolution Intelligence"
+            "Career Evolution Intelligence",
+
+            "Decision Memory Intelligence"
+
 
         ]
 
