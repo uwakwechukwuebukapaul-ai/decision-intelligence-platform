@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template
+import json
+import ast
 
 from app.database.db import SessionLocal
-
 from app.models.user import UserProfile
 from app.models.report import AIReport
 
@@ -13,9 +14,7 @@ dashboard_bp = Blueprint(
 
 
 
-@dashboard_bp.route(
-    "/dashboard/<int:user_id>"
-)
+@dashboard_bp.route("/dashboard/<int:user_id>")
 def dashboard(user_id):
 
     db = SessionLocal()
@@ -37,8 +36,26 @@ def dashboard(user_id):
     reports = db.query(AIReport).filter(
         AIReport.user_id == user_id
     ).order_by(
-        AIReport.created_at.desc()
+        AIReport.id.desc()
     ).all()
+
+
+
+    for report in reports:
+
+        try:
+
+            report.report_content = json.loads(
+                report.report_content
+            )
+
+
+        except json.JSONDecodeError:
+
+
+            report.report_content = ast.literal_eval(
+                report.report_content
+            )
 
 
 

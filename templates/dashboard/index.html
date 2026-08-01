@@ -3,46 +3,95 @@
 
 <head>
 
-    <title>
-        Decision Intelligence Dashboard
-    </title>
+<title>
+AI Decision Intelligence Dashboard
+</title>
 
-    <style>
+<style>
 
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f6f9;
-            padding: 40px;
-        }
-
-
-        .card {
-
-            background: white;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 10px;
-
-        }
+body {
+    font-family: Arial, sans-serif;
+    background:#f4f6f9;
+    padding:40px;
+}
 
 
-        h1 {
-
-            color: #1f2937;
-
-        }
+h1 {
+    color:#111827;
+}
 
 
-        .report {
+.card {
 
-            border-left: 5px solid #2563eb;
-            padding: 15px;
-            margin-top: 15px;
-            background: #fafafa;
+    background:white;
+    padding:25px;
+    border-radius:12px;
+    margin-bottom:25px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.08);
 
-        }
+}
 
-    </style>
+
+.profile {
+
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+
+}
+
+
+.report {
+
+    border-left:5px solid #2563eb;
+    padding:20px;
+    background:#fafafa;
+    margin-top:20px;
+
+}
+
+
+.recommendation {
+
+    background:#eef2ff;
+    padding:15px;
+    border-radius:10px;
+    margin-top:10px;
+
+}
+
+
+.badge {
+
+    background:#2563eb;
+    color:white;
+    padding:5px 10px;
+    border-radius:20px;
+
+}
+
+
+.skill {
+
+    background:#fee2e2;
+    padding:8px;
+    margin:5px;
+    display:inline-block;
+    border-radius:8px;
+
+}
+
+
+.action {
+
+    background:#dcfce7;
+    padding:12px;
+    margin:8px;
+    border-radius:8px;
+
+}
+
+</style>
 
 </head>
 
@@ -51,70 +100,181 @@
 
 
 <h1>
-    AI Decision Intelligence Dashboard
+🧠 AI Decision Intelligence Dashboard
 </h1>
+
 
 
 <div class="card">
 
 <h2>
-User Profile
+User Intelligence Profile
 </h2>
 
-<p>
-Name: {{ user.name }}
-</p>
 
-<p>
-Education: {{ user.education }}
-</p>
+<div class="profile">
 
-<p>
-Skills: {{ user.skills }}
-</p>
+
+<div>
+
+<b>Name</b>
+
+<br>
+
+{{ user.name }}
 
 </div>
 
 
 
+<div>
+
+<b>Education</b>
+
+<br>
+
+{{ user.education }}
+
+</div>
+
+
+
+<div>
+
+<b>Skills</b>
+
+<br>
+
+{{ user.skills }}
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+
 <div class="card">
 
+
 <h2>
-AI Reports
-</h2>
-
-
-<p>
-Total Reports:
+AI Reports:
 {{ reports|length }}
-</p>
+</h2>
 
 
 
 {% for report in reports %}
 
+
 <div class="report">
 
-<h3>
-Report #{{ report.id }}
-</h3>
+
+<h2>
+{{ report.report_content.title }}
+</h2>
 
 
 <p>
-{{ report.report_content }}
+
+Generated:
+{{ report.report_content.generated_at }}
+
 </p>
+
+
+
+<h3>
+🚀 Career Recommendations
+</h3>
+
+
+
+{% for career in report.report_content.recommendations %}
+
+
+<div class="recommendation">
+
+
+<b>
+{{ career.career }}
+</b>
+
+
+<br>
+
+
+Match Score:
+
+<span class="badge">
+
+{{ career.match_score }}
+
+</span>
+
+
+<br><br>
+
+
+{{ career.description }}
 
 
 </div>
 
 
-{% else %}
+{% endfor %}
 
-<p>
-No AI reports available.
-</p>
+
+
+
+<h3>
+⚠ Skill Gap
+</h3>
+
+
+{% for skill in report.report_content.skill_gap %}
+
+
+<span class="skill">
+
+{{ skill }}
+
+</span>
+
 
 {% endfor %}
+
+
+
+
+<h3>
+📌 Action Plan
+</h3>
+
+
+{% for step in report.report_content.action_plan %}
+
+
+<div class="action">
+
+✓ {{ step }}
+
+</div>
+
+
+{% endfor %}
+
+
+
+</div>
+
+
+{% endfor %}
+
 
 
 </div>
