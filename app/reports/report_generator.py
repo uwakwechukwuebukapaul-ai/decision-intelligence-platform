@@ -17,6 +17,24 @@ def generate_report(profile, analysis):
     )
 
 
+    readiness = analysis.get(
+        "readiness",
+        {}
+    )
+
+
+    evolution = analysis.get(
+        "evolution",
+        {}
+    )
+
+
+    learning_plan = analysis.get(
+        "learning_plan",
+        {}
+    )
+
+
 
     report = {
 
@@ -39,10 +57,10 @@ def generate_report(profile, analysis):
             "Decision Intelligence Engine",
 
             "version":
-            "v6",
+            "v12",
 
             "type":
-            "AI Career Mentor Intelligence System"
+            "AI Career Intelligence Platform"
 
         },
 
@@ -82,6 +100,14 @@ def generate_report(profile, analysis):
 
 
 
+        "certifications":
+        analysis.get(
+            "certifications",
+            []
+        ),
+
+
+
         "ai_reasoning":
         analysis.get(
             "ai_reasoning",
@@ -98,7 +124,31 @@ def generate_report(profile, analysis):
 
 
 
-        "mentor": mentor
+        # AI Mentor Intelligence
+
+        "mentor":
+        mentor,
+
+
+
+        # Career Readiness Intelligence
+
+        "readiness":
+        readiness,
+
+
+
+        # Career Growth Evolution Intelligence
+
+        "evolution":
+        evolution,
+
+
+
+        # AI Learning Recommendation Engine
+
+        "learning_plan":
+        learning_plan
 
 
     }
