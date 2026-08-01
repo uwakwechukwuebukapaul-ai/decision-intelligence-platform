@@ -1,10 +1,9 @@
 from flask import Blueprint, render_template
 
 from app.database.db import SessionLocal
-from app.models.user import UserProfile
 
-from app.ai.decision_engine import analyze_profile
-from app.reports.report_generator import generate_report
+from app.models.user import UserProfile
+from app.models.report import AIReport
 
 
 dashboard_bp = Blueprint(
@@ -14,7 +13,9 @@ dashboard_bp = Blueprint(
 
 
 
-@dashboard_bp.route("/dashboard/<int:user_id>")
+@dashboard_bp.route(
+    "/dashboard/<int:user_id>"
+)
 def dashboard(user_id):
 
     db = SessionLocal()
@@ -32,13 +33,13 @@ def dashboard(user_id):
         return "User not found"
 
 
-    analysis = analyze_profile(user)
 
+    reports = db.query(AIReport).filter(
+        AIReport.user_id == user_id
+    ).order_by(
+        AIReport.created_at.desc()
+    ).all()
 
-    report = generate_report(
-        user,
-        analysis
-    )
 
 
     db.close()
@@ -46,5 +47,6 @@ def dashboard(user_id):
 
     return render_template(
         "dashboard/index.html",
-        report=report
+        user=user,
+        reports=reports
     )

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>
+        Decision Intelligence Dashboard
+    </title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            padding: 40px;
+        }
+
+
+        .card {
+
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+
+        }
+
+
+        h1 {
+
+            color: #1f2937;
+
+        }
+
+
+        .report {
+
+            border-left: 5px solid #2563eb;
+            padding: 15px;
+            margin-top: 15px;
+            background: #fafafa;
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<h1>
+    AI Decision Intelligence Dashboard
+</h1>
+
+
+<div class="card">
+
+<h2>
+User Profile
+</h2>
+
+<p>
+Name: {{ user.name }}
+</p>
+
+<p>
+Education: {{ user.education }}
+</p>
+
+<p>
+Skills: {{ user.skills }}
+</p>
+
+</div>
+
+
+
+<div class="card">
+
+<h2>
+AI Reports
+</h2>
+
+
+<p>
+Total Reports:
+{{ reports|length }}
+</p>
+
+
+
+{% for report in reports %}
+
+<div class="report">
+
+<h3>
+Report #{{ report.id }}
+</h3>
+
+
+<p>
+{{ report.report_content }}
+</p>
+
+
+</div>
+
+
+{% else %}
+
+<p>
+No AI reports available.
+</p>
+
+{% endfor %}
+
+
+</div>
+
+
+</body>
+
+</html>
