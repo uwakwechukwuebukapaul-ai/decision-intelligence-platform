@@ -1,0 +1,5 @@
+[33m4ef9e98[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m Complete AI reasoning integration and dashboard upgrade
+[33m91bef7e[m Add LLM reasoning architecture layer
+[33m7aa9018[m Upgrade decision engine with career knowledge matching
+[33m85e9546[m Add decision intelligence web dashboard
+[33mfd8f23c[m Add AI decision engine and analysis API

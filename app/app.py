@@ -4,12 +4,10 @@ from app.database.db import engine, Base
 
 from app.routes.profile import profile_bp
 from app.routes.analysis import analysis_bp
-from app.routes.dashboard import dashboard_bp
-
+from app.routes.auth import auth_bp
 
 
 app = Flask(__name__)
-
 
 
 # Create database tables
@@ -19,8 +17,7 @@ Base.metadata.create_all(
 )
 
 
-
-# Register application routes
+# Register API routes
 
 app.register_blueprint(
     profile_bp
@@ -33,9 +30,8 @@ app.register_blueprint(
 
 
 app.register_blueprint(
-    dashboard_bp
+    auth_bp
 )
-
 
 
 @app.route("/")
@@ -47,7 +43,7 @@ def home():
 
         "status": "running",
 
-        "version": "0.1",
+        "version": "0.2",
 
         "features": [
 
@@ -55,11 +51,11 @@ def home():
 
             "AI Decision Engine",
 
-            "Career Analysis",
+            "Career Matching",
 
-            "Decision Reports",
+            "LLM Reasoning",
 
-            "Web Dashboard"
+            "Authentication System"
 
         ]
 
