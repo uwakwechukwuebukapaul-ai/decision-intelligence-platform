@@ -1,248 +1,137 @@
-from datetime import datetime
+from app.ai.mentor.roadmap_engine import generate_roadmap
+from app.ai.mentor.certification_engine import recommend_certifications
+from app.ai.mentor.project_generator import generate_projects
 
 
 
-def generate_mentor_plan(profile, analysis):
+def calculate_readiness(profile, career):
+
+    completed = []
+
+    missing = []
 
 
-    recommendations = analysis.get(
-        "career_recommendations",
+    skills = [
+        skill.strip().lower()
+        for skill in profile.skills.split(",")
+    ]
+
+
+    requirements = {
+
+        "AI Security Specialist": [
+
+            "python",
+            "security",
+            "machine learning",
+            "automation",
+            "cloud security"
+
+        ],
+
+
+        "SOC Analyst": [
+
+            "security",
+            "linux",
+            "siem",
+            "incident response"
+
+        ]
+
+    }
+
+
+    required = requirements.get(
+        career,
         []
     )
 
 
-    if not recommendations:
+    for skill in required:
 
-        return {
+        if skill in skills:
 
-            "status": "insufficient_data",
+            completed.append(skill)
 
-            "message":
-            "No career recommendation available yet."
+        else:
 
-        }
-
+            missing.append(skill)
 
 
-    top_career = recommendations[0]
+
+    if not required:
+
+        score = 0
+
+    else:
+
+        score = round(
+            (len(completed) / len(required)) * 100
+        )
 
 
-    target_role = top_career.get(
+    return {
+
+        "score": score,
+
+        "completed_skills": completed,
+
+        "missing_skills": missing
+
+    }
+
+
+
+def create_career_mentor(profile, recommendation):
+
+
+    target = recommendation.get(
         "career",
-        "Unknown"
+        ""
     )
 
 
-    missing_skills = top_career.get(
-        "missing_skills",
-        []
+    readiness = calculate_readiness(
+        profile,
+        target
     )
-
-
-    certifications = top_career.get(
-        "certifications",
-        []
-    )
-
 
 
     return {
 
 
-        "status": "success",
+        "target_career":
+        target,
 
 
-        "generated_at":
+        "readiness_score":
+        readiness["score"],
 
-            datetime.now().strftime(
-                "%Y-%m-%d"
-            ),
 
+        "completed_skills":
+        readiness["completed_skills"],
 
 
-        "student":
+        "missing_skills":
+        readiness["missing_skills"],
 
-            profile.name,
 
+        "roadmap":
+        generate_roadmap(
+            target
+        ),
 
 
-        "target_role":
+        "certifications":
+        recommend_certifications(
+            target
+        ),
 
-            target_role,
 
-
-
-        "career_confidence":
-
-            top_career.get(
-                "confidence",
-                "Unknown"
-            ),
-
-
-
-        "current_skills":
-
-            profile.skills,
-
-
-
-        "skill_priorities":
-
-            missing_skills,
-
-
-
-        "three_month_roadmap": [
-
-            {
-
-                "month": "Month 1",
-
-                "focus":
-
-                "Strengthen cybersecurity foundations",
-
-                "tasks": [
-
-                    "Improve Python automation skills",
-
-                    "Practice Linux administration",
-
-                    "Study networking fundamentals"
-
-                ]
-
-            },
-
-
-            {
-
-                "month": "Month 2",
-
-                "focus":
-
-                "Security operations skills",
-
-                "tasks": [
-
-                    "Learn SIEM concepts",
-
-                    "Analyze security logs",
-
-                    "Practice incident response"
-
-                ]
-
-            },
-
-
-            {
-
-                "month": "Month 3",
-
-                "focus":
-
-                "Build professional portfolio",
-
-                "tasks": [
-
-                    "Create cybersecurity projects",
-
-                    "Document technical work",
-
-                    "Publish portfolio"
-
-                ]
-
-            }
-
-        ],
-
-
-
-        "six_month_goal": [
-
-            "Become internship/job ready",
-
-            "Complete industry certifications",
-
-            "Gain hands-on security experience"
-
-        ],
-
-
-
-        "recommended_projects": [
-
-            {
-
-                "project":
-
-                "AI SOC Monitoring Dashboard",
-
-                "purpose":
-
-                "Practice threat detection and security analytics"
-
-            },
-
-
-            {
-
-                "project":
-
-                "Threat Intelligence Platform",
-
-                "purpose":
-
-                "Learn IOC enrichment and threat analysis"
-
-            },
-
-
-            {
-
-                "project":
-
-                "Vulnerability Scanner",
-
-                "purpose":
-
-                "Understand security assessment workflows"
-
-            }
-
-        ],
-
-
-
-        "recommended_certifications":
-
-            certifications if certifications else [
-
-                "CompTIA Security+",
-
-                "Certified SOC Analyst (CSA)",
-
-                "Google Cybersecurity Certificate"
-
-            ],
-
-
-
-        "mentor_message": f"""
-
-{profile.name}, your current strongest career direction is
-{target_role}.
-
-Your next priority should be closing your skill gaps,
-building practical projects, and developing industry-ready
-experience.
-
-The roadmap above is designed to move you toward
-professional readiness.
-
-"""
+        "projects":
+        generate_projects(
+            target
+        )
 
     }
