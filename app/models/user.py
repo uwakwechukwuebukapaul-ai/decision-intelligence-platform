@@ -1,12 +1,15 @@
 from sqlalchemy import Column, Integer, String, Text, DateTime
+from sqlalchemy.orm import relationship
 from datetime import datetime
 
 from app.database.db import Base
 
 
+
 class UserProfile(Base):
 
     __tablename__ = "user_profiles"
+
 
 
     id = Column(
@@ -16,7 +19,11 @@ class UserProfile(Base):
     )
 
 
-    # Authentication fields
+
+    # ==========================
+    # Authentication Fields
+    # ==========================
+
 
     email = Column(
         String(150),
@@ -26,10 +33,12 @@ class UserProfile(Base):
     )
 
 
+
     password_hash = Column(
         String(255),
         nullable=False
     )
+
 
 
     created_at = Column(
@@ -38,7 +47,11 @@ class UserProfile(Base):
     )
 
 
-    # Profile fields
+
+    # ==========================
+    # Profile Intelligence Data
+    # ==========================
+
 
     name = Column(
         String(100),
@@ -46,9 +59,11 @@ class UserProfile(Base):
     )
 
 
+
     education = Column(
         Text
     )
+
 
 
     experience = Column(
@@ -56,9 +71,11 @@ class UserProfile(Base):
     )
 
 
+
     skills = Column(
         Text
     )
+
 
 
     goals = Column(
@@ -66,6 +83,28 @@ class UserProfile(Base):
     )
 
 
+
     constraints = Column(
         Text
+    )
+
+
+
+    # ==========================
+    # AI Career Intelligence
+    # ==========================
+
+
+    reports = relationship(
+        "AIReport",
+        back_populates="user",
+        cascade="all, delete-orphan"
+    )
+
+
+
+    skills_progress = relationship(
+        "SkillProgress",
+        back_populates="user",
+        cascade="all, delete-orphan"
     )
