@@ -16,6 +16,8 @@ from app.ai.evolution.evolution_engine import calculate_growth
 
 from app.ai.simulation.career_simulator import simulate_career_growth
 
+from app.ai.learning.learning_engine import generate_learning_plan
+
 from app.reports.report_generator import generate_report
 
 
@@ -24,6 +26,7 @@ analysis_bp = Blueprint(
     "analysis",
     __name__
 )
+
 
 
 
@@ -62,6 +65,7 @@ def create_analysis(user_id):
 
 
 
+
         # =================================
         # AI Career Intelligence Analysis
         # =================================
@@ -70,6 +74,7 @@ def create_analysis(user_id):
         analysis = analyze_profile(
             user
         )
+
 
 
 
@@ -89,6 +94,8 @@ def create_analysis(user_id):
 
 
             top_career = recommendations[0]
+
+
 
 
 
@@ -118,12 +125,10 @@ def create_analysis(user_id):
 
                 analysis["mentor"] = {
 
-
                     "error":
                     str(error)
 
                 }
-
 
 
 
@@ -155,7 +160,6 @@ def create_analysis(user_id):
                 )
 
 
-
                 analysis["readiness"] = readiness
 
 
@@ -167,6 +171,7 @@ def create_analysis(user_id):
 
 
                     "error":
+
                     str(error)
 
                 }
@@ -242,8 +247,11 @@ def create_analysis(user_id):
 
 
                     analysis.get(
+
                         "readiness",
+
                         {}
+
                     ).get(
 
                         "readiness_score",
@@ -286,6 +294,52 @@ def create_analysis(user_id):
 
 
 
+
+
+            # =================================
+            # AI Learning Intelligence Engine v15
+            # =================================
+
+
+            try:
+
+
+                learning = generate_learning_plan(
+
+
+                    top_career.get(
+
+                        "missing_skills",
+
+                        []
+
+                    )
+
+                )
+
+
+                analysis["learning"] = learning
+
+
+
+            except Exception as error:
+
+
+                analysis["learning"] = {
+
+
+                    "error":
+
+                    str(error)
+
+                }
+
+
+
+
+
+
+
         else:
 
 
@@ -297,6 +351,8 @@ def create_analysis(user_id):
             analysis["evolution"] = {}
 
             analysis["simulation"] = {}
+
+            analysis["learning"] = {}
 
 
 
@@ -318,7 +374,6 @@ def create_analysis(user_id):
             analysis
 
         )
-
 
 
 
@@ -363,6 +418,7 @@ def create_analysis(user_id):
 
 
 
+
         return jsonify({
 
 
@@ -391,6 +447,7 @@ def create_analysis(user_id):
 
 
 
+
     except Exception as error:
 
 
@@ -408,6 +465,8 @@ def create_analysis(user_id):
 
 
         }), 500
+
+
 
 
 
