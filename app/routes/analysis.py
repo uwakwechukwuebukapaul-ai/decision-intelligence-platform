@@ -16,7 +16,7 @@ from app.ai.evolution.evolution_engine import calculate_growth
 
 from app.ai.simulation.career_simulator import simulate_career_growth
 
-from app.ai.learning.learning_engine import generate_learning_plan
+from app.ai.analytics.analytics_engine import calculate_career_intelligence
 
 from app.reports.report_generator import generate_report
 
@@ -39,6 +39,7 @@ def create_analysis(user_id):
 
 
     db = SessionLocal()
+
 
 
     try:
@@ -78,7 +79,6 @@ def create_analysis(user_id):
 
 
 
-
         recommendations = analysis.get(
             "career_recommendations",
             []
@@ -94,6 +94,8 @@ def create_analysis(user_id):
 
 
             top_career = recommendations[0]
+
+
 
 
 
@@ -125,10 +127,14 @@ def create_analysis(user_id):
 
                 analysis["mentor"] = {
 
+
                     "error":
+
                     str(error)
 
                 }
+
+
 
 
 
@@ -160,6 +166,7 @@ def create_analysis(user_id):
                 )
 
 
+
                 analysis["readiness"] = readiness
 
 
@@ -183,8 +190,9 @@ def create_analysis(user_id):
 
 
 
+
             # =================================
-            # Career Evolution Intelligence v10
+            # Career Evolution Intelligence
             # =================================
 
 
@@ -206,7 +214,6 @@ def create_analysis(user_id):
                     )
 
                 )
-
 
 
                 analysis["evolution"] = evolution
@@ -232,8 +239,9 @@ def create_analysis(user_id):
 
 
 
+
             # =================================
-            # AI Career Simulation Engine v13
+            # AI Career Simulation Engine
             # =================================
 
 
@@ -254,11 +262,13 @@ def create_analysis(user_id):
 
                     ).get(
 
+
                         "readiness_score",
 
                         0
 
                     ),
+
 
 
                     top_career.get(
@@ -296,15 +306,37 @@ def create_analysis(user_id):
 
 
 
+
             # =================================
-            # AI Learning Intelligence Engine v15
+            # AI Career Analytics Intelligence v15
             # =================================
 
 
             try:
 
 
-                learning = generate_learning_plan(
+                analytics = calculate_career_intelligence(
+
+
+                    top_career["career"],
+
+
+
+                    analysis.get(
+
+                        "readiness",
+
+                        {}
+
+                    ).get(
+
+
+                        "readiness_score",
+
+                        0
+
+                    ),
+
 
 
                     top_career.get(
@@ -318,14 +350,15 @@ def create_analysis(user_id):
                 )
 
 
-                analysis["learning"] = learning
+
+                analysis["analytics"] = analytics
 
 
 
             except Exception as error:
 
 
-                analysis["learning"] = {
+                analysis["analytics"] = {
 
 
                     "error":
@@ -339,9 +372,7 @@ def create_analysis(user_id):
 
 
 
-
         else:
-
 
 
             analysis["mentor"] = {}
@@ -352,7 +383,7 @@ def create_analysis(user_id):
 
             analysis["simulation"] = {}
 
-            analysis["learning"] = {}
+            analysis["analytics"] = {}
 
 
 
@@ -363,7 +394,7 @@ def create_analysis(user_id):
 
 
         # =================================
-        # Generate Final Intelligence Report
+        # Generate Final AI Report
         # =================================
 
 
@@ -399,6 +430,8 @@ def create_analysis(user_id):
 
 
 
+
+
         db.add(saved_report)
 
 
@@ -411,7 +444,6 @@ def create_analysis(user_id):
             saved_report
 
         )
-
 
 
 
@@ -447,7 +479,6 @@ def create_analysis(user_id):
 
 
 
-
     except Exception as error:
 
 
@@ -465,8 +496,6 @@ def create_analysis(user_id):
 
 
         }), 500
-
-
 
 
 
