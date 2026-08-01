@@ -1,128 +1,129 @@
-from app.knowledge.career_database import CAREER_DATABASE
+from app.ai.progress.evolution_engine import evaluate_growth
 
 
-def normalize_skills(skills):
-
-    if not skills:
-        return []
-
-    return [
-        skill.strip().lower()
-        for skill in skills.split(",")
-    ]
-
-
-
-def calculate_readiness(
+def generate_progress(
     career,
-    user_skills
+    completed_skills
 ):
 
-    user_skills = normalize_skills(
-        user_skills
-    )
+
+    career_skills = {
 
 
-    required = career.get(
-        "skills",
-        []
-    )
+        "AI Security Specialist":
 
-
-    completed = []
-    missing = []
-
-
-    for skill in required:
-
-        if skill.lower() in user_skills:
-
-            completed.append(
-                skill
-            )
-
-        else:
-
-            missing.append(
-                skill
-            )
+        [
+            "python",
+            "security",
+            "machine learning",
+            "automation",
+            "cloud security"
+        ],
 
 
 
-    if required:
+        "SOC Analyst":
 
-        score = round(
-            (len(completed) /
-            len(required))
-            * 100
-        )
-
-    else:
-
-        score = 0
+        [
+            "linux",
+            "siem",
+            "incident response",
+            "network security"
+        ],
 
 
 
-    return {
+        "Security Engineer":
 
-        "readiness_score": score,
+        [
+            "network security",
+            "linux",
+            "firewalls",
+            "cloud security"
+        ]
 
-        "completed_skills": completed,
-
-        "missing_skills": missing
 
     }
 
 
 
-def generate_progress(
-    target_career,
-    user_skills
-):
+    required = career_skills.get(
+        career,
+        []
+    )
 
 
-    selected = None
+    completed = []
 
 
-    for career in CAREER_DATABASE:
-
-        if career["name"] == target_career:
-
-            selected = career
-            break
+    missing = []
 
 
 
-    if not selected:
+    for skill in required:
 
 
-        return {
-
-            "error":
-            "Career not found"
-
-        }
+        if skill in completed_skills:
 
 
+            completed.append(skill)
 
-    result = calculate_readiness(
 
-        selected,
+        else:
 
-        user_skills
 
+            missing.append(skill)
+
+
+
+
+    if required:
+
+
+        readiness = round(
+            (len(completed) /
+            len(required)) * 100
+        )
+
+
+    else:
+
+
+        readiness = 0
+
+
+
+
+    growth = evaluate_growth(
+        readiness
     )
 
 
 
     return {
 
-        "career":
-        target_career,
 
-        **result,
+        "career": career,
 
-        "engine_version":
-        "Progress Intelligence Engine v1"
+
+        "readiness_score":
+            readiness,
+
+
+        "completed_skills":
+            completed,
+
+
+        "missing_skills":
+            missing,
+
+
+        "career_level":
+            growth["career_level"],
+
+
+        "recommendation":
+            growth["recommendation"]
+
 
     }
