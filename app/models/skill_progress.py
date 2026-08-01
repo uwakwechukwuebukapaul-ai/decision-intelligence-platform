@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
-from sqlalchemy.orm import relationship
+
 from datetime import datetime
 
 from app.database.db import Base
@@ -19,49 +19,67 @@ class SkillProgress(Base):
 
 
     user_id = Column(
+
         Integer,
-        ForeignKey("users.id"),
+
+        ForeignKey(
+            "user_profiles.id"
+        ),
+
         nullable=False
+
     )
 
 
     skill_name = Column(
-        String,
+
+        String(100),
+
         nullable=False
+
     )
 
 
     level = Column(
-        String,
+
+        String(50),
+
         default="Beginner"
+
     )
 
 
     progress = Column(
+
         Integer,
+
         default=0
+
     )
 
 
     status = Column(
-        String,
+
+        String(50),
+
         default="Learning"
+
     )
 
 
-    started_at = Column(
+    created_at = Column(
+
         DateTime,
+
         default=datetime.utcnow
+
     )
 
 
     completed_at = Column(
+
         DateTime,
+
         nullable=True
-    )
 
-
-    user = relationship(
-        "UserProfile",
-        back_populates="skills_progress"
     )
