@@ -88,6 +88,14 @@ from app.routes.decision_reasoning import decision_reasoning_bp
 
 
 
+# =====================================================
+# AI Orchestration Intelligence Routes
+# =====================================================
+
+from app.routes.decision_orchestrator import decision_orchestrator_bp
+
+
+
 
 # =====================================================
 # Application Metadata
@@ -95,7 +103,7 @@ from app.routes.decision_reasoning import decision_reasoning_bp
 
 APP_NAME = "Decision Intelligence Platform"
 
-APP_VERSION = "2.2"
+APP_VERSION = "2.3"
 
 APP_STATUS = "running"
 
@@ -206,7 +214,15 @@ BLUEPRINTS = [
     # AI Reasoning Layer
     # -----------------------------
 
-    decision_reasoning_bp
+    decision_reasoning_bp,
+
+
+
+    # -----------------------------
+    # AI Orchestration Layer
+    # -----------------------------
+
+    decision_orchestrator_bp
 
 ]
 
@@ -327,7 +343,13 @@ def home():
 
             # Reasoning Layer
 
-            "AI Decision Reasoning Engine v1"
+            "AI Decision Reasoning Engine v1",
+
+
+
+            # Orchestration Layer
+
+            "AI Decision Orchestrator Engine v1"
 
 
         ],
@@ -434,7 +456,9 @@ def platform_info():
 
             "Intelligence Graph Reasoning",
 
-            "Decision Reasoning Intelligence"
+            "Decision Reasoning Intelligence",
+
+            "Decision Orchestration Intelligence"
 
 
         ]
