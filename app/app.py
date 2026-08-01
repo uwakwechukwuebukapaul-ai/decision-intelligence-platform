@@ -2,17 +2,17 @@ from flask import Flask
 import os
 
 
-# ===============================
+# =====================================================
 # Database
-# ===============================
+# =====================================================
 
 from app.database.db import engine, Base
 
 
 
-# ===============================
+# =====================================================
 # Register Models
-# ===============================
+# =====================================================
 
 from app.models import (
     UserProfile,
@@ -23,9 +23,9 @@ from app.models import (
 
 
 
-# ===============================
+# =====================================================
 # Core Routes
-# ===============================
+# =====================================================
 
 from app.routes.profile import profile_bp
 from app.routes.analysis import analysis_bp
@@ -39,9 +39,9 @@ from app.routes.learning_progress import learning_progress_bp
 
 
 
-# ===============================
+# =====================================================
 # AI Intelligence Routes
-# ===============================
+# =====================================================
 
 from app.routes.skill_analysis import skill_analysis_bp
 from app.routes.career_report import career_report_bp
@@ -51,22 +51,26 @@ from app.routes.advisor import advisor_bp
 from app.routes.mentor import mentor_bp
 from app.routes.coach import coach_bp
 from app.routes.intelligence import intelligence_bp
+from app.routes.digital_twin import digital_twin_bp
 
 
 
 
-# ===============================
+# =====================================================
 # Application Metadata
-# ===============================
+# =====================================================
 
 APP_NAME = "Decision Intelligence Platform"
-APP_VERSION = "1.7"
+
+APP_VERSION = "1.8"
+
+APP_STATUS = "running"
 
 
 
-# ===============================
+# =====================================================
 # Flask Application
-# ===============================
+# =====================================================
 
 app = Flask(
 
@@ -86,9 +90,9 @@ app = Flask(
 
 
 
-# ===============================
+# =====================================================
 # Database Initialization
-# ===============================
+# =====================================================
 
 Base.metadata.create_all(
 
@@ -98,13 +102,16 @@ Base.metadata.create_all(
 
 
 
-# ===============================
+# =====================================================
 # Blueprint Registry
-# ===============================
+# =====================================================
 
 BLUEPRINTS = [
 
+
+    # -------------------------
     # Core Platform
+    # -------------------------
 
     profile_bp,
     analysis_bp,
@@ -117,7 +124,10 @@ BLUEPRINTS = [
     learning_progress_bp,
 
 
+
+    # -------------------------
     # AI Intelligence Layer
+    # -------------------------
 
     skill_analysis_bp,
     career_report_bp,
@@ -126,7 +136,14 @@ BLUEPRINTS = [
     advisor_bp,
     mentor_bp,
     coach_bp,
-    intelligence_bp
+    intelligence_bp,
+
+
+    # -------------------------
+    # Advanced AI Simulation
+    # -------------------------
+
+    digital_twin_bp
 
 ]
 
@@ -135,15 +152,17 @@ BLUEPRINTS = [
 for blueprint in BLUEPRINTS:
 
     app.register_blueprint(
+
         blueprint
+
     )
 
 
 
 
-# ===============================
-# Platform Health Endpoint
-# ===============================
+# =====================================================
+# Platform Root Endpoint
+# =====================================================
 
 @app.route("/")
 
@@ -159,7 +178,7 @@ def home():
 
         "status":
 
-            "running",
+            APP_STATUS,
 
 
         "version":
@@ -198,6 +217,10 @@ def home():
 
             "Adaptive Learning Engine",
 
+
+
+            # Advanced AI Layer
+
             "AI Skill Gap Intelligence Engine",
 
             "AI Career Intelligence Report Engine",
@@ -208,18 +231,28 @@ def home():
 
             "AI Cybersecurity Coach Engine",
 
-            "AI User Intelligence Profile v2"
+            "AI User Intelligence Profile v2",
 
-        ]
+            "AI Digital Twin Engine v1"
+
+
+        ],
+
+
+
+        "blueprints_loaded":
+
+            len(BLUEPRINTS)
 
     }
 
 
 
 
-# ===============================
-# Health Check
-# ===============================
+
+# =====================================================
+# Health Monitoring Endpoint
+# =====================================================
 
 @app.route("/health")
 
@@ -240,7 +273,17 @@ def health():
 
         "database":
 
-            "connected"
+            "connected",
+
+
+        "api":
+
+            "operational",
+
+
+        "version":
+
+            APP_VERSION
 
 
     }
@@ -248,9 +291,55 @@ def health():
 
 
 
-# ===============================
+# =====================================================
+# AI Platform Information Endpoint
+# =====================================================
+
+@app.route("/api/info")
+
+def platform_info():
+
+    return {
+
+
+        "platform":
+
+            APP_NAME,
+
+
+        "version":
+
+            APP_VERSION,
+
+
+        "modules":[
+
+
+            "Decision Intelligence",
+
+            "Career Intelligence",
+
+            "AI Mentor",
+
+            "Cybersecurity Coach",
+
+            "User Intelligence",
+
+            "Learning Intelligence",
+
+            "Digital Twin Simulation"
+
+
+        ]
+
+    }
+
+
+
+
+# =====================================================
 # Application Runner
-# ===============================
+# =====================================================
 
 if __name__ == "__main__":
 

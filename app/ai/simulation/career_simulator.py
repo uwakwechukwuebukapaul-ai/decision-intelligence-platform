@@ -1,70 +1,156 @@
-from app.ai.simulation.simulation_database import SIMULATION_DATA
-
-
-
 def simulate_career_growth(
     career,
-    readiness_score,
-    missing_skills
+    skills,
+    progress,
+    certifications,
+    labs
 ):
 
 
-    timeline = []
+    base_score = progress
 
 
-    for stage in SIMULATION_DATA:
+
+    missing_skills = [
+
+        "SIEM",
+
+        "Log Analysis",
+
+        "Incident Response",
+
+        "Threat Intelligence",
+
+        "MITRE ATT&CK",
+
+        "Detection Engineering"
+
+    ]
 
 
-        improvement = stage["increase"]
+
+    completed_skills = [
+
+        skill
+
+        for skill in missing_skills
+
+        if skill not in skills
+
+    ]
 
 
-        projected_score = min(
-            readiness_score + improvement,
-            100
-        )
+
+    six_month_score = min(
+        base_score + 20,
+        100
+    )
 
 
-        timeline.append({
-
-            "period":
-            stage["period"],
-
-
-            "projected_readiness":
-            projected_score,
-
-
-            "focus":
-            stage["focus"],
-
-
-            "expected_outcome":
-            stage["outcome"]
-
-        })
+    twelve_month_score = min(
+        base_score + 35,
+        100
+    )
 
 
 
     return {
 
 
-        "career":
-        career,
+        "career_target":
+
+            career,
 
 
-        "starting_readiness":
-        readiness_score,
+
+        "current_profile":{
 
 
-        "missing_skills":
-        missing_skills,
+            "skills":
+
+                skills,
 
 
-        "simulation":
-        timeline,
+            "certifications":
+
+                certifications,
 
 
-        "engine":
-        "Career Simulation Engine v1"
+            "labs":
+
+                labs,
+
+
+            "readiness":
+
+                base_score
+
+        },
+
+
+
+        "simulation":{
+
+
+            "6_months":{
+
+
+                "estimated_readiness":
+
+                    six_month_score,
+
+
+                "focus":[
+
+                    "Improve SIEM skills",
+
+                    "Practice incident investigations",
+
+                    "Build detection rules"
+
+                ]
+
+            },
+
+
+
+            "12_months":{
+
+
+                "estimated_readiness":
+
+                    twelve_month_score,
+
+
+                "focus":[
+
+                    "Threat Hunting",
+
+                    "MITRE ATT&CK Mapping",
+
+                    "Detection Engineering"
+
+                ]
+
+            }
+
+        },
+
+
+
+        "prediction":{
+
+
+            "status":
+
+            "Positive Growth Path",
+
+
+
+            "message":
+
+            f"You are progressing toward becoming a {career}"
+
+        }
 
     }
