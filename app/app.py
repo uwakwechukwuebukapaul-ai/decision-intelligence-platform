@@ -32,23 +32,20 @@ from app.routes.performance_optimization import (
 
 
 # ======================================
-# Autonomous Intelligence Layers
+# Autonomous Intelligence Stack
 # ======================================
 
 from app.routes.autonomous_orchestrator import (
     autonomous_orchestrator_bp
 )
 
-
 from app.routes.cognitive_core import (
     cognitive_core_bp
 )
 
-
 from app.routes.autonomous_fabric import (
     autonomous_fabric_bp
 )
-
 
 from app.routes.autonomous_operating_system import (
     autonomous_operating_system_bp
@@ -117,7 +114,7 @@ from app.routes.meta_intelligence import (
 
 
 # ======================================
-# Intelligence Control Plane
+# Intelligence Control Plane v10
 # ======================================
 
 from app.routes.intelligence_control_plane import (
@@ -127,7 +124,7 @@ from app.routes.intelligence_control_plane import (
 
 
 # ======================================
-# Intelligence Memory Fabric
+# Intelligence Memory Fabric v11
 # ======================================
 
 from app.routes.intelligence_memory_fabric import (
@@ -137,7 +134,7 @@ from app.routes.intelligence_memory_fabric import (
 
 
 # ======================================
-# Knowledge Graph Intelligence
+# Knowledge Graph Intelligence v12
 # ======================================
 
 from app.routes.knowledge_graph_intelligence import (
@@ -147,7 +144,7 @@ from app.routes.knowledge_graph_intelligence import (
 
 
 # ======================================
-# Autonomous Reasoning Engine
+# Autonomous Reasoning Engine v13
 # ======================================
 
 from app.routes.autonomous_reasoning_engine import (
@@ -162,6 +159,16 @@ from app.routes.autonomous_reasoning_engine import (
 
 from app.routes.autonomous_decision_core import (
     autonomous_decision_core_bp
+)
+
+
+
+# ======================================
+# Autonomous Agent Workforce v15
+# ======================================
+
+from app.routes.autonomous_agent_workforce import (
+    autonomous_agent_workforce_bp
 )
 # ======================================
 # Blueprint Registration
@@ -223,11 +230,6 @@ def register_blueprints(app):
         autonomous_operating_system_bp
     )
 
-
-
-    # ======================================
-    # Collective Intelligence
-    # ======================================
 
     app.register_blueprint(
         collective_operating_intelligence_bp
@@ -291,7 +293,7 @@ def register_blueprints(app):
 
 
     # ======================================
-    # Control Plane
+    # Intelligence Control Plane
     # ======================================
 
     app.register_blueprint(
@@ -301,7 +303,7 @@ def register_blueprints(app):
 
 
     # ======================================
-    # Memory Fabric
+    # Intelligence Memory Fabric
     # ======================================
 
     app.register_blueprint(
@@ -311,7 +313,7 @@ def register_blueprints(app):
 
 
     # ======================================
-    # Knowledge Graph
+    # Knowledge Graph Intelligence
     # ======================================
 
     app.register_blueprint(
@@ -321,7 +323,7 @@ def register_blueprints(app):
 
 
     # ======================================
-    # Autonomous Reasoning
+    # Autonomous Reasoning Engine
     # ======================================
 
     app.register_blueprint(
@@ -331,14 +333,24 @@ def register_blueprints(app):
 
 
     # ======================================
-    # Autonomous Decision Core v14
+    # Autonomous Decision Core
     # ======================================
 
     app.register_blueprint(
         autonomous_decision_core_bp
     )
+
+
+
     # ======================================
-# Application Factory
+    # Autonomous Agent Workforce v15
+    # ======================================
+
+    app.register_blueprint(
+        autonomous_agent_workforce_bp
+    )
+    # ======================================
+# Flask Application Factory
 # ======================================
 
 def create_app():
@@ -358,7 +370,9 @@ def create_app():
 
 
 
-# Create Flask Application
+# ======================================
+# Application Instance
+# ======================================
 
 app = create_app()
 
@@ -382,7 +396,7 @@ def home():
                 "operational",
 
             "version":
-                "14.0"
+                "15.0"
 
         }
 
@@ -391,7 +405,7 @@ def home():
 
 
 # ======================================
-# Health Monitoring Endpoint
+# Health Monitoring
 # ======================================
 
 @app.route("/health")
@@ -410,12 +424,13 @@ def health():
 
 
             "version":
-                "14.0",
+                "15.0",
 
 
             "services":
 
                 {
+
 
                     "database":
                         "connected",
@@ -474,6 +489,10 @@ def health():
 
 
                     "autonomous_decision_core":
+                        "active",
+
+
+                    "autonomous_agent_workforce":
                         "active"
 
                 }
@@ -485,7 +504,7 @@ def health():
 
 
 # ======================================
-# Development Runner
+# Development Server
 # ======================================
 
 if __name__ == "__main__":
