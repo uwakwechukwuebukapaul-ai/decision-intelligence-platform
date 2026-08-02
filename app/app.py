@@ -105,10 +105,14 @@ from app.routes.autonomous_cognitive_intelligence_engine import (
     autonomous_cognitive_intelligence_engine
 )
 
+from app.routes.autonomous_intelligence_governance_engine import (
+    autonomous_intelligence_governance_engine
+)
+
 
 
 # ===============================
-# Application Factory
+# Flask Application
 # ===============================
 
 app = Flask(__name__)
@@ -128,7 +132,6 @@ Base.metadata.create_all(
 # ===============================
 # Blueprint Registration
 # ===============================
-
 
 app.register_blueprint(
     autonomous_adaptation_engine
@@ -214,6 +217,10 @@ app.register_blueprint(
     autonomous_cognitive_intelligence_engine
 )
 
+app.register_blueprint(
+    autonomous_intelligence_governance_engine
+)
+
 
 
 # ===============================
@@ -232,7 +239,8 @@ def health():
             "healthy",
 
         "version":
-            "33.0",
+            "34.0",
+
 
         "services":
 
@@ -241,88 +249,121 @@ def health():
             "database":
                 "connected",
 
+
             "autonomous_adaptation":
                 "active",
+
 
             "autonomous_agent_workforce":
                 "active",
 
+
             "autonomous_decision_core":
                 "active",
+
 
             "autonomous_evolution":
                 "active",
 
+
             "autonomous_governance_engine":
                 "active",
+
 
             "autonomous_intelligence_orchestrator":
                 "active",
 
+
             "autonomous_knowledge_fabric_engine":
                 "active",
+
 
             "autonomous_learning":
                 "active",
 
+
             "autonomous_memory_engine":
                 "active",
+
 
             "autonomous_meta_intelligence_engine":
                 "active",
 
+
             "autonomous_meta_intelligence_engine_v2":
                 "active",
+
 
             "autonomous_reasoning":
                 "active",
 
+
             "autonomous_self_healing_engine":
                 "active",
+
 
             "autonomous_trust_intelligence_engine":
                 "active",
 
+
             "autonomous_security_intelligence_engine":
                 "active",
+
 
             "autonomous_simulation_engine":
                 "active",
 
+
             "autonomous_forecasting_engine":
                 "active",
+
 
             "autonomous_intelligence_fusion_engine":
                 "active",
 
+
             "autonomous_strategic_decision_engine":
                 "active",
+
 
             "autonomous_executive_intelligence_engine":
                 "active",
 
+
             "autonomous_cognitive_intelligence_engine":
                 "active",
+
+
+            "autonomous_intelligence_governance_engine":
+                "active",
+
 
             "knowledge_graph":
                 "active",
 
+
             "memory_fabric":
                 "active",
+
 
             "governance_layer":
                 "active",
 
+
             "self_healing_layer":
                 "active",
+
 
             "meta_intelligence_layer":
                 "active",
 
+
             "cognitive_intelligence_layer":
                 "active"
 
+
         },
+
 
         "timestamp":
             datetime.utcnow().isoformat()
@@ -338,6 +379,9 @@ def health():
 if __name__ == "__main__":
 
     app.run(
+
         host="127.0.0.1",
+
         port=5000
+
     )
