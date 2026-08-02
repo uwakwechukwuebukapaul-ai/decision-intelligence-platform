@@ -3,25 +3,46 @@ from flask import Flask, jsonify
 from app.database.db import engine, Base
 
 
-# Autonomous Intelligence Routes
+# ==============================
+# Autonomous Intelligence Layers
+# ==============================
 
-from app.routes.autonomous_goal import autonomous_goal_bp
 
-from app.routes.autonomous_mission import autonomous_mission_bp
+from app.routes.autonomous_goal import (
+    autonomous_goal_bp
+)
 
-from app.routes.strategic_planning import strategic_planning_bp
+from app.routes.autonomous_mission import (
+    autonomous_mission_bp
+)
 
-from app.routes.execution_management import execution_management_bp
+from app.routes.strategic_planning import (
+    strategic_planning_bp
+)
 
-from app.routes.performance_optimization import performance_optimization_bp
+from app.routes.execution_management import (
+    execution_management_bp
+)
 
-from app.routes.autonomous_orchestrator import autonomous_orchestrator_bp
+from app.routes.performance_optimization import (
+    performance_optimization_bp
+)
 
-from app.routes.cognitive_core import cognitive_core_bp
+from app.routes.autonomous_orchestrator import (
+    autonomous_orchestrator_bp
+)
 
-from app.routes.autonomous_fabric import autonomous_fabric_bp
+from app.routes.cognitive_core import (
+    cognitive_core_bp
+)
 
-from app.routes.autonomous_operating_system import autonomous_operating_system_bp
+from app.routes.autonomous_fabric import (
+    autonomous_fabric_bp
+)
+
+from app.routes.autonomous_operating_system import (
+    autonomous_operating_system_bp
+)
 
 from app.routes.collective_operating_intelligence import (
     collective_operating_intelligence_bp
@@ -32,22 +53,43 @@ from app.routes.collective_intelligence import (
 )
 
 
-# Governance Layer
+
+# ==============================
+# Governance Intelligence Layer
+# ==============================
+
 
 from app.routes.intelligence_governance import (
     intelligence_governance_bp
 )
 
 
-# Reliability Layer
+
+# ==============================
+# Reliability Intelligence Layer
+# ==============================
+
 
 from app.routes.autonomous_reliability import (
     autonomous_reliability_bp
 )
+
+
+
+# ==============================
+# Self-Healing Intelligence Layer
+# ==============================
+
+
+from app.routes.self_healing_intelligence import (
+    self_healing_intelligence_bp
+)
 def register_blueprints(app):
 
 
+    # ==============================
     # Autonomous Intelligence Stack
+    # ==============================
 
 
     app.register_blueprint(
@@ -106,7 +148,9 @@ def register_blueprints(app):
 
 
 
-    # Governance Intelligence Layer
+    # ==============================
+    # Governance Layer
+    # ==============================
 
 
     app.register_blueprint(
@@ -115,11 +159,24 @@ def register_blueprints(app):
 
 
 
-    # Reliability Intelligence Layer
+    # ==============================
+    # Reliability Layer
+    # ==============================
 
 
     app.register_blueprint(
         autonomous_reliability_bp
+    )
+
+
+
+    # ==============================
+    # Self-Healing Layer
+    # ==============================
+
+
+    app.register_blueprint(
+        self_healing_intelligence_bp
     )
 
 
@@ -132,7 +189,9 @@ def create_app():
     app = Flask(__name__)
 
 
-    app.config["JSON_SORT_KEYS"] = False
+    app.config[
+        "JSON_SORT_KEYS"
+    ] = False
 
 
     register_blueprints(app)
@@ -151,13 +210,18 @@ def home():
         {
 
             "platform":
+
                 "Decision Intelligence Platform",
 
+
             "status":
+
                 "operational",
 
+
             "version":
-                "6.0"
+
+                "7.0"
 
         }
 
@@ -166,55 +230,72 @@ def home():
 
 
 
+
 @app.route("/health")
 def health():
-
 
     return jsonify(
 
         {
 
+
             "platform":
+
                 "Decision Intelligence Platform",
 
 
             "status":
+
                 "healthy",
 
 
             "version":
-                "6.0",
+
+                "7.0",
 
 
             "services":
+
                 {
 
 
                     "database":
+
                         "connected",
 
 
                     "intelligence_engine":
+
                         "active",
 
 
                     "autonomous_agents":
+
                         "running",
 
 
                     "collective_intelligence":
+
                         "enabled",
 
 
                     "operating_system_layer":
+
                         "active",
 
 
                     "governance_layer":
+
                         "active",
 
 
                     "reliability_layer":
+
+                        "active",
+
+
+                    "self_healing_layer":
+
                         "active"
 
 
@@ -227,11 +308,14 @@ def health():
 
 
 
+
 if __name__ == "__main__":
 
 
     Base.metadata.create_all(
+
         bind=engine
+
     )
 
 
