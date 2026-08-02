@@ -146,15 +146,14 @@ from app.routes.agent_adaptation import agent_adaptation_bp
 from app.routes.agent_evolution import agent_evolution_bp
 from app.routes.agent_optimization import agent_optimization_bp
 from app.routes.agent_meta_learning import agent_meta_learning_bp
-
-
-
 # =====================================================
 # Collective Intelligence Layer
 # =====================================================
 
 from app.routes.collective_intelligence import (
+
     collective_intelligence_bp
+
 )
 
 
@@ -164,7 +163,21 @@ from app.routes.collective_intelligence import (
 # =====================================================
 
 from app.routes.agent_swarm import (
+
     agent_swarm_bp
+
+)
+
+
+
+# =====================================================
+# Autonomous Mission Intelligence Layer
+# =====================================================
+
+from app.routes.autonomous_mission import (
+
+    autonomous_mission_bp
+
 )
 
 
@@ -175,7 +188,7 @@ from app.routes.agent_swarm import (
 
 APP_NAME = "Decision Intelligence Platform"
 
-APP_VERSION = "4.1"
+APP_VERSION = "4.2"
 
 APP_STATUS = "running"
 
@@ -214,11 +227,15 @@ Base.metadata.create_all(
     bind=engine
 
 )
+
+
+
 # =====================================================
 # Blueprint Registry
 # =====================================================
 
 BLUEPRINTS = [
+
 
 
     # =================================================
@@ -334,7 +351,7 @@ BLUEPRINTS = [
 
 
     # =================================================
-    # Agent Self Improvement
+    # Self Improving Intelligence
     # =================================================
 
     agent_reflection_bp,
@@ -357,12 +374,17 @@ BLUEPRINTS = [
     # Swarm Intelligence
     # =================================================
 
-    agent_swarm_bp
+    agent_swarm_bp,
+
+
+
+    # =================================================
+    # Autonomous Mission Intelligence
+    # =================================================
+
+    autonomous_mission_bp
 
 ]
-
-
-
 # =====================================================
 # Blueprint Registration
 # =====================================================
@@ -386,7 +408,10 @@ for blueprint in BLUEPRINTS:
             f"Blueprint registration failed: {error}"
 
         )
-      # =====================================================
+
+
+
+# =====================================================
 # Root Endpoint
 # =====================================================
 
@@ -421,7 +446,7 @@ def home():
 
         "intelligence_state":
 
-            "Autonomous Collective Swarm Intelligence",
+            "Autonomous Collective Swarm Mission Intelligence",
 
 
 
@@ -448,7 +473,9 @@ def home():
 
             "Collective Intelligence",
 
-            "Swarm Intelligence"
+            "Swarm Intelligence",
+
+            "Autonomous Mission Intelligence"
 
 
         ],
@@ -465,7 +492,7 @@ def home():
 
             "architecture":
 
-                "Autonomous Multi Agent Swarm Network",
+                "Autonomous Multi Agent Swarm Mission Network",
 
 
             "agents":
@@ -504,7 +531,13 @@ def home():
 
                 "Consensus",
 
-                "Swarm Intelligence"
+                "Swarm Intelligence",
+
+                "Mission Planning",
+
+                "Mission Execution",
+
+                "Mission Learning"
 
 
             ]
@@ -573,7 +606,18 @@ def home():
 
             "Agent Swarm Memory",
 
-            "Agent Swarm Strategy"
+            "Agent Swarm Strategy",
+
+
+            "Autonomous Mission Controller",
+
+            "Autonomous Mission Planner",
+
+            "Autonomous Mission Executor",
+
+            "Autonomous Mission Monitor",
+
+            "Autonomous Mission Learning Engine"
 
 
         ],
@@ -629,7 +673,7 @@ def health():
 
         "architecture":
 
-            "AI Autonomous Swarm Platform",
+            "AI Autonomous Swarm Mission Platform",
 
 
         "blueprints":
@@ -715,7 +759,10 @@ def platform_info():
 
             "Consensus Intelligence",
 
-            "Agent Swarm Intelligence"
+            "Agent Swarm Intelligence",
+
+
+            "Autonomous Mission Intelligence"
 
 
         ],
@@ -737,7 +784,7 @@ def platform_info():
 
             "architecture":
 
-                "Collaborative Autonomous Swarm"
+                "Collaborative Autonomous Swarm Mission Network"
 
 
         }
@@ -763,4 +810,4 @@ if __name__ == "__main__":
 
         debug=True
 
-    )  
+    )
