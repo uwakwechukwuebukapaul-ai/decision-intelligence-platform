@@ -97,42 +97,15 @@ from app.routes.decision_orchestrator import decision_orchestrator_bp
 
 
 # =====================================================
-# AI Agent Runtime Routes
+# Autonomous Agent Routes
 # =====================================================
 
 from app.routes.agent_runtime import agent_runtime_bp
-
-
-
-# =====================================================
-# AI Agent Tools Routes
-# =====================================================
-
 from app.routes.agent_tools import agent_tools_bp
-
-
-
-# =====================================================
-# AI Agent Planner Routes
-# =====================================================
-
 from app.routes.agent_planner import agent_planner_bp
-
-
-
-# =====================================================
-# AI Agent Supervisor Routes
-# =====================================================
-
 from app.routes.agent_supervisor import agent_supervisor_bp
-
-
-
-# =====================================================
-# AI Agent Memory Routes
-# =====================================================
-
 from app.routes.agent_memory import agent_memory_bp
+from app.routes.agent_learning import agent_learning_bp
 
 
 
@@ -143,7 +116,7 @@ from app.routes.agent_memory import agent_memory_bp
 
 APP_NAME = "Decision Intelligence Platform"
 
-APP_VERSION = "2.8"
+APP_VERSION = "3.0"
 
 APP_STATUS = "running"
 
@@ -193,7 +166,9 @@ Base.metadata.create_all(
 BLUEPRINTS = [
 
 
+    # =================================================
     # Core Platform
+    # =================================================
 
     profile_bp,
     analysis_bp,
@@ -207,7 +182,9 @@ BLUEPRINTS = [
 
 
 
+    # =================================================
     # AI Intelligence Layer
+    # =================================================
 
     skill_analysis_bp,
     career_report_bp,
@@ -220,7 +197,9 @@ BLUEPRINTS = [
 
 
 
+    # =================================================
     # AI Simulation Layer
+    # =================================================
 
     digital_twin_bp,
     career_simulation_bp,
@@ -228,54 +207,66 @@ BLUEPRINTS = [
 
 
 
+    # =================================================
     # AI Memory Layer
+    # =================================================
 
     memory_bp,
 
 
 
-    # AI Knowledge Layer
+    # =================================================
+    # AI Knowledge Graph Layer
+    # =================================================
 
     intelligence_graph_bp,
 
 
 
+    # =================================================
     # AI Reasoning Layer
+    # =================================================
 
     decision_reasoning_bp,
 
 
 
+    # =================================================
     # AI Orchestration Layer
+    # =================================================
 
     decision_orchestrator_bp,
 
 
 
-    # AI Agent Layer
+    # =================================================
+    # Autonomous Agent Layer
+    # =================================================
 
     agent_runtime_bp,
     agent_tools_bp,
     agent_planner_bp,
     agent_supervisor_bp,
-    agent_memory_bp
+    agent_memory_bp,
+    agent_learning_bp
 
-]
-
-
-
-
-# =====================================================
+]# =====================================================
 # Register Blueprints
 # =====================================================
 
 for blueprint in BLUEPRINTS:
 
-    app.register_blueprint(
+    try:
 
-        blueprint
+        app.register_blueprint(
+            blueprint
+        )
 
-    )
+    except Exception as error:
+
+        print(
+            f"Blueprint registration failed: {error}"
+        )
 
 
 
@@ -312,8 +303,34 @@ def home():
 
 
 
+        "layers":[
+
+
+            "Core Intelligence",
+
+            "Career Intelligence",
+
+            "Simulation Intelligence",
+
+            "Memory Intelligence",
+
+            "Knowledge Graph Intelligence",
+
+            "Reasoning Intelligence",
+
+            "Decision Orchestration",
+
+            "Autonomous Agent Intelligence"
+
+
+        ],
+
+
+
         "engines":[
 
+
+            # Core Engines
 
             "User Intelligence Profile Engine",
 
@@ -325,10 +342,6 @@ def home():
 
             "AI Mentor Engine",
 
-            "AI Career Simulation Engine",
-
-            "AI Career Evolution Engine",
-
             "Skill Progress Engine",
 
             "Certification Intelligence Engine",
@@ -338,6 +351,8 @@ def home():
             "Adaptive Learning Engine",
 
 
+
+            # Intelligence Layer
 
             "AI Skill Gap Intelligence Engine",
 
@@ -353,6 +368,8 @@ def home():
 
 
 
+            # Simulation Layer
+
             "AI Digital Twin Engine v1",
 
             "AI Career Simulation Engine v1",
@@ -361,15 +378,23 @@ def home():
 
 
 
+            # Memory + Knowledge
+
             "AI Decision Memory Engine v1",
 
             "AI Intelligence Graph Engine v1",
+
+
+
+            # Reasoning + Orchestration
 
             "AI Decision Reasoning Engine v1",
 
             "AI Decision Orchestrator Engine v1",
 
 
+
+            # Autonomous Agent System
 
             "AI Agent Runtime Engine v1",
 
@@ -379,10 +404,47 @@ def home():
 
             "AI Agent Supervisor Engine v1",
 
-            "AI Agent Memory Engine v1"
+            "AI Agent Memory Engine v1",
+
+            "AI Agent Learning Engine v1"
 
 
         ],
+
+
+
+        "agent_system":{
+
+
+            "status":
+
+                "operational",
+
+
+            "agents":
+
+                6,
+
+
+            "autonomous_cycle":[
+
+
+                "Observe",
+
+                "Retrieve Memory",
+
+                "Reason",
+
+                "Plan",
+
+                "Execute",
+
+                "Learn"
+
+
+            ]
+
+        },
 
 
 
@@ -461,6 +523,7 @@ def platform_info():
             APP_VERSION,
 
 
+
         "modules":[
 
 
@@ -498,10 +561,34 @@ def platform_info():
 
             "Agent Supervisor Intelligence",
 
-            "Agent Memory Intelligence"
+            "Agent Memory Intelligence",
+
+            "Agent Learning Intelligence"
 
 
-        ]
+        ],
+
+
+
+        "autonomous_agents":{
+
+
+            "runtime":
+
+                "online",
+
+
+            "total_agents":
+
+                6,
+
+
+            "version":
+
+                "1.0"
+
+
+        }
 
     }
 
