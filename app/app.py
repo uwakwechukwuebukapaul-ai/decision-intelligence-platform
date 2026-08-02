@@ -109,6 +109,10 @@ from app.routes.autonomous_intelligence_governance_engine import (
     autonomous_intelligence_governance_engine
 )
 
+from app.routes.autonomous_intelligence_self_optimization_engine import (
+    autonomous_intelligence_self_optimization_engine
+)
+
 
 
 # ===============================
@@ -221,6 +225,10 @@ app.register_blueprint(
     autonomous_intelligence_governance_engine
 )
 
+app.register_blueprint(
+    autonomous_intelligence_self_optimization_engine
+)
+
 
 
 # ===============================
@@ -230,21 +238,23 @@ app.register_blueprint(
 @app.route("/health", methods=["GET"])
 def health():
 
+
     return jsonify({
 
         "platform":
             "Decision Intelligence Platform",
 
+
         "status":
             "healthy",
 
+
         "version":
-            "34.0",
+            "35.0",
 
 
-        "services":
+        "services": {
 
-        {
 
             "database":
                 "connected",
@@ -338,6 +348,10 @@ def health():
                 "active",
 
 
+            "autonomous_intelligence_self_optimization_engine":
+                "active",
+
+
             "knowledge_graph":
                 "active",
 
@@ -358,9 +372,8 @@ def health():
                 "active",
 
 
-            "cognitive_intelligence_layer":
+            "optimization_layer":
                 "active"
-
 
         },
 
@@ -372,16 +385,4 @@ def health():
 
 
 
-# ===============================
-# Run Application
-# ===============================
-
-if __name__ == "__main__":
-
-    app.run(
-
-        host="127.0.0.1",
-
-        port=5000
-
-    )
+#
