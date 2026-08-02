@@ -6,7 +6,7 @@ from app.database.db import engine, Base
 
 
 # ======================================
-# Core Decision Intelligence Routes
+# Core Decision Intelligence
 # ======================================
 
 from app.routes.autonomous_goal import (
@@ -51,11 +51,9 @@ from app.routes.autonomous_operating_system import (
     autonomous_operating_system_bp
 )
 
-
 from app.routes.collective_operating_intelligence import (
     collective_operating_intelligence_bp
 )
-
 
 from app.routes.collective_intelligence import (
     collective_intelligence_bp
@@ -104,7 +102,7 @@ from app.routes.autonomous_evolution import (
 
 
 # ======================================
-# Meta Intelligence
+# Meta Intelligence v9
 # ======================================
 
 from app.routes.meta_intelligence import (
@@ -170,6 +168,16 @@ from app.routes.autonomous_decision_core import (
 from app.routes.autonomous_agent_workforce import (
     autonomous_agent_workforce_bp
 )
+
+
+
+# ======================================
+# Autonomous Learning Engine v16
+# ======================================
+
+from app.routes.autonomous_learning_engine import (
+    autonomous_learning_engine_bp
+)
 # ======================================
 # Blueprint Registration
 # ======================================
@@ -185,21 +193,17 @@ def register_blueprints(app):
         autonomous_goal_bp
     )
 
-
     app.register_blueprint(
         autonomous_mission_bp
     )
-
 
     app.register_blueprint(
         strategic_planning_bp
     )
 
-
     app.register_blueprint(
         execution_management_bp
     )
-
 
     app.register_blueprint(
         performance_optimization_bp
@@ -215,26 +219,21 @@ def register_blueprints(app):
         autonomous_orchestrator_bp
     )
 
-
     app.register_blueprint(
         cognitive_core_bp
     )
-
 
     app.register_blueprint(
         autonomous_fabric_bp
     )
 
-
     app.register_blueprint(
         autonomous_operating_system_bp
     )
 
-
     app.register_blueprint(
         collective_operating_intelligence_bp
     )
-
 
     app.register_blueprint(
         collective_intelligence_bp
@@ -243,7 +242,7 @@ def register_blueprints(app):
 
 
     # ======================================
-    # Governance
+    # Intelligence Governance
     # ======================================
 
     app.register_blueprint(
@@ -253,7 +252,7 @@ def register_blueprints(app):
 
 
     # ======================================
-    # Reliability
+    # Reliability Intelligence
     # ======================================
 
     app.register_blueprint(
@@ -263,7 +262,7 @@ def register_blueprints(app):
 
 
     # ======================================
-    # Self Healing
+    # Self Healing Intelligence
     # ======================================
 
     app.register_blueprint(
@@ -273,7 +272,7 @@ def register_blueprints(app):
 
 
     # ======================================
-    # Evolution
+    # Evolution Intelligence
     # ======================================
 
     app.register_blueprint(
@@ -283,7 +282,7 @@ def register_blueprints(app):
 
 
     # ======================================
-    # Meta Intelligence
+    # Meta Intelligence v9
     # ======================================
 
     app.register_blueprint(
@@ -293,7 +292,7 @@ def register_blueprints(app):
 
 
     # ======================================
-    # Intelligence Control Plane
+    # Intelligence Control Plane v10
     # ======================================
 
     app.register_blueprint(
@@ -303,7 +302,7 @@ def register_blueprints(app):
 
 
     # ======================================
-    # Intelligence Memory Fabric
+    # Intelligence Memory Fabric v11
     # ======================================
 
     app.register_blueprint(
@@ -313,7 +312,7 @@ def register_blueprints(app):
 
 
     # ======================================
-    # Knowledge Graph Intelligence
+    # Knowledge Graph Intelligence v12
     # ======================================
 
     app.register_blueprint(
@@ -323,7 +322,7 @@ def register_blueprints(app):
 
 
     # ======================================
-    # Autonomous Reasoning Engine
+    # Autonomous Reasoning Engine v13
     # ======================================
 
     app.register_blueprint(
@@ -333,7 +332,7 @@ def register_blueprints(app):
 
 
     # ======================================
-    # Autonomous Decision Core
+    # Autonomous Decision Core v14
     # ======================================
 
     app.register_blueprint(
@@ -348,6 +347,16 @@ def register_blueprints(app):
 
     app.register_blueprint(
         autonomous_agent_workforce_bp
+    )
+
+
+
+    # ======================================
+    # Autonomous Learning Engine v16
+    # ======================================
+
+    app.register_blueprint(
+        autonomous_learning_engine_bp
     )
     # ======================================
 # Flask Application Factory
@@ -396,7 +405,7 @@ def home():
                 "operational",
 
             "version":
-                "15.0"
+                "16.0"
 
         }
 
@@ -405,7 +414,7 @@ def home():
 
 
 # ======================================
-# Health Monitoring
+# Health Endpoint
 # ======================================
 
 @app.route("/health")
@@ -424,7 +433,7 @@ def health():
 
 
             "version":
-                "15.0",
+                "16.0",
 
 
             "services":
@@ -493,6 +502,10 @@ def health():
 
 
                     "autonomous_agent_workforce":
+                        "active",
+
+
+                    "autonomous_learning":
                         "active"
 
                 }
