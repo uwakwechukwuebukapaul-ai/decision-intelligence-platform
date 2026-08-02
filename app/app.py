@@ -2,9 +2,9 @@ from flask import Flask, jsonify
 from flask_cors import CORS
 
 
-# ==========================================
-# Route Imports
-# ==========================================
+# ==================================================
+# Routes Import
+# ==================================================
 
 from app.routes.autonomous_reasoning_engine import (
     autonomous_reasoning_engine
@@ -50,14 +50,17 @@ from app.routes.autonomous_governance_engine import (
     autonomous_governance_engine
 )
 
+from app.routes.autonomous_meta_intelligence_engine import (
+    autonomous_meta_intelligence_engine
+)
 
 
-# ==========================================
+
+# ==================================================
 # Application Factory
-# ==========================================
+# ==================================================
 
 def create_app():
-
 
     app = Flask(__name__)
 
@@ -69,10 +72,9 @@ def create_app():
 
 
 
-    # ==========================================
+    # ==================================================
     # Blueprint Registration
-    # ==========================================
-
+    # ==================================================
 
     app.register_blueprint(
         autonomous_reasoning_engine
@@ -129,11 +131,15 @@ def create_app():
     )
 
 
+    app.register_blueprint(
+        autonomous_meta_intelligence_engine
+    )
 
-    # ==========================================
-    # Platform Health
-    # ==========================================
 
+
+    # ==================================================
+    # Health Endpoint
+    # ==================================================
 
     @app.route("/health", methods=["GET"])
     def health():
@@ -143,15 +149,18 @@ def create_app():
 
 
             "platform":
+
                 "Decision Intelligence Platform",
 
 
             "status":
+
                 "healthy",
 
 
             "version":
-                "23.0",
+
+                "24.0",
 
 
 
@@ -159,143 +168,163 @@ def create_app():
 
 
                 "autonomous_reasoning":
+
                     "active",
 
 
                 "autonomous_decision_core":
+
                     "active",
 
 
                 "autonomous_agent_workforce":
+
                     "active",
 
 
                 "autonomous_learning":
+
                     "active",
 
 
                 "autonomous_adaptation":
+
                     "active",
 
 
                 "autonomous_evolution":
+
                     "active",
 
 
                 "autonomous_intelligence_orchestrator":
+
                     "active",
 
 
                 "autonomous_memory_engine":
+
                     "active",
 
 
                 "autonomous_knowledge_fabric_engine":
+
                     "active",
 
 
                 "autonomous_self_healing_engine":
+
                     "active",
 
 
                 "autonomous_governance_engine":
+
+                    "active",
+
+
+                "autonomous_meta_intelligence_engine":
+
                     "active",
 
 
                 "autonomous_agents":
+
                     "running",
 
 
                 "collective_intelligence":
+
                     "enabled",
 
 
                 "control_plane":
+
                     "active",
 
 
                 "database":
+
                     "connected",
 
 
                 "governance_layer":
+
                     "active",
 
 
                 "intelligence_engine":
+
                     "active",
 
 
                 "knowledge_graph":
+
                     "active",
 
 
                 "memory_fabric":
+
                     "active",
 
 
                 "meta_intelligence_layer":
+
                     "active",
 
 
                 "operating_system_layer":
+
                     "active",
 
 
                 "reliability_layer":
+
                     "active",
 
 
                 "self_healing_layer":
+
                     "active"
 
-
             }
-
 
         })
 
 
 
-    # ==========================================
+    # ==================================================
     # Error Handling
-    # ==========================================
-
+    # ==================================================
 
     @app.errorhandler(404)
     def not_found(error):
 
-
         return jsonify({
 
-
             "status":
+
                 "error",
 
-
             "message":
+
                 "Endpoint not found"
 
-
         }), 404
-
 
 
 
     @app.errorhandler(500)
     def internal_error(error):
 
-
         return jsonify({
 
-
             "status":
+
                 "error",
 
-
             "message":
-                "Internal server error"
 
+                "Internal server error"
 
         }), 500
 
@@ -306,20 +335,19 @@ def create_app():
 
 
 
-# ==========================================
+# ==================================================
 # Flask Instance
-# ==========================================
+# ==================================================
 
 app = create_app()
 
 
 
-# ==========================================
+# ==================================================
 # Development Server
-# ==========================================
+# ==================================================
 
 if __name__ == "__main__":
-
 
     app.run(
 
