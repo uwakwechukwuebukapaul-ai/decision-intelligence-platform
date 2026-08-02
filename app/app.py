@@ -2,9 +2,9 @@ from flask import Flask, jsonify
 from flask_cors import CORS
 
 
-# ==================================================
-# Route Imports
-# ==================================================
+# ==========================================
+# Blueprint Imports
+# ==========================================
 
 from app.routes.autonomous_reasoning_engine import (
     autonomous_reasoning_engine
@@ -42,16 +42,19 @@ from app.routes.autonomous_knowledge_fabric_engine import (
     autonomous_knowledge_fabric_engine
 )
 
+from app.routes.autonomous_self_healing_engine import (
+    autonomous_self_healing_engine
+)
 
 
-# ==================================================
+
+# ==========================================
 # Application Factory
-# ==================================================
+# ==========================================
 
 def create_app():
 
     app = Flask(__name__)
-
 
     CORS(app)
 
@@ -60,9 +63,9 @@ def create_app():
 
 
 
-    # ==================================================
+    # ==========================================
     # Blueprint Registration
-    # ==================================================
+    # ==========================================
 
     app.register_blueprint(
         autonomous_reasoning_engine
@@ -109,16 +112,17 @@ def create_app():
     )
 
 
-
-    # ==================================================
-    # Platform Health
-    # ==================================================
-
-    @app.route(
-        "/health",
-        methods=["GET"]
+    app.register_blueprint(
+        autonomous_self_healing_engine
     )
 
+
+
+    # ==========================================
+    # Platform Health
+    # ==========================================
+
+    @app.route("/health", methods=["GET"])
     def health():
 
         return jsonify({
@@ -126,14 +130,11 @@ def create_app():
             "platform":
                 "Decision Intelligence Platform",
 
-
             "status":
                 "healthy",
 
-
             "version":
-                "21.0",
-
+                "22.0",
 
 
             "services": {
@@ -172,6 +173,10 @@ def create_app():
 
 
                 "autonomous_knowledge_fabric_engine":
+                    "active",
+
+
+                "autonomous_self_healing_engine":
                     "active",
 
 
@@ -228,12 +233,11 @@ def create_app():
 
 
 
-    # ==================================================
+    # ==========================================
     # Error Handlers
-    # ==================================================
+    # ==========================================
 
     @app.errorhandler(404)
-
     def not_found(error):
 
         return jsonify({
@@ -249,7 +253,6 @@ def create_app():
 
 
     @app.errorhandler(500)
-
     def internal_error(error):
 
         return jsonify({
@@ -269,17 +272,17 @@ def create_app():
 
 
 
-# ==================================================
+# ==========================================
 # Flask Instance
-# ==================================================
+# ==========================================
 
 app = create_app()
 
 
 
-# ==================================================
+# ==========================================
 # Development Server
-# ==================================================
+# ==========================================
 
 if __name__ == "__main__":
 
