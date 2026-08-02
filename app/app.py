@@ -110,6 +110,22 @@ from app.routes.agent_loop import agent_loop_bp
 
 
 
+# =====================================================
+# Multi Agent Routes
+# =====================================================
+
+from app.routes.multi_agent import multi_agent_bp
+
+
+
+# =====================================================
+# Agent Communication Routes
+# =====================================================
+
+from app.routes.agent_communication import agent_communication_bp
+
+
+
 
 # =====================================================
 # Application Metadata
@@ -117,7 +133,7 @@ from app.routes.agent_loop import agent_loop_bp
 
 APP_NAME = "Decision Intelligence Platform"
 
-APP_VERSION = "3.1"
+APP_VERSION = "3.2"
 
 APP_STATUS = "running"
 
@@ -167,7 +183,7 @@ Base.metadata.create_all(
 BLUEPRINTS = [
 
 
-    # Core Platform
+    # Core Layer
 
     profile_bp,
     analysis_bp,
@@ -181,7 +197,7 @@ BLUEPRINTS = [
 
 
 
-    # AI Intelligence Layer
+    # Intelligence Layer
 
     skill_analysis_bp,
     career_report_bp,
@@ -194,7 +210,7 @@ BLUEPRINTS = [
 
 
 
-    # AI Simulation Layer
+    # Simulation Layer
 
     digital_twin_bp,
     career_simulation_bp,
@@ -202,25 +218,25 @@ BLUEPRINTS = [
 
 
 
-    # AI Memory Layer
+    # Memory Layer
 
     memory_bp,
 
 
 
-    # AI Knowledge Layer
+    # Knowledge Layer
 
     intelligence_graph_bp,
 
 
 
-    # AI Reasoning Layer
+    # Reasoning Layer
 
     decision_reasoning_bp,
 
 
 
-    # AI Orchestration Layer
+    # Orchestration Layer
 
     decision_orchestrator_bp,
 
@@ -234,7 +250,19 @@ BLUEPRINTS = [
     agent_supervisor_bp,
     agent_memory_bp,
     agent_learning_bp,
-    agent_loop_bp
+    agent_loop_bp,
+
+
+
+    # Multi Agent Layer
+
+    multi_agent_bp,
+
+
+
+    # Communication Layer
+
+    agent_communication_bp
 
 ]
 
@@ -247,11 +275,17 @@ BLUEPRINTS = [
 
 for blueprint in BLUEPRINTS:
 
-    app.register_blueprint(
+    try:
 
-        blueprint
+        app.register_blueprint(
+            blueprint
+        )
 
-    )
+    except Exception as error:
+
+        print(
+            f"Blueprint registration failed: {error}"
+        )
 
 
 
@@ -284,7 +318,7 @@ def home():
 
         "architecture":
 
-            "AI Decision Intelligence Platform",
+            "Autonomous AI Decision Intelligence Platform",
 
 
 
@@ -305,78 +339,11 @@ def home():
 
             "Decision Orchestration",
 
-            "Autonomous Agent Intelligence"
+            "Autonomous Agent Intelligence",
 
+            "Multi Agent Collaboration",
 
-        ],
-
-
-
-        "engines":[
-
-
-            "User Intelligence Profile Engine",
-
-            "Decision Intelligence Engine",
-
-            "Career Matching Engine",
-
-            "AI Report Engine",
-
-            "AI Mentor Engine",
-
-            "Skill Progress Engine",
-
-            "Certification Intelligence Engine",
-
-            "Learning Roadmap Engine",
-
-            "Adaptive Learning Engine",
-
-
-            "AI Skill Gap Intelligence Engine",
-
-            "AI Career Intelligence Report Engine",
-
-            "AI Recommendation Engine",
-
-            "AI Career Advisor Engine",
-
-            "AI Cybersecurity Coach Engine",
-
-            "AI User Intelligence Profile v2",
-
-
-            "AI Digital Twin Engine v1",
-
-            "AI Career Simulation Engine v1",
-
-            "AI Career Evolution Engine v1",
-
-
-            "AI Decision Memory Engine v1",
-
-            "AI Intelligence Graph Engine v1",
-
-
-            "AI Decision Reasoning Engine v1",
-
-            "AI Decision Orchestrator Engine v1",
-
-
-            "AI Agent Runtime Engine v1",
-
-            "AI Agent Tool Execution Engine v1",
-
-            "AI Agent Planner Engine v1",
-
-            "AI Agent Supervisor Engine v1",
-
-            "AI Agent Memory Engine v1",
-
-            "AI Agent Learning Engine v1",
-
-            "AI Agent Autonomous Loop Engine v1"
+            "Agent Communication Network"
 
 
         ],
@@ -393,7 +360,7 @@ def home():
 
             "agents":
 
-                7,
+                6,
 
 
             "autonomous_cycle":[
@@ -411,7 +378,9 @@ def home():
 
                 "Learn",
 
-                "Repeat Autonomous Cycle"
+                "Communicate",
+
+                "Collaborate"
 
 
             ]
@@ -496,6 +465,32 @@ def platform_info():
 
 
 
+        "autonomous_agents":{
+
+
+            "runtime":
+
+                "online",
+
+
+            "multi_agent":
+
+                "enabled",
+
+
+            "communication_bus":
+
+                "enabled",
+
+
+            "agent_count":
+
+                6
+
+
+        },
+
+
         "modules":[
 
 
@@ -506,10 +501,6 @@ def platform_info():
             "AI Mentor",
 
             "Cybersecurity Coach",
-
-            "User Intelligence",
-
-            "Learning Intelligence",
 
             "Digital Twin Simulation",
 
@@ -537,7 +528,11 @@ def platform_info():
 
             "Agent Learning Intelligence",
 
-            "Agent Loop Intelligence"
+            "Autonomous Decision Loop Intelligence",
+
+            "Multi Agent Collaboration Intelligence",
+
+            "Agent Communication Intelligence"
 
 
         ]
