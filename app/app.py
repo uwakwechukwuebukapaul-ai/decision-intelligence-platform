@@ -2,9 +2,9 @@ from flask import Flask, jsonify
 from flask_cors import CORS
 
 
-# ==========================================
-# Blueprint Imports
-# ==========================================
+# ==================================================
+# Routes Imports
+# ==================================================
 
 from app.routes.autonomous_reasoning_engine import (
     autonomous_reasoning_engine
@@ -34,30 +34,30 @@ from app.routes.autonomous_intelligence_orchestrator import (
     autonomous_intelligence_orchestrator
 )
 
+from app.routes.autonomous_memory_engine import (
+    autonomous_memory_engine
+)
 
 
-# ==========================================
+
+# ==================================================
 # Application Factory
-# ==========================================
+# ==================================================
 
 def create_app():
 
     app = Flask(__name__)
 
-
-    # ======================================
-    # Global Configuration
-    # ======================================
-
     CORS(app)
+
 
     app.config["JSON_SORT_KEYS"] = False
 
 
 
-    # ======================================
+    # ==================================================
     # Blueprint Registration
-    # ======================================
+    # ==================================================
 
     app.register_blueprint(
         autonomous_reasoning_engine
@@ -94,15 +94,17 @@ def create_app():
     )
 
 
-
-    # ======================================
-    # Platform Health
-    # ======================================
-
-    @app.route(
-        "/health",
-        methods=["GET"]
+    app.register_blueprint(
+        autonomous_memory_engine
     )
+
+
+
+    # ==================================================
+    # Health Endpoint
+    # ==================================================
+
+    @app.route("/health", methods=["GET"])
     def health():
 
         return jsonify({
@@ -116,8 +118,7 @@ def create_app():
 
 
             "version":
-                "19.0",
-
+                "20.0",
 
 
             "services": {
@@ -151,6 +152,10 @@ def create_app():
                     "active",
 
 
+                "autonomous_memory_engine":
+                    "active",
+
+
                 "autonomous_agents":
                     "running",
 
@@ -179,11 +184,11 @@ def create_app():
                     "active",
 
 
-                "governance_layer":
+                "operating_system_layer":
                     "active",
 
 
-                "operating_system_layer":
+                "governance_layer":
                     "active",
 
 
@@ -200,9 +205,9 @@ def create_app():
 
 
 
-    # ======================================
-    # Error Handling
-    # ======================================
+    # ==================================================
+    # Error Handlers
+    # ==================================================
 
     @app.errorhandler(404)
     def not_found(error):
@@ -239,17 +244,17 @@ def create_app():
 
 
 
-# ==========================================
+# ==================================================
 # Flask Instance
-# ==========================================
+# ==================================================
 
 app = create_app()
 
 
 
-# ==========================================
+# ==================================================
 # Development Server
-# ==========================================
+# ==================================================
 
 if __name__ == "__main__":
 
