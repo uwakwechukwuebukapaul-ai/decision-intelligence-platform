@@ -16,6 +16,7 @@ from app.database.db import engine, Base
 from app.models import *
 
 
+
 # ===============================
 # Routes
 # ===============================
@@ -96,12 +97,18 @@ from app.routes.autonomous_executive_intelligence_engine import (
     autonomous_executive_intelligence_engine
 )
 
+from app.routes.autonomous_meta_intelligence_engine_v2 import (
+    autonomous_meta_intelligence_engine_v2
+)
+
+
 
 # ===============================
-# Flask Application
+# Application Factory
 # ===============================
 
 app = Flask(__name__)
+
 
 
 # ===============================
@@ -113,85 +120,111 @@ Base.metadata.create_all(
 )
 
 
+
 # ===============================
 # Blueprint Registration
 # ===============================
+
 
 app.register_blueprint(
     autonomous_adaptation_engine
 )
 
+
 app.register_blueprint(
     autonomous_agent_workforce
 )
+
 
 app.register_blueprint(
     autonomous_decision_core
 )
 
+
 app.register_blueprint(
     autonomous_evolution_engine
 )
+
 
 app.register_blueprint(
     autonomous_governance_engine
 )
 
+
 app.register_blueprint(
     autonomous_intelligence_orchestrator
 )
+
 
 app.register_blueprint(
     autonomous_knowledge_fabric_engine
 )
 
+
 app.register_blueprint(
     autonomous_learning_engine
 )
+
 
 app.register_blueprint(
     autonomous_memory_engine
 )
 
+
 app.register_blueprint(
     autonomous_meta_intelligence_engine
 )
+
 
 app.register_blueprint(
     autonomous_reasoning_engine
 )
 
+
 app.register_blueprint(
     autonomous_self_healing_engine
 )
+
 
 app.register_blueprint(
     autonomous_trust_intelligence_engine
 )
 
+
 app.register_blueprint(
     autonomous_security_intelligence_engine
 )
+
 
 app.register_blueprint(
     autonomous_simulation_engine
 )
 
+
 app.register_blueprint(
     autonomous_forecasting_engine
 )
+
 
 app.register_blueprint(
     autonomous_intelligence_fusion_engine
 )
 
+
 app.register_blueprint(
     autonomous_strategic_decision_engine
 )
 
+
 app.register_blueprint(
     autonomous_executive_intelligence_engine
 )
+
+
+app.register_blueprint(
+    autonomous_meta_intelligence_engine_v2
+)
+
 
 
 # ===============================
@@ -210,7 +243,7 @@ def health():
             "healthy",
 
         "version":
-            "30.0",
+            "32.0",
 
         "services":
 
@@ -247,6 +280,9 @@ def health():
                 "active",
 
             "autonomous_meta_intelligence_engine":
+                "active",
+
+            "autonomous_meta_intelligence_engine_v2":
                 "active",
 
             "autonomous_reasoning":
@@ -297,6 +333,7 @@ def health():
             datetime.utcnow().isoformat()
 
     })
+
 
 
 # ===============================
