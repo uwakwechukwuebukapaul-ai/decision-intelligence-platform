@@ -134,6 +134,14 @@ from app.routes.agent_governance import agent_governance_bp
 
 
 
+# =====================================================
+# Agent Reflection Routes
+# =====================================================
+
+from app.routes.agent_reflection import agent_reflection_bp
+
+
+
 
 # =====================================================
 # Application Metadata
@@ -141,7 +149,7 @@ from app.routes.agent_governance import agent_governance_bp
 
 APP_NAME = "Decision Intelligence Platform"
 
-APP_VERSION = "3.3"
+APP_VERSION = "3.4"
 
 APP_STATUS = "running"
 
@@ -276,7 +284,13 @@ BLUEPRINTS = [
 
     # Governance Layer
 
-    agent_governance_bp
+    agent_governance_bp,
+
+
+
+    # Reflection Layer
+
+    agent_reflection_bp
 
 ]
 
@@ -349,7 +363,7 @@ def home():
                 6,
 
 
-            "autonomous_cycle":[
+            "cycle":[
 
 
                 "Observe",
@@ -368,12 +382,15 @@ def home():
 
                 "Learn",
 
-                "Reflect"
+                "Reflect",
+
+                "Optimize"
 
 
             ]
 
         },
+
 
 
         "layers":[
@@ -397,9 +414,11 @@ def home():
 
             "Multi Agent Collaboration",
 
-            "Agent Communication Network",
+            "Agent Communication",
 
-            "Agent Governance Control"
+            "Agent Governance",
+
+            "Agent Reflection"
 
         ],
 
@@ -426,7 +445,10 @@ def home():
 
             "AI Agent Communication Engine v1",
 
-            "AI Agent Governance Engine v1"
+            "AI Agent Governance Engine v1",
+
+            "AI Agent Reflection Engine v1"
+
 
         ],
 
@@ -520,14 +542,15 @@ def platform_info():
                 6,
 
 
-            "communication":
+            "governance":
 
                 "enabled",
 
 
-            "governance":
+            "reflection":
 
                 "enabled"
+
 
         },
 
@@ -569,7 +592,10 @@ def platform_info():
 
             "Agent Communication Intelligence",
 
-            "Agent Governance Intelligence"
+            "Agent Governance Intelligence",
+
+            "Agent Reflection Intelligence"
+
 
         ]
 
