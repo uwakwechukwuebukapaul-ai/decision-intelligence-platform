@@ -49,7 +49,7 @@ from app.routes.collective_intelligence import (
 
 
 # ======================================
-# Governance Intelligence
+# Governance
 # ======================================
 
 from app.routes.intelligence_governance import (
@@ -58,7 +58,7 @@ from app.routes.intelligence_governance import (
 
 
 # ======================================
-# Reliability Intelligence
+# Reliability
 # ======================================
 
 from app.routes.autonomous_reliability import (
@@ -67,7 +67,7 @@ from app.routes.autonomous_reliability import (
 
 
 # ======================================
-# Self Healing Intelligence
+# Self Healing
 # ======================================
 
 from app.routes.self_healing_intelligence import (
@@ -76,7 +76,7 @@ from app.routes.self_healing_intelligence import (
 
 
 # ======================================
-# Evolution Intelligence
+# Evolution
 # ======================================
 
 from app.routes.autonomous_evolution import (
@@ -99,6 +99,15 @@ from app.routes.meta_intelligence import (
 
 from app.routes.intelligence_control_plane import (
     intelligence_control_plane_bp
+)
+
+
+# ======================================
+# Intelligence Memory Fabric
+# ======================================
+
+from app.routes.intelligence_memory_fabric import (
+    intelligence_memory_fabric_bp
 )
 # ======================================
 # Blueprint Registration
@@ -218,6 +227,15 @@ def register_blueprints(app):
     app.register_blueprint(
         intelligence_control_plane_bp
     )
+
+
+    # ======================================
+    # Intelligence Memory Fabric Layer
+    # ======================================
+
+    app.register_blueprint(
+        intelligence_memory_fabric_bp
+    )
     # ======================================
 # Application Factory
 # ======================================
@@ -237,6 +255,9 @@ def create_app():
 
 
 
+# ======================================
+# Flask Application
+# ======================================
 
 app = create_app()
 
@@ -260,12 +281,11 @@ def home():
                 "operational",
 
             "version":
-                "10.0"
+                "11.0"
 
         }
 
     )
-
 
 
 
@@ -283,17 +303,15 @@ def health():
             "platform":
                 "Decision Intelligence Platform",
 
-
             "status":
                 "healthy",
 
-
             "version":
-                "10.0",
-
+                "11.0",
 
             "services":
                 {
+
 
                     "database":
                         "connected",
@@ -336,7 +354,12 @@ def health():
 
 
                     "control_plane_layer":
+                        "active",
+
+
+                    "memory_fabric_layer":
                         "active"
+
 
                 }
 
@@ -346,9 +369,8 @@ def health():
 
 
 
-
 # ======================================
-# Application Runner
+# Development Runner
 # ======================================
 
 if __name__ == "__main__":
