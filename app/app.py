@@ -15,12 +15,10 @@ from app.database.db import engine, Base
 # =====================================================
 
 from app.models import (
-
     UserProfile,
     AIReport,
     SkillProgress,
     LearningProgress
-
 )
 
 
@@ -57,7 +55,7 @@ from app.routes.intelligence import intelligence_bp
 
 
 # =====================================================
-# AI Simulation Routes
+# Simulation Intelligence
 # =====================================================
 
 from app.routes.digital_twin import digital_twin_bp
@@ -76,7 +74,7 @@ from app.routes.memory_consolidation import memory_consolidation_bp
 
 
 # =====================================================
-# Knowledge Intelligence
+# Knowledge Graph
 # =====================================================
 
 from app.routes.intelligence_graph import intelligence_graph_bp
@@ -96,8 +94,11 @@ from app.routes.decision_reasoning import decision_reasoning_bp
 # =====================================================
 
 from app.routes.decision_orchestrator import decision_orchestrator_bp
+
+
+
 # =====================================================
-# Autonomous Agent Core Routes
+# Autonomous Agent Foundation
 # =====================================================
 
 from app.routes.agent_runtime import agent_runtime_bp
@@ -119,17 +120,10 @@ from app.routes.multi_agent import multi_agent_bp
 
 
 # =====================================================
-# Agent Communication Layer
+# Communication + Governance
 # =====================================================
 
 from app.routes.agent_communication import agent_communication_bp
-
-
-
-# =====================================================
-# Agent Governance Layer
-# =====================================================
-
 from app.routes.agent_governance import agent_governance_bp
 
 
@@ -147,100 +141,84 @@ from app.routes.agent_meta_learning import agent_meta_learning_bp
 
 
 # =====================================================
-# Collective Intelligence Layer
+# Collective Intelligence
 # =====================================================
 
-from app.routes.collective_intelligence import (
-    collective_intelligence_bp
-)
+from app.routes.collective_intelligence import collective_intelligence_bp
 
 
 
 # =====================================================
-# Agent Swarm Intelligence Layer
+# Agent Swarm
 # =====================================================
 
-from app.routes.agent_swarm import (
-    agent_swarm_bp
-)
+from app.routes.agent_swarm import agent_swarm_bp
 
 
 
 # =====================================================
-# Autonomous Mission Intelligence
+# Autonomous Mission
 # =====================================================
 
-from app.routes.autonomous_mission import (
-    autonomous_mission_bp
-)
+from app.routes.autonomous_mission import autonomous_mission_bp
 
 
 
 # =====================================================
-# Autonomous Goal Intelligence
+# Autonomous Goal
 # =====================================================
 
-from app.routes.autonomous_goal import (
-    autonomous_goal_bp
-)
+from app.routes.autonomous_goal import autonomous_goal_bp
 
 
 
 # =====================================================
-# Strategic Planning Intelligence
+# Strategic Planning
 # =====================================================
 
-from app.routes.strategic_planning import (
-    strategic_planning_bp
-)
+from app.routes.strategic_planning import strategic_planning_bp
 
 
 
 # =====================================================
-# Execution Management Intelligence
+# Execution Management
 # =====================================================
 
-from app.routes.execution_management import (
-    execution_management_bp
-)
+from app.routes.execution_management import execution_management_bp
 
 
 
 # =====================================================
-# Performance Optimization Intelligence
+# Performance Optimization
 # =====================================================
 
-from app.routes.performance_optimization import (
-    performance_optimization_bp
-)
+from app.routes.performance_optimization import performance_optimization_bp
 
 
 
 # =====================================================
-# Autonomous Intelligence Orchestrator
+# Autonomous Orchestrator
 # =====================================================
 
-from app.routes.autonomous_orchestrator import (
-    autonomous_orchestrator_bp
-)
+from app.routes.autonomous_orchestrator import autonomous_orchestrator_bp
 
 
 
 # =====================================================
-# Application Metadata
+# Cognitive Core Intelligence
 # =====================================================
+
+from app.routes.cognitive_core import cognitive_core_bp
+
+
 
 APP_NAME = "Decision Intelligence Platform"
 
-APP_VERSION = "4.3"
+APP_VERSION = "5.0"
 
 APP_STATUS = "running"
 
 
-
-# =====================================================
-# Flask Application
-# =====================================================
 
 app = Flask(
 
@@ -262,26 +240,20 @@ app = Flask(
 
 
 
-# =====================================================
-# Database Initialization
-# =====================================================
-
 Base.metadata.create_all(
 
     bind=engine
 
 )
-
-
-
 # =====================================================
 # Blueprint Registry
 # =====================================================
 
+
 BLUEPRINTS = [
 
 
-    # Core
+    # Core Platform
 
     profile_bp,
     analysis_bp,
@@ -295,7 +267,7 @@ BLUEPRINTS = [
 
 
 
-    # Intelligence
+    # AI Intelligence
 
     skill_analysis_bp,
     career_report_bp,
@@ -308,35 +280,40 @@ BLUEPRINTS = [
 
 
 
-    # Simulation
+    # Simulation Intelligence
 
     digital_twin_bp,
     career_simulation_bp,
     career_evolution_bp,
 
 
-    # Memory
+
+    # Memory Intelligence
 
     memory_bp,
     memory_consolidation_bp,
 
 
-    # Knowledge
+
+    # Knowledge Graph
 
     intelligence_graph_bp,
 
 
-    # Reasoning
+
+    # Reasoning Intelligence
 
     decision_reasoning_bp,
 
 
-    # Orchestration
+
+    # Decision Orchestration
 
     decision_orchestrator_bp,
 
 
-    # Agent Foundation
+
+    # Autonomous Agent System
 
     agent_runtime_bp,
     agent_tools_bp,
@@ -347,19 +324,23 @@ BLUEPRINTS = [
     agent_loop_bp,
 
 
-    # Multi Agent
+
+    # Multi Agent Intelligence
 
     multi_agent_bp,
 
 
-    # Communication
+
+    # Communication Layer
 
     agent_communication_bp,
 
 
-    # Governance
+
+    # Governance Layer
 
     agent_governance_bp,
+
 
 
     # Self Improvement
@@ -371,69 +352,92 @@ BLUEPRINTS = [
     agent_meta_learning_bp,
 
 
+
     # Collective Intelligence
 
     collective_intelligence_bp,
 
 
-    # Swarm Intelligence
+
+    # Agent Swarm Intelligence
 
     agent_swarm_bp,
 
 
-    # Autonomous Mission
+
+    # Autonomous Mission Intelligence
 
     autonomous_mission_bp,
 
 
-    # Autonomous Goal
+
+    # Autonomous Goal Intelligence
 
     autonomous_goal_bp,
 
 
-    # Strategic Planning
+
+    # Strategic Planning Intelligence
 
     strategic_planning_bp,
 
 
-    # Execution Management
+
+    # Execution Management Intelligence
 
     execution_management_bp,
 
 
-    # Performance Optimization
+
+    # Performance Optimization Intelligence
 
     performance_optimization_bp,
 
 
-    # Autonomous Orchestrator
 
-    autonomous_orchestrator_bp
+    # Autonomous Orchestration Intelligence
+
+    autonomous_orchestrator_bp,
+
+
+
+    # Cognitive Core Intelligence
+
+    cognitive_core_bp
 
 ]
+
+
+
+
+
 # =====================================================
-# Blueprint Registration
+# Register Blueprints
 # =====================================================
+
 
 for blueprint in BLUEPRINTS:
 
     try:
 
         app.register_blueprint(
+
             blueprint
+
         )
+
 
     except Exception as error:
 
         print(
+
             f"Blueprint registration failed: {error}"
+
         )
-
-
-
-# =====================================================
+      # =====================================================
 # Root Endpoint
 # =====================================================
+
 
 @app.route("/")
 
@@ -459,12 +463,12 @@ def home():
 
         "architecture":
 
-            "Autonomous Decision Intelligence Platform",
+            "AI Decision Intelligence Platform",
 
 
         "intelligence_state":
 
-            "Autonomous Orchestrated Multi-Agent Intelligence",
+            "Autonomous Cognitive Swarm Intelligence Network",
 
 
 
@@ -475,7 +479,7 @@ def home():
 
             "Career Intelligence",
 
-            "Simulation Intelligence",
+            "Digital Twin Intelligence",
 
             "Memory Intelligence",
 
@@ -485,9 +489,9 @@ def home():
 
             "Decision Orchestration",
 
-            "Autonomous Agent Intelligence",
+            "Autonomous Agents",
 
-            "Self Improving Intelligence",
+            "Self Improvement",
 
             "Collective Intelligence",
 
@@ -497,18 +501,20 @@ def home():
 
             "Strategic Planning Intelligence",
 
-            "Execution Management Intelligence",
+            "Execution Intelligence",
 
-            "Performance Optimization Intelligence",
+            "Performance Optimization",
 
-            "Autonomous Orchestration Intelligence"
+            "Autonomous Orchestration",
+
+            "Cognitive Core Intelligence"
 
 
         ],
 
 
 
-        "autonomous_system":{
+        "agent_system":{
 
 
             "status":
@@ -518,7 +524,7 @@ def home():
 
             "architecture":
 
-                "Hierarchical Multi-Agent Autonomous Intelligence Network",
+                "Autonomous Cognitive Multi Agent Network",
 
 
             "agents":
@@ -526,7 +532,7 @@ def home():
                 6,
 
 
-            "cycle":[
+            "autonomous_cycle":[
 
 
                 "Observe",
@@ -537,109 +543,25 @@ def home():
 
                 "Plan",
 
-                "Coordinate",
+                "Collaborate",
 
                 "Execute",
 
                 "Monitor",
 
-                "Optimize",
-
                 "Learn",
+
+                "Reflect",
 
                 "Adapt",
 
-                "Evolve",
+                "Optimize",
 
-                "Orchestrate"
-
+                "Evolve"
 
             ]
 
         },
-
-
-
-        "engines":[
-
-
-            "Decision Intelligence Engine",
-
-            "Career Intelligence Engine",
-
-            "Digital Twin Engine",
-
-            "Memory Consolidation Engine",
-
-            "Decision Reasoning Engine",
-
-            "Decision Orchestration Engine",
-
-
-            "Agent Runtime Engine",
-
-            "Agent Planning Engine",
-
-            "Agent Memory Engine",
-
-            "Agent Learning Engine",
-
-            "Agent Loop Engine",
-
-
-            "Multi Agent Coordination Engine",
-
-            "Agent Communication Engine",
-
-            "Agent Governance Engine",
-
-
-            "Agent Reflection Engine",
-
-            "Agent Adaptation Engine",
-
-            "Agent Evolution Engine",
-
-            "Agent Optimization Engine",
-
-            "Agent Meta Learning Engine",
-
-
-            "Collective Intelligence Engine",
-
-            "Consensus Engine",
-
-            "Knowledge Pool Engine",
-
-
-            "Agent Swarm Controller",
-
-            "Agent Swarm Coordinator",
-
-
-            "Autonomous Mission Engine",
-
-            "Autonomous Goal Engine",
-
-            "Strategic Planning Engine",
-
-            "Execution Management Engine",
-
-            "Performance Optimization Engine",
-
-
-            "Autonomous Orchestrator Engine",
-
-            "Lifecycle Manager",
-
-            "Decision Router",
-
-            "Intelligence Pipeline",
-
-            "Optimization Loop"
-
-
-        ],
 
 
 
@@ -652,9 +574,11 @@ def home():
 
 
 
+
 # =====================================================
 # Health Endpoint
 # =====================================================
+
 
 @app.route("/health")
 
@@ -690,7 +614,7 @@ def health():
 
         "architecture":
 
-            "Autonomous Orchestrated Intelligence Platform",
+            "Autonomous Cognitive Intelligence Platform",
 
 
         "blueprints":
@@ -702,9 +626,11 @@ def health():
 
 
 
+
 # =====================================================
 # Platform Information
 # =====================================================
+
 
 @app.route("/api/info")
 
@@ -730,7 +656,7 @@ def platform_info():
 
             "Career Intelligence",
 
-            "Digital Twin Simulation",
+            "Digital Twin",
 
             "Memory Intelligence",
 
@@ -754,34 +680,45 @@ def platform_info():
 
             "Multi Agent Collaboration",
 
-            "Agent Governance",
-
             "Agent Communication",
 
+            "Agent Governance",
+
+
+            "Agent Reflection",
+
+            "Agent Adaptation",
 
             "Agent Evolution",
 
             "Agent Optimization",
 
-            "Meta Learning",
+            "Agent Meta Learning",
 
 
             "Collective Intelligence",
 
-            "Swarm Intelligence",
+            "Consensus Intelligence",
+
+            "Knowledge Pool",
 
 
-            "Autonomous Mission",
+            "Agent Swarm Intelligence",
 
-            "Autonomous Goal",
 
-            "Strategic Planning",
+            "Autonomous Mission Engine",
 
-            "Execution Management",
+            "Autonomous Goal Engine",
 
-            "Performance Optimization",
+            "Strategic Planning Engine",
 
-            "Autonomous Orchestration"
+            "Execution Management Engine",
+
+            "Performance Optimization Engine",
+
+            "Autonomous Orchestrator Engine",
+
+            "Cognitive Core Engine"
 
 
         ],
@@ -803,8 +740,7 @@ def platform_info():
 
             "architecture":
 
-                "Collaborative Autonomous Agent Network"
-
+                "Collaborative Cognitive Autonomous Swarm"
 
         }
 
@@ -813,9 +749,11 @@ def platform_info():
 
 
 
+
 # =====================================================
 # Application Runner
 # =====================================================
+
 
 if __name__ == "__main__":
 
@@ -828,4 +766,4 @@ if __name__ == "__main__":
 
         debug=True
 
-    )
+    )  
