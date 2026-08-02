@@ -55,7 +55,7 @@ from app.routes.intelligence import intelligence_bp
 
 
 # =====================================================
-# Advanced AI Simulation Routes
+# AI Simulation Routes
 # =====================================================
 
 from app.routes.digital_twin import digital_twin_bp
@@ -106,6 +106,7 @@ from app.routes.agent_planner import agent_planner_bp
 from app.routes.agent_supervisor import agent_supervisor_bp
 from app.routes.agent_memory import agent_memory_bp
 from app.routes.agent_learning import agent_learning_bp
+from app.routes.agent_loop import agent_loop_bp
 
 
 
@@ -116,7 +117,7 @@ from app.routes.agent_learning import agent_learning_bp
 
 APP_NAME = "Decision Intelligence Platform"
 
-APP_VERSION = "3.0"
+APP_VERSION = "3.1"
 
 APP_STATUS = "running"
 
@@ -166,9 +167,7 @@ Base.metadata.create_all(
 BLUEPRINTS = [
 
 
-    # =================================================
     # Core Platform
-    # =================================================
 
     profile_bp,
     analysis_bp,
@@ -182,9 +181,7 @@ BLUEPRINTS = [
 
 
 
-    # =================================================
     # AI Intelligence Layer
-    # =================================================
 
     skill_analysis_bp,
     career_report_bp,
@@ -197,9 +194,7 @@ BLUEPRINTS = [
 
 
 
-    # =================================================
     # AI Simulation Layer
-    # =================================================
 
     digital_twin_bp,
     career_simulation_bp,
@@ -207,66 +202,56 @@ BLUEPRINTS = [
 
 
 
-    # =================================================
     # AI Memory Layer
-    # =================================================
 
     memory_bp,
 
 
 
-    # =================================================
-    # AI Knowledge Graph Layer
-    # =================================================
+    # AI Knowledge Layer
 
     intelligence_graph_bp,
 
 
 
-    # =================================================
     # AI Reasoning Layer
-    # =================================================
 
     decision_reasoning_bp,
 
 
 
-    # =================================================
     # AI Orchestration Layer
-    # =================================================
 
     decision_orchestrator_bp,
 
 
 
-    # =================================================
     # Autonomous Agent Layer
-    # =================================================
 
     agent_runtime_bp,
     agent_tools_bp,
     agent_planner_bp,
     agent_supervisor_bp,
     agent_memory_bp,
-    agent_learning_bp
+    agent_learning_bp,
+    agent_loop_bp
 
-]# =====================================================
+]
+
+
+
+
+# =====================================================
 # Register Blueprints
 # =====================================================
 
 for blueprint in BLUEPRINTS:
 
-    try:
+    app.register_blueprint(
 
-        app.register_blueprint(
-            blueprint
-        )
+        blueprint
 
-    except Exception as error:
-
-        print(
-            f"Blueprint registration failed: {error}"
-        )
+    )
 
 
 
@@ -330,8 +315,6 @@ def home():
         "engines":[
 
 
-            # Core Engines
-
             "User Intelligence Profile Engine",
 
             "Decision Intelligence Engine",
@@ -351,9 +334,6 @@ def home():
             "Adaptive Learning Engine",
 
 
-
-            # Intelligence Layer
-
             "AI Skill Gap Intelligence Engine",
 
             "AI Career Intelligence Report Engine",
@@ -367,9 +347,6 @@ def home():
             "AI User Intelligence Profile v2",
 
 
-
-            # Simulation Layer
-
             "AI Digital Twin Engine v1",
 
             "AI Career Simulation Engine v1",
@@ -377,24 +354,15 @@ def home():
             "AI Career Evolution Engine v1",
 
 
-
-            # Memory + Knowledge
-
             "AI Decision Memory Engine v1",
 
             "AI Intelligence Graph Engine v1",
 
 
-
-            # Reasoning + Orchestration
-
             "AI Decision Reasoning Engine v1",
 
             "AI Decision Orchestrator Engine v1",
 
-
-
-            # Autonomous Agent System
 
             "AI Agent Runtime Engine v1",
 
@@ -406,7 +374,9 @@ def home():
 
             "AI Agent Memory Engine v1",
 
-            "AI Agent Learning Engine v1"
+            "AI Agent Learning Engine v1",
+
+            "AI Agent Autonomous Loop Engine v1"
 
 
         ],
@@ -423,7 +393,7 @@ def home():
 
             "agents":
 
-                6,
+                7,
 
 
             "autonomous_cycle":[
@@ -439,7 +409,9 @@ def home():
 
                 "Execute",
 
-                "Learn"
+                "Learn",
+
+                "Repeat Autonomous Cycle"
 
 
             ]
@@ -563,32 +535,12 @@ def platform_info():
 
             "Agent Memory Intelligence",
 
-            "Agent Learning Intelligence"
+            "Agent Learning Intelligence",
+
+            "Agent Loop Intelligence"
 
 
-        ],
-
-
-
-        "autonomous_agents":{
-
-
-            "runtime":
-
-                "online",
-
-
-            "total_agents":
-
-                6,
-
-
-            "version":
-
-                "1.0"
-
-
-        }
+        ]
 
     }
 
