@@ -1,24 +1,34 @@
 from flask import Flask, jsonify
-from flask_cors import CORS
+import os
 
 
-# ===============================
+# =====================================================
 # Database
-# ===============================
+# =====================================================
 
 from app.database.db import engine, Base
 
 
-# ===============================
-# Import Models
-# ===============================
+# =====================================================
+# Models Registration
+# =====================================================
 
-from app.models import *
+from app.models import (
+    UserProfile,
+    AIReport,
+    SkillProgress,
+    LearningProgress
+)
 
 
-# ===============================
-# Routes
-# ===============================
+# =====================================================
+# Existing Routes
+# =====================================================
+
+from app.routes.profile import profile_bp
+from app.routes.analysis import analysis_bp
+from app.routes.auth import auth_bp
+
 
 from app.routes.autonomous_reasoning_engine import (
     autonomous_reasoning_engine
@@ -28,12 +38,12 @@ from app.routes.autonomous_decision_core import (
     autonomous_decision_core
 )
 
-from app.routes.autonomous_agent_workforce import (
-    autonomous_agent_workforce
-)
-
 from app.routes.autonomous_learning_engine import (
     autonomous_learning_engine
+)
+
+from app.routes.autonomous_agent_workforce import (
+    autonomous_agent_workforce
 )
 
 from app.routes.autonomous_adaptation_engine import (
@@ -73,25 +83,43 @@ from app.routes.autonomous_trust_intelligence_engine import (
 )
 
 
-# ===============================
+# =====================================================
+# NEW v26 ENGINE
+# =====================================================
+
+from app.routes.autonomous_security_intelligence_engine import (
+    autonomous_security_intelligence_engine
+)
+
+
+
+# =====================================================
 # Application Factory
-# ===============================
+# =====================================================
 
 def create_app():
 
     app = Flask(__name__)
 
 
-    CORS(app)
+    app.config["SECRET_KEY"] = os.getenv(
+        "SECRET_KEY",
+        "decision-intelligence-secret"
+    )
 
 
-    app.config["JSON_SORT_KEYS"] = False
+    # =================================================
+    # Core Routes
+    # =================================================
+
+    app.register_blueprint(profile_bp)
+    app.register_blueprint(analysis_bp)
+    app.register_blueprint(auth_bp)
 
 
-
-    # ===============================
-    # Register Blueprints
-    # ===============================
+    # =================================================
+    # Autonomous Intelligence Stack
+    # =================================================
 
     app.register_blueprint(
         autonomous_reasoning_engine
@@ -102,11 +130,11 @@ def create_app():
     )
 
     app.register_blueprint(
-        autonomous_agent_workforce
+        autonomous_learning_engine
     )
 
     app.register_blueprint(
-        autonomous_learning_engine
+        autonomous_agent_workforce
     )
 
     app.register_blueprint(
@@ -146,9 +174,18 @@ def create_app():
     )
 
 
-    # ===============================
+    # =================================================
+    # v26 Security Intelligence Layer
+    # =================================================
+
+    app.register_blueprint(
+        autonomous_security_intelligence_engine
+    )
+
+
+    # =================================================
     # Health Endpoint
-    # ===============================
+    # =================================================
 
     @app.route("/health")
     def health():
@@ -156,94 +193,45 @@ def create_app():
         return jsonify({
 
             "platform":
-                "Decision Intelligence Platform",
-
+            "Decision Intelligence Platform",
 
             "status":
-                "healthy",
-
+            "healthy",
 
             "version":
-                "25.0",
-
+            "26.0",
 
             "services": {
 
+                "database":
+                "connected",
 
                 "autonomous_reasoning":
-                    "active",
-
+                "active",
 
                 "autonomous_decision_core":
-                    "active",
-
-
-                "autonomous_agent_workforce":
-                    "active",
-
-
-                "autonomous_learning":
-                    "active",
-
-
-                "autonomous_adaptation":
-                    "active",
-
-
-                "autonomous_evolution":
-                    "active",
-
-
-                "autonomous_intelligence_orchestrator":
-                    "active",
-
+                "active",
 
                 "autonomous_memory_engine":
-                    "active",
-
+                "active",
 
                 "autonomous_knowledge_fabric_engine":
-                    "active",
-
+                "active",
 
                 "autonomous_self_healing_engine":
-                    "active",
-
+                "active",
 
                 "autonomous_governance_engine":
-                    "active",
-
+                "active",
 
                 "autonomous_meta_intelligence_engine":
-                    "active",
-
+                "active",
 
                 "autonomous_trust_intelligence_engine":
-                    "active",
+                "active",
 
-
-                "database":
-                    "connected",
-
-
-                "knowledge_graph":
-                    "active",
-
-
-                "memory_fabric":
-                    "active",
-
-
-                "meta_intelligence_layer":
-                    "active",
-
-
-                "governance_layer":
-                    "active",
-
-
-                "self_healing_layer":
-                    "active"
+                "autonomous_security_intelligence_engine":
+                "active"
 
             }
 
@@ -254,18 +242,8 @@ def create_app():
 
 
 
-# ===============================
-# Application Entry
-# ===============================
+# =====================================================
+# Application Instance
+# =====================================================
 
 app = create_app()
-
-
-
-if __name__ == "__main__":
-
-    app.run(
-        host="0.0.0.0",
-        port=5000,
-        debug=True
-    )
