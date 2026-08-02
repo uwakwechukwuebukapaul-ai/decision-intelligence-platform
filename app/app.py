@@ -55,7 +55,7 @@ from app.routes.intelligence import intelligence_bp
 
 
 # =====================================================
-# AI Simulation Routes
+# Simulation Routes
 # =====================================================
 
 from app.routes.digital_twin import digital_twin_bp
@@ -65,15 +65,16 @@ from app.routes.career_evolution import career_evolution_bp
 
 
 # =====================================================
-# AI Memory Routes
+# Memory Routes
 # =====================================================
 
 from app.routes.memory import memory_bp
+from app.routes.memory_consolidation import memory_consolidation_bp
 
 
 
 # =====================================================
-# AI Knowledge Graph Routes
+# Knowledge Graph Routes
 # =====================================================
 
 from app.routes.intelligence_graph import intelligence_graph_bp
@@ -81,7 +82,7 @@ from app.routes.intelligence_graph import intelligence_graph_bp
 
 
 # =====================================================
-# AI Reasoning Routes
+# Reasoning Routes
 # =====================================================
 
 from app.routes.decision_reasoning import decision_reasoning_bp
@@ -89,7 +90,7 @@ from app.routes.decision_reasoning import decision_reasoning_bp
 
 
 # =====================================================
-# AI Orchestration Routes
+# Orchestration Routes
 # =====================================================
 
 from app.routes.decision_orchestrator import decision_orchestrator_bp
@@ -111,7 +112,7 @@ from app.routes.agent_loop import agent_loop_bp
 
 
 # =====================================================
-# Multi Agent Intelligence Routes
+# Multi Agent Routes
 # =====================================================
 
 from app.routes.multi_agent import multi_agent_bp
@@ -151,10 +152,10 @@ from app.routes.agent_adaptation import agent_adaptation_bp
 
 
 # =====================================================
-# Memory Consolidation Routes
+# Agent Evolution Routes
 # =====================================================
 
-from app.routes.memory_consolidation import memory_consolidation_bp
+from app.routes.agent_evolution import agent_evolution_bp
 
 
 
@@ -165,7 +166,7 @@ from app.routes.memory_consolidation import memory_consolidation_bp
 
 APP_NAME = "Decision Intelligence Platform"
 
-APP_VERSION = "3.6"
+APP_VERSION = "3.7"
 
 APP_STATUS = "running"
 
@@ -215,9 +216,7 @@ Base.metadata.create_all(
 BLUEPRINTS = [
 
 
-    # =================================================
     # Core Platform
-    # =================================================
 
     profile_bp,
     analysis_bp,
@@ -231,9 +230,7 @@ BLUEPRINTS = [
 
 
 
-    # =================================================
     # AI Intelligence Layer
-    # =================================================
 
     skill_analysis_bp,
     career_report_bp,
@@ -246,9 +243,7 @@ BLUEPRINTS = [
 
 
 
-    # =================================================
     # Simulation Layer
-    # =================================================
 
     digital_twin_bp,
     career_simulation_bp,
@@ -256,42 +251,32 @@ BLUEPRINTS = [
 
 
 
-    # =================================================
     # Memory Layer
-    # =================================================
 
     memory_bp,
     memory_consolidation_bp,
 
 
 
-    # =================================================
     # Knowledge Layer
-    # =================================================
 
     intelligence_graph_bp,
 
 
 
-    # =================================================
     # Reasoning Layer
-    # =================================================
 
     decision_reasoning_bp,
 
 
 
-    # =================================================
     # Orchestration Layer
-    # =================================================
 
     decision_orchestrator_bp,
 
 
 
-    # =================================================
     # Autonomous Agent Layer
-    # =================================================
 
     agent_runtime_bp,
     agent_tools_bp,
@@ -303,43 +288,39 @@ BLUEPRINTS = [
 
 
 
-    # =================================================
     # Multi Agent Layer
-    # =================================================
 
     multi_agent_bp,
 
 
 
-    # =================================================
-    # Agent Communication Layer
-    # =================================================
+    # Communication Layer
 
     agent_communication_bp,
 
 
 
-    # =================================================
-    # Agent Governance Layer
-    # =================================================
+    # Governance Layer
 
     agent_governance_bp,
 
 
 
-    # =================================================
-    # Agent Reflection Layer
-    # =================================================
+    # Reflection Layer
 
     agent_reflection_bp,
 
 
 
-    # =================================================
-    # Agent Adaptation Layer
-    # =================================================
+    # Adaptation Layer
 
-    agent_adaptation_bp
+    agent_adaptation_bp,
+
+
+
+    # Evolution Layer
+
+    agent_evolution_bp
 
 ]
 
@@ -399,6 +380,34 @@ def home():
 
 
 
+        "layers":[
+
+
+            "Core Intelligence",
+
+            "Career Intelligence",
+
+            "Simulation Intelligence",
+
+            "Memory Intelligence",
+
+            "Memory Consolidation Intelligence",
+
+            "Knowledge Graph Intelligence",
+
+            "Reasoning Intelligence",
+
+            "Decision Orchestration",
+
+            "Autonomous Agent Intelligence",
+
+            "Agent Evolution Intelligence"
+
+
+        ],
+
+
+
         "agent_system":{
 
 
@@ -409,10 +418,11 @@ def home():
 
             "agents":
 
-                7,
+                8,
 
 
             "autonomous_cycle":[
+
 
                 "Observe",
 
@@ -436,35 +446,14 @@ def home():
 
                 "Adapt",
 
+                "Evolve",
+
                 "Optimize"
+
 
             ]
 
         },
-
-
-
-        "layers":[
-
-            "Core Intelligence",
-
-            "Career Intelligence",
-
-            "Simulation Intelligence",
-
-            "Memory Intelligence",
-
-            "Memory Consolidation Intelligence",
-
-            "Knowledge Graph Intelligence",
-
-            "Reasoning Intelligence",
-
-            "Decision Orchestration",
-
-            "Autonomous Agent Intelligence"
-
-        ],
 
 
 
@@ -495,7 +484,10 @@ def home():
 
             "AI Agent Adaptation Engine v1",
 
-            "AI Memory Consolidation Engine v1"
+            "AI Memory Consolidation Engine v1",
+
+            "AI Agent Evolution Engine v1"
+
 
         ],
 
@@ -586,7 +578,7 @@ def platform_info():
 
             "total_agents":
 
-                7,
+                8,
 
 
             "self_improvement":
@@ -603,17 +595,13 @@ def platform_info():
 
             "Career Intelligence",
 
-            "AI Mentor",
-
-            "Cybersecurity Coach",
-
             "Digital Twin Intelligence",
 
             "Decision Memory Intelligence",
 
             "Memory Consolidation Intelligence",
 
-            "Intelligence Graph Intelligence",
+            "Knowledge Graph Intelligence",
 
             "Decision Reasoning Intelligence",
 
@@ -639,7 +627,10 @@ def platform_info():
 
             "Agent Reflection Intelligence",
 
-            "Agent Adaptation Intelligence"
+            "Agent Adaptation Intelligence",
+
+            "Agent Evolution Intelligence"
+
 
         ]
 
