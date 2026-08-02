@@ -15,10 +15,12 @@ from app.database.db import engine, Base
 # =====================================================
 
 from app.models import (
+
     UserProfile,
     AIReport,
     SkillProgress,
     LearningProgress
+
 )
 
 
@@ -112,7 +114,7 @@ from app.routes.agent_loop import agent_loop_bp
 
 
 # =====================================================
-# Multi Agent Intelligence Routes
+# Multi Agent Intelligence
 # =====================================================
 
 from app.routes.multi_agent import multi_agent_bp
@@ -120,7 +122,7 @@ from app.routes.multi_agent import multi_agent_bp
 
 
 # =====================================================
-# Agent Communication Routes
+# Agent Communication
 # =====================================================
 
 from app.routes.agent_communication import agent_communication_bp
@@ -128,7 +130,7 @@ from app.routes.agent_communication import agent_communication_bp
 
 
 # =====================================================
-# Agent Governance Routes
+# Agent Governance
 # =====================================================
 
 from app.routes.agent_governance import agent_governance_bp
@@ -136,7 +138,7 @@ from app.routes.agent_governance import agent_governance_bp
 
 
 # =====================================================
-# Agent Reflection Routes
+# Agent Reflection
 # =====================================================
 
 from app.routes.agent_reflection import agent_reflection_bp
@@ -144,7 +146,7 @@ from app.routes.agent_reflection import agent_reflection_bp
 
 
 # =====================================================
-# Agent Adaptation Routes
+# Agent Adaptation
 # =====================================================
 
 from app.routes.agent_adaptation import agent_adaptation_bp
@@ -152,7 +154,7 @@ from app.routes.agent_adaptation import agent_adaptation_bp
 
 
 # =====================================================
-# Agent Evolution Routes
+# Agent Evolution
 # =====================================================
 
 from app.routes.agent_evolution import agent_evolution_bp
@@ -160,7 +162,7 @@ from app.routes.agent_evolution import agent_evolution_bp
 
 
 # =====================================================
-# Agent Optimization Routes
+# Agent Optimization
 # =====================================================
 
 from app.routes.agent_optimization import agent_optimization_bp
@@ -168,10 +170,20 @@ from app.routes.agent_optimization import agent_optimization_bp
 
 
 # =====================================================
-# Agent Meta Learning Routes
+# Agent Meta Learning
 # =====================================================
 
 from app.routes.agent_meta_learning import agent_meta_learning_bp
+
+
+
+# =====================================================
+# Collective Intelligence
+# =====================================================
+
+from app.routes.collective_intelligence import (
+    collective_intelligence_bp
+)
 
 
 
@@ -181,7 +193,7 @@ from app.routes.agent_meta_learning import agent_meta_learning_bp
 
 APP_NAME = "Decision Intelligence Platform"
 
-APP_VERSION = "3.9"
+APP_VERSION = "4.0"
 
 APP_STATUS = "running"
 
@@ -198,7 +210,9 @@ app = Flask(
     template_folder=os.path.join(
 
         os.path.dirname(
+
             os.path.dirname(__file__)
+
         ),
 
         "templates"
@@ -257,7 +271,7 @@ BLUEPRINTS = [
 
 
     # =================================================
-    # Simulation Intelligence Layer
+    # Simulation Layer
     # =================================================
 
     digital_twin_bp,
@@ -267,7 +281,7 @@ BLUEPRINTS = [
 
 
     # =================================================
-    # Memory Intelligence Layer
+    # Memory Layer
     # =================================================
 
     memory_bp,
@@ -276,7 +290,7 @@ BLUEPRINTS = [
 
 
     # =================================================
-    # Knowledge Intelligence Layer
+    # Knowledge Layer
     # =================================================
 
     intelligence_graph_bp,
@@ -284,7 +298,7 @@ BLUEPRINTS = [
 
 
     # =================================================
-    # Reasoning Intelligence Layer
+    # Reasoning Layer
     # =================================================
 
     decision_reasoning_bp,
@@ -292,7 +306,7 @@ BLUEPRINTS = [
 
 
     # =================================================
-    # Decision Orchestration Layer
+    # Orchestration Layer
     # =================================================
 
     decision_orchestrator_bp,
@@ -322,7 +336,7 @@ BLUEPRINTS = [
 
 
     # =================================================
-    # Agent Communication Layer
+    # Communication Layer
     # =================================================
 
     agent_communication_bp,
@@ -330,7 +344,7 @@ BLUEPRINTS = [
 
 
     # =================================================
-    # Agent Governance Layer
+    # Governance Layer
     # =================================================
 
     agent_governance_bp,
@@ -345,7 +359,15 @@ BLUEPRINTS = [
     agent_adaptation_bp,
     agent_evolution_bp,
     agent_optimization_bp,
-    agent_meta_learning_bp
+    agent_meta_learning_bp,
+
+
+
+    # =================================================
+    # Collective Intelligence Layer
+    # =================================================
+
+    collective_intelligence_bp
 
 ]
 
@@ -362,7 +384,6 @@ for blueprint in BLUEPRINTS:
         app.register_blueprint(
             blueprint
         )
-
 
     except Exception as error:
 
@@ -423,43 +444,9 @@ def home():
 
             "Autonomous Agent Intelligence",
 
-            "Self Improving Intelligence"
+            "Self Improving Intelligence",
 
-
-        ],
-
-
-
-        "autonomous_cycle":[
-
-
-            "Observe",
-
-            "Retrieve Memory",
-
-            "Consolidate Memory",
-
-            "Reason",
-
-            "Plan",
-
-            "Communicate",
-
-            "Govern",
-
-            "Execute",
-
-            "Learn",
-
-            "Reflect",
-
-            "Adapt",
-
-            "Evolve",
-
-            "Optimize",
-
-            "Meta Learn"
+            "Collective Intelligence"
 
 
         ],
@@ -474,17 +461,100 @@ def home():
                 "operational",
 
 
+            "architecture":
+
+                "Collaborative Autonomous Intelligence Network",
+
+
             "agents":
 
                 6,
 
 
-            "architecture":
+            "cycle":[
 
-                "Collaborative Self Improving Autonomous Agent Network"
 
+                "Observe",
+
+                "Retrieve Memory",
+
+                "Reason",
+
+                "Plan",
+
+                "Communicate",
+
+                "Execute",
+
+                "Learn",
+
+                "Reflect",
+
+                "Adapt",
+
+                "Evolve",
+
+                "Optimize",
+
+                "Meta Learn",
+
+                "Collective Consensus"
+
+
+            ]
 
         },
+
+
+
+        "engines":[
+
+
+            "Decision Intelligence Engine",
+
+            "Career Intelligence Engine",
+
+            "Digital Twin Engine",
+
+            "Memory Consolidation Engine",
+
+            "Decision Reasoning Engine",
+
+            "Decision Orchestration Engine",
+
+            "Agent Runtime Engine",
+
+            "Agent Planner Engine",
+
+            "Agent Supervisor Engine",
+
+            "Agent Memory Engine",
+
+            "Agent Learning Engine",
+
+            "Agent Loop Engine",
+
+            "Multi Agent Engine",
+
+            "Agent Communication Engine",
+
+            "Agent Governance Engine",
+
+            "Agent Reflection Engine",
+
+            "Agent Adaptation Engine",
+
+            "Agent Evolution Engine",
+
+            "Agent Optimization Engine",
+
+            "Agent Meta Learning Engine",
+
+            "Collective Intelligence Engine"
+
+
+        ],
+
 
 
         "blueprints_loaded":
@@ -560,6 +630,11 @@ def platform_info():
             APP_VERSION,
 
 
+        "intelligence_state":
+
+            "collective autonomous intelligence",
+
+
 
         "modules":[
 
@@ -568,66 +643,42 @@ def platform_info():
 
             "Career Intelligence",
 
-            "Digital Twin Intelligence",
+            "Digital Twin Simulation",
 
-            "Memory Consolidation Intelligence",
+            "Memory Intelligence",
 
             "Knowledge Graph Intelligence",
 
-            "Decision Reasoning Intelligence",
+            "Reasoning Intelligence",
 
-            "Decision Orchestration Intelligence",
+            "Decision Orchestration",
 
+            "Agent Runtime",
 
-            "Agent Runtime Intelligence",
+            "Agent Learning",
 
-            "Agent Tool Intelligence",
+            "Agent Loop",
 
-            "Agent Planning Intelligence",
+            "Multi Agent Collaboration",
 
-            "Agent Supervisor Intelligence",
+            "Agent Communication",
 
-            "Agent Memory Intelligence",
+            "Agent Governance",
 
-            "Agent Learning Intelligence",
+            "Agent Reflection",
 
-            "Agent Loop Intelligence",
+            "Agent Adaptation",
 
-            "Multi Agent Intelligence",
+            "Agent Evolution",
 
-            "Agent Communication Intelligence",
+            "Agent Optimization",
 
-            "Agent Governance Intelligence",
+            "Agent Meta Learning",
 
-            "Agent Reflection Intelligence",
-
-            "Agent Adaptation Intelligence",
-
-            "Agent Evolution Intelligence",
-
-            "Agent Optimization Intelligence",
-
-            "Agent Meta-Learning Intelligence"
+            "Collective Intelligence"
 
 
-        ],
-
-
-
-        "autonomous_intelligence":{
-
-
-            "state":
-
-                "self_improving",
-
-
-            "version":
-
-                "3.9"
-
-
-        }
+        ]
 
     }
 
