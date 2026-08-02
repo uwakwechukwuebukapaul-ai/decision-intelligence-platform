@@ -84,6 +84,10 @@ from app.routes.autonomous_forecasting_engine import (
     autonomous_forecasting_engine
 )
 
+from app.routes.autonomous_intelligence_fusion_engine import (
+    autonomous_intelligence_fusion_engine
+)
+
 
 # ===============================
 # Application Factory
@@ -169,6 +173,10 @@ app.register_blueprint(
     autonomous_forecasting_engine
 )
 
+app.register_blueprint(
+    autonomous_intelligence_fusion_engine
+)
+
 
 # ===============================
 # Health Endpoint
@@ -186,7 +194,7 @@ def health():
             "healthy",
 
         "version":
-            "27.0",
+            "28.0",
 
         "services":
 
@@ -241,6 +249,9 @@ def health():
                 "active",
 
             "autonomous_forecasting_engine":
+                "active",
+
+            "autonomous_intelligence_fusion_engine":
                 "active",
 
             "knowledge_graph":
