@@ -134,6 +134,10 @@ from app.routes.autonomous_intelligence_dashboard import (
     autonomous_intelligence_dashboard
 )
 
+from app.routes.autonomous_intelligence_command_center import (
+    autonomous_intelligence_command_center
+)
+
 
 
 # ===============================
@@ -215,7 +219,9 @@ blueprints = [
 
     autonomous_validation_engine,
 
-    autonomous_intelligence_dashboard
+    autonomous_intelligence_dashboard,
+
+    autonomous_intelligence_command_center
 
 ]
 
@@ -244,7 +250,7 @@ def health():
             "healthy",
 
         "version":
-            "39.0",
+            "40.0",
 
         "services":
 
@@ -266,6 +272,9 @@ def health():
                 "active",
 
             "dashboard_engine":
+                "active",
+
+            "command_center":
                 "active",
 
             "meta_intelligence_layer":
