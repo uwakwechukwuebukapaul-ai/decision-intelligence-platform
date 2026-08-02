@@ -14,6 +14,7 @@ from app.routes.execution_management import execution_management_bp
 from app.routes.performance_optimization import performance_optimization_bp
 
 
+
 # ======================================
 # Autonomous Intelligence Layers
 # ======================================
@@ -35,21 +36,19 @@ from app.routes.autonomous_operating_system import (
 )
 
 
-# ======================================
-# Collective Intelligence
-# ======================================
-
 from app.routes.collective_operating_intelligence import (
     collective_operating_intelligence_bp
 )
+
 
 from app.routes.collective_intelligence import (
     collective_intelligence_bp
 )
 
 
+
 # ======================================
-# Governance
+# Governance Intelligence
 # ======================================
 
 from app.routes.intelligence_governance import (
@@ -57,8 +56,9 @@ from app.routes.intelligence_governance import (
 )
 
 
+
 # ======================================
-# Reliability
+# Reliability Intelligence
 # ======================================
 
 from app.routes.autonomous_reliability import (
@@ -66,8 +66,9 @@ from app.routes.autonomous_reliability import (
 )
 
 
+
 # ======================================
-# Self Healing
+# Self Healing Intelligence
 # ======================================
 
 from app.routes.self_healing_intelligence import (
@@ -75,13 +76,15 @@ from app.routes.self_healing_intelligence import (
 )
 
 
+
 # ======================================
-# Evolution
+# Evolution Intelligence
 # ======================================
 
 from app.routes.autonomous_evolution import (
     autonomous_evolution_bp
 )
+
 
 
 # ======================================
@@ -93,6 +96,7 @@ from app.routes.meta_intelligence import (
 )
 
 
+
 # ======================================
 # Intelligence Control Plane
 # ======================================
@@ -102,12 +106,23 @@ from app.routes.intelligence_control_plane import (
 )
 
 
+
 # ======================================
 # Intelligence Memory Fabric
 # ======================================
 
 from app.routes.intelligence_memory_fabric import (
     intelligence_memory_fabric_bp
+)
+
+
+
+# ======================================
+# Knowledge Graph Intelligence
+# ======================================
+
+from app.routes.knowledge_graph_intelligence import (
+    knowledge_graph_intelligence_bp
 )
 # ======================================
 # Blueprint Registration
@@ -124,21 +139,26 @@ def register_blueprints(app):
         autonomous_goal_bp
     )
 
+
     app.register_blueprint(
         autonomous_mission_bp
     )
+
 
     app.register_blueprint(
         strategic_planning_bp
     )
 
+
     app.register_blueprint(
         execution_management_bp
     )
 
+
     app.register_blueprint(
         performance_optimization_bp
     )
+
 
 
     # ======================================
@@ -149,17 +169,21 @@ def register_blueprints(app):
         autonomous_orchestrator_bp
     )
 
+
     app.register_blueprint(
         cognitive_core_bp
     )
+
 
     app.register_blueprint(
         autonomous_fabric_bp
     )
 
+
     app.register_blueprint(
         autonomous_operating_system_bp
     )
+
 
 
     # ======================================
@@ -170,9 +194,11 @@ def register_blueprints(app):
         collective_operating_intelligence_bp
     )
 
+
     app.register_blueprint(
         collective_intelligence_bp
     )
+
 
 
     # ======================================
@@ -184,6 +210,7 @@ def register_blueprints(app):
     )
 
 
+
     # ======================================
     # Reliability Layer
     # ======================================
@@ -191,6 +218,7 @@ def register_blueprints(app):
     app.register_blueprint(
         autonomous_reliability_bp
     )
+
 
 
     # ======================================
@@ -202,6 +230,7 @@ def register_blueprints(app):
     )
 
 
+
     # ======================================
     # Evolution Layer
     # ======================================
@@ -209,6 +238,7 @@ def register_blueprints(app):
     app.register_blueprint(
         autonomous_evolution_bp
     )
+
 
 
     # ======================================
@@ -220,6 +250,7 @@ def register_blueprints(app):
     )
 
 
+
     # ======================================
     # Intelligence Control Plane Layer
     # ======================================
@@ -229,6 +260,7 @@ def register_blueprints(app):
     )
 
 
+
     # ======================================
     # Intelligence Memory Fabric Layer
     # ======================================
@@ -236,8 +268,18 @@ def register_blueprints(app):
     app.register_blueprint(
         intelligence_memory_fabric_bp
     )
+
+
+
     # ======================================
-# Application Factory
+    # Knowledge Graph Intelligence Layer
+    # ======================================
+
+    app.register_blueprint(
+        knowledge_graph_intelligence_bp
+    )
+    # ======================================
+# Flask Application Factory
 # ======================================
 
 def create_app():
@@ -256,7 +298,7 @@ def create_app():
 
 
 # ======================================
-# Flask Application
+# Application Instance
 # ======================================
 
 app = create_app()
@@ -281,7 +323,7 @@ def home():
                 "operational",
 
             "version":
-                "11.0"
+                "12.0"
 
         }
 
@@ -290,7 +332,7 @@ def home():
 
 
 # ======================================
-# Health Endpoint
+# Health Monitoring Endpoint
 # ======================================
 
 @app.route("/health")
@@ -303,11 +345,14 @@ def health():
             "platform":
                 "Decision Intelligence Platform",
 
+
             "status":
                 "healthy",
 
+
             "version":
-                "11.0",
+                "12.0",
+
 
             "services":
                 {
@@ -353,13 +398,16 @@ def health():
                         "active",
 
 
-                    "control_plane_layer":
+                    "control_plane":
                         "active",
 
 
-                    "memory_fabric_layer":
-                        "active"
+                    "memory_fabric":
+                        "active",
 
+
+                    "knowledge_graph":
+                        "active"
 
                 }
 
