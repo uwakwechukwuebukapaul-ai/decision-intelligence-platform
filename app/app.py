@@ -24,7 +24,7 @@ from app.models import (
 
 
 # =====================================================
-# Core Routes
+# Core Platform Routes
 # =====================================================
 
 from app.routes.profile import profile_bp
@@ -55,7 +55,7 @@ from app.routes.intelligence import intelligence_bp
 
 
 # =====================================================
-# Simulation Routes
+# AI Simulation Routes
 # =====================================================
 
 from app.routes.digital_twin import digital_twin_bp
@@ -90,7 +90,7 @@ from app.routes.decision_reasoning import decision_reasoning_bp
 
 
 # =====================================================
-# Orchestration Routes
+# Decision Orchestration Routes
 # =====================================================
 
 from app.routes.decision_orchestrator import decision_orchestrator_bp
@@ -112,7 +112,7 @@ from app.routes.agent_loop import agent_loop_bp
 
 
 # =====================================================
-# Multi Agent Routes
+# Multi Agent Intelligence Routes
 # =====================================================
 
 from app.routes.multi_agent import multi_agent_bp
@@ -168,12 +168,20 @@ from app.routes.agent_optimization import agent_optimization_bp
 
 
 # =====================================================
+# Agent Meta Learning Routes
+# =====================================================
+
+from app.routes.agent_meta_learning import agent_meta_learning_bp
+
+
+
+# =====================================================
 # Application Metadata
 # =====================================================
 
 APP_NAME = "Decision Intelligence Platform"
 
-APP_VERSION = "3.8"
+APP_VERSION = "3.9"
 
 APP_STATUS = "running"
 
@@ -249,7 +257,7 @@ BLUEPRINTS = [
 
 
     # =================================================
-    # Simulation Layer
+    # Simulation Intelligence Layer
     # =================================================
 
     digital_twin_bp,
@@ -259,7 +267,7 @@ BLUEPRINTS = [
 
 
     # =================================================
-    # Memory Layer
+    # Memory Intelligence Layer
     # =================================================
 
     memory_bp,
@@ -268,7 +276,7 @@ BLUEPRINTS = [
 
 
     # =================================================
-    # Knowledge Layer
+    # Knowledge Intelligence Layer
     # =================================================
 
     intelligence_graph_bp,
@@ -276,7 +284,7 @@ BLUEPRINTS = [
 
 
     # =================================================
-    # Reasoning Layer
+    # Reasoning Intelligence Layer
     # =================================================
 
     decision_reasoning_bp,
@@ -284,7 +292,7 @@ BLUEPRINTS = [
 
 
     # =================================================
-    # Orchestration Layer
+    # Decision Orchestration Layer
     # =================================================
 
     decision_orchestrator_bp,
@@ -306,7 +314,7 @@ BLUEPRINTS = [
 
 
     # =================================================
-    # Multi Agent Intelligence Layer
+    # Multi Agent Layer
     # =================================================
 
     multi_agent_bp,
@@ -330,13 +338,14 @@ BLUEPRINTS = [
 
 
     # =================================================
-    # Agent Self Improvement Layer
+    # Self Improvement Layer
     # =================================================
 
     agent_reflection_bp,
     agent_adaptation_bp,
     agent_evolution_bp,
-    agent_optimization_bp
+    agent_optimization_bp,
+    agent_meta_learning_bp
 
 ]
 
@@ -353,6 +362,7 @@ for blueprint in BLUEPRINTS:
         app.register_blueprint(
             blueprint
         )
+
 
     except Exception as error:
 
@@ -413,7 +423,7 @@ def home():
 
             "Autonomous Agent Intelligence",
 
-            "Self Optimizing Intelligence"
+            "Self Improving Intelligence"
 
 
         ],
@@ -447,7 +457,9 @@ def home():
 
             "Evolve",
 
-            "Optimize"
+            "Optimize",
+
+            "Meta Learn"
 
 
         ],
@@ -473,7 +485,6 @@ def home():
 
 
         },
-
 
 
         "blueprints_loaded":
@@ -557,46 +568,46 @@ def platform_info():
 
             "Career Intelligence",
 
-            "Digital Twin Simulation",
-
-            "Decision Memory Intelligence",
+            "Digital Twin Intelligence",
 
             "Memory Consolidation Intelligence",
 
-            "Knowledge Graph Reasoning",
+            "Knowledge Graph Intelligence",
 
-            "Decision Reasoning",
+            "Decision Reasoning Intelligence",
 
-            "Decision Orchestration",
+            "Decision Orchestration Intelligence",
 
 
-            "Agent Runtime",
+            "Agent Runtime Intelligence",
 
-            "Agent Tools",
+            "Agent Tool Intelligence",
 
-            "Agent Planner",
+            "Agent Planning Intelligence",
 
-            "Agent Supervisor",
+            "Agent Supervisor Intelligence",
 
-            "Agent Memory",
+            "Agent Memory Intelligence",
 
-            "Agent Learning",
+            "Agent Learning Intelligence",
 
-            "Agent Loop",
+            "Agent Loop Intelligence",
 
-            "Multi Agent Coordination",
+            "Multi Agent Intelligence",
 
-            "Agent Communication",
+            "Agent Communication Intelligence",
 
-            "Agent Governance",
+            "Agent Governance Intelligence",
 
-            "Agent Reflection",
+            "Agent Reflection Intelligence",
 
-            "Agent Adaptation",
+            "Agent Adaptation Intelligence",
 
-            "Agent Evolution",
+            "Agent Evolution Intelligence",
 
-            "Agent Optimization"
+            "Agent Optimization Intelligence",
+
+            "Agent Meta-Learning Intelligence"
 
 
         ],
@@ -608,12 +619,12 @@ def platform_info():
 
             "state":
 
-                "self_optimizing",
+                "self_improving",
 
 
             "version":
 
-                "3.8"
+                "3.9"
 
 
         }
@@ -623,7 +634,7 @@ def platform_info():
 
 
 # =====================================================
-# Application Runner
+# Runner
 # =====================================================
 
 if __name__ == "__main__":
