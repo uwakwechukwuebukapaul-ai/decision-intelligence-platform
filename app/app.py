@@ -2,9 +2,23 @@ from flask import Flask, jsonify
 from flask_cors import CORS
 
 
-# ==================================================
-# Routes Import
-# ==================================================
+# ===============================
+# Database
+# ===============================
+
+from app.database.db import engine, Base
+
+
+# ===============================
+# Import Models
+# ===============================
+
+from app.models import *
+
+
+# ===============================
+# Routes
+# ===============================
 
 from app.routes.autonomous_reasoning_engine import (
     autonomous_reasoning_engine
@@ -54,11 +68,14 @@ from app.routes.autonomous_meta_intelligence_engine import (
     autonomous_meta_intelligence_engine
 )
 
+from app.routes.autonomous_trust_intelligence_engine import (
+    autonomous_trust_intelligence_engine
+)
 
 
-# ==================================================
+# ===============================
 # Application Factory
-# ==================================================
+# ===============================
 
 def create_app():
 
@@ -72,218 +89,160 @@ def create_app():
 
 
 
-    # ==================================================
-    # Blueprint Registration
-    # ==================================================
+    # ===============================
+    # Register Blueprints
+    # ===============================
 
     app.register_blueprint(
         autonomous_reasoning_engine
     )
 
-
     app.register_blueprint(
         autonomous_decision_core
     )
-
 
     app.register_blueprint(
         autonomous_agent_workforce
     )
 
-
     app.register_blueprint(
         autonomous_learning_engine
     )
-
 
     app.register_blueprint(
         autonomous_adaptation_engine
     )
 
-
     app.register_blueprint(
         autonomous_evolution_engine
     )
-
 
     app.register_blueprint(
         autonomous_intelligence_orchestrator
     )
 
-
     app.register_blueprint(
         autonomous_memory_engine
     )
-
 
     app.register_blueprint(
         autonomous_knowledge_fabric_engine
     )
 
-
     app.register_blueprint(
         autonomous_self_healing_engine
     )
-
 
     app.register_blueprint(
         autonomous_governance_engine
     )
 
-
     app.register_blueprint(
         autonomous_meta_intelligence_engine
     )
 
+    app.register_blueprint(
+        autonomous_trust_intelligence_engine
+    )
 
 
-    # ==================================================
+    # ===============================
     # Health Endpoint
-    # ==================================================
+    # ===============================
 
-    @app.route("/health", methods=["GET"])
+    @app.route("/health")
     def health():
-
 
         return jsonify({
 
-
             "platform":
-
                 "Decision Intelligence Platform",
 
 
             "status":
-
                 "healthy",
 
 
             "version":
-
-                "24.0",
-
+                "25.0",
 
 
             "services": {
 
 
                 "autonomous_reasoning":
-
                     "active",
 
 
                 "autonomous_decision_core":
-
                     "active",
 
 
                 "autonomous_agent_workforce":
-
                     "active",
 
 
                 "autonomous_learning":
-
                     "active",
 
 
                 "autonomous_adaptation":
-
                     "active",
 
 
                 "autonomous_evolution":
-
                     "active",
 
 
                 "autonomous_intelligence_orchestrator":
-
                     "active",
 
 
                 "autonomous_memory_engine":
-
                     "active",
 
 
                 "autonomous_knowledge_fabric_engine":
-
                     "active",
 
 
                 "autonomous_self_healing_engine":
-
                     "active",
 
 
                 "autonomous_governance_engine":
-
                     "active",
 
 
                 "autonomous_meta_intelligence_engine":
-
                     "active",
 
 
-                "autonomous_agents":
-
-                    "running",
-
-
-                "collective_intelligence":
-
-                    "enabled",
-
-
-                "control_plane":
-
+                "autonomous_trust_intelligence_engine":
                     "active",
 
 
                 "database":
-
                     "connected",
 
 
-                "governance_layer":
-
-                    "active",
-
-
-                "intelligence_engine":
-
-                    "active",
-
-
                 "knowledge_graph":
-
                     "active",
 
 
                 "memory_fabric":
-
                     "active",
 
 
                 "meta_intelligence_layer":
-
                     "active",
 
 
-                "operating_system_layer":
-
-                    "active",
-
-
-                "reliability_layer":
-
+                "governance_layer":
                     "active",
 
 
                 "self_healing_layer":
-
                     "active"
 
             }
@@ -291,70 +250,22 @@ def create_app():
         })
 
 
-
-    # ==================================================
-    # Error Handling
-    # ==================================================
-
-    @app.errorhandler(404)
-    def not_found(error):
-
-        return jsonify({
-
-            "status":
-
-                "error",
-
-            "message":
-
-                "Endpoint not found"
-
-        }), 404
-
-
-
-    @app.errorhandler(500)
-    def internal_error(error):
-
-        return jsonify({
-
-            "status":
-
-                "error",
-
-            "message":
-
-                "Internal server error"
-
-        }), 500
-
-
-
     return app
 
 
 
-
-# ==================================================
-# Flask Instance
-# ==================================================
+# ===============================
+# Application Entry
+# ===============================
 
 app = create_app()
 
 
 
-# ==================================================
-# Development Server
-# ==================================================
-
 if __name__ == "__main__":
 
     app.run(
-
         host="0.0.0.0",
-
         port=5000,
-
         debug=True
-
     )
