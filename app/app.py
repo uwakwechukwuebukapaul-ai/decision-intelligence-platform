@@ -130,6 +130,10 @@ from app.routes.autonomous_validation_engine import (
     autonomous_validation_engine
 )
 
+from app.routes.autonomous_intelligence_dashboard import (
+    autonomous_intelligence_dashboard
+)
+
 
 
 # ===============================
@@ -209,7 +213,9 @@ blueprints = [
 
     autonomous_trust_intelligence_engine,
 
-    autonomous_validation_engine
+    autonomous_validation_engine,
+
+    autonomous_intelligence_dashboard
 
 ]
 
@@ -257,6 +263,9 @@ def health():
                 "active",
 
             "validation_engine":
+                "active",
+
+            "dashboard_engine":
                 "active",
 
             "meta_intelligence_layer":
