@@ -1,6 +1,8 @@
 from flask import Flask, jsonify
 
+
 from app.database.db import engine, Base
+
 
 
 # ======================================
@@ -30,34 +32,33 @@ from app.routes.performance_optimization import (
 
 
 # ======================================
-# Autonomous Intelligence Stack
+# Autonomous Intelligence Layers
 # ======================================
 
 from app.routes.autonomous_orchestrator import (
     autonomous_orchestrator_bp
 )
 
+
 from app.routes.cognitive_core import (
     cognitive_core_bp
 )
 
+
 from app.routes.autonomous_fabric import (
     autonomous_fabric_bp
 )
+
 
 from app.routes.autonomous_operating_system import (
     autonomous_operating_system_bp
 )
 
 
-
-# ======================================
-# Collective Intelligence
-# ======================================
-
 from app.routes.collective_operating_intelligence import (
     collective_operating_intelligence_bp
 )
+
 
 from app.routes.collective_intelligence import (
     collective_intelligence_bp
@@ -152,6 +153,16 @@ from app.routes.knowledge_graph_intelligence import (
 from app.routes.autonomous_reasoning_engine import (
     autonomous_reasoning_engine_bp
 )
+
+
+
+# ======================================
+# Autonomous Decision Core v14
+# ======================================
+
+from app.routes.autonomous_decision_core import (
+    autonomous_decision_core_bp
+)
 # ======================================
 # Blueprint Registration
 # ======================================
@@ -215,7 +226,7 @@ def register_blueprints(app):
 
 
     # ======================================
-    # Collective Intelligence Layer
+    # Collective Intelligence
     # ======================================
 
     app.register_blueprint(
@@ -230,7 +241,7 @@ def register_blueprints(app):
 
 
     # ======================================
-    # Governance Layer
+    # Governance
     # ======================================
 
     app.register_blueprint(
@@ -240,7 +251,7 @@ def register_blueprints(app):
 
 
     # ======================================
-    # Reliability Layer
+    # Reliability
     # ======================================
 
     app.register_blueprint(
@@ -250,7 +261,7 @@ def register_blueprints(app):
 
 
     # ======================================
-    # Self Healing Layer
+    # Self Healing
     # ======================================
 
     app.register_blueprint(
@@ -260,7 +271,7 @@ def register_blueprints(app):
 
 
     # ======================================
-    # Evolution Layer
+    # Evolution
     # ======================================
 
     app.register_blueprint(
@@ -270,7 +281,7 @@ def register_blueprints(app):
 
 
     # ======================================
-    # Meta Intelligence Layer
+    # Meta Intelligence
     # ======================================
 
     app.register_blueprint(
@@ -280,7 +291,7 @@ def register_blueprints(app):
 
 
     # ======================================
-    # Intelligence Control Plane Layer
+    # Control Plane
     # ======================================
 
     app.register_blueprint(
@@ -290,7 +301,7 @@ def register_blueprints(app):
 
 
     # ======================================
-    # Intelligence Memory Fabric Layer
+    # Memory Fabric
     # ======================================
 
     app.register_blueprint(
@@ -300,7 +311,7 @@ def register_blueprints(app):
 
 
     # ======================================
-    # Knowledge Graph Intelligence Layer
+    # Knowledge Graph
     # ======================================
 
     app.register_blueprint(
@@ -310,14 +321,24 @@ def register_blueprints(app):
 
 
     # ======================================
-    # Autonomous Reasoning Engine Layer
+    # Autonomous Reasoning
     # ======================================
 
     app.register_blueprint(
         autonomous_reasoning_engine_bp
     )
-  # ======================================
-# Flask Application Factory
+
+
+
+    # ======================================
+    # Autonomous Decision Core v14
+    # ======================================
+
+    app.register_blueprint(
+        autonomous_decision_core_bp
+    )
+    # ======================================
+# Application Factory
 # ======================================
 
 def create_app():
@@ -325,7 +346,9 @@ def create_app():
     app = Flask(__name__)
 
 
-    app.config["JSON_SORT_KEYS"] = False
+    app.config[
+        "JSON_SORT_KEYS"
+    ] = False
 
 
     register_blueprints(app)
@@ -335,9 +358,7 @@ def create_app():
 
 
 
-# ======================================
-# Flask Application Instance
-# ======================================
+# Create Flask Application
 
 app = create_app()
 
@@ -361,7 +382,7 @@ def home():
                 "operational",
 
             "version":
-                "13.0"
+                "14.0"
 
         }
 
@@ -389,13 +410,12 @@ def health():
 
 
             "version":
-                "13.0",
+                "14.0",
 
 
             "services":
 
                 {
-
 
                     "database":
                         "connected",
@@ -450,6 +470,10 @@ def health():
 
 
                     "autonomous_reasoning":
+                        "active",
+
+
+                    "autonomous_decision_core":
                         "active"
 
                 }
@@ -482,4 +506,4 @@ if __name__ == "__main__":
 
         debug=True
 
-    )  
+    )
