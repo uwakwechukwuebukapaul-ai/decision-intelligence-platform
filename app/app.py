@@ -7,16 +7,30 @@ from app.database.db import engine, Base
 # Core Decision Intelligence Routes
 # ======================================
 
-from app.routes.autonomous_goal import autonomous_goal_bp
-from app.routes.autonomous_mission import autonomous_mission_bp
-from app.routes.strategic_planning import strategic_planning_bp
-from app.routes.execution_management import execution_management_bp
-from app.routes.performance_optimization import performance_optimization_bp
+from app.routes.autonomous_goal import (
+    autonomous_goal_bp
+)
+
+from app.routes.autonomous_mission import (
+    autonomous_mission_bp
+)
+
+from app.routes.strategic_planning import (
+    strategic_planning_bp
+)
+
+from app.routes.execution_management import (
+    execution_management_bp
+)
+
+from app.routes.performance_optimization import (
+    performance_optimization_bp
+)
 
 
 
 # ======================================
-# Autonomous Intelligence Layers
+# Autonomous Intelligence Stack
 # ======================================
 
 from app.routes.autonomous_orchestrator import (
@@ -36,10 +50,14 @@ from app.routes.autonomous_operating_system import (
 )
 
 
+
+# ======================================
+# Collective Intelligence
+# ======================================
+
 from app.routes.collective_operating_intelligence import (
     collective_operating_intelligence_bp
 )
-
 
 from app.routes.collective_intelligence import (
     collective_intelligence_bp
@@ -48,7 +66,7 @@ from app.routes.collective_intelligence import (
 
 
 # ======================================
-# Governance Intelligence
+# Governance
 # ======================================
 
 from app.routes.intelligence_governance import (
@@ -58,7 +76,7 @@ from app.routes.intelligence_governance import (
 
 
 # ======================================
-# Reliability Intelligence
+# Reliability
 # ======================================
 
 from app.routes.autonomous_reliability import (
@@ -68,7 +86,7 @@ from app.routes.autonomous_reliability import (
 
 
 # ======================================
-# Self Healing Intelligence
+# Self Healing
 # ======================================
 
 from app.routes.self_healing_intelligence import (
@@ -78,7 +96,7 @@ from app.routes.self_healing_intelligence import (
 
 
 # ======================================
-# Evolution Intelligence
+# Evolution
 # ======================================
 
 from app.routes.autonomous_evolution import (
@@ -123,6 +141,16 @@ from app.routes.intelligence_memory_fabric import (
 
 from app.routes.knowledge_graph_intelligence import (
     knowledge_graph_intelligence_bp
+)
+
+
+
+# ======================================
+# Autonomous Reasoning Engine
+# ======================================
+
+from app.routes.autonomous_reasoning_engine import (
+    autonomous_reasoning_engine_bp
 )
 # ======================================
 # Blueprint Registration
@@ -278,7 +306,17 @@ def register_blueprints(app):
     app.register_blueprint(
         knowledge_graph_intelligence_bp
     )
+
+
+
     # ======================================
+    # Autonomous Reasoning Engine Layer
+    # ======================================
+
+    app.register_blueprint(
+        autonomous_reasoning_engine_bp
+    )
+  # ======================================
 # Flask Application Factory
 # ======================================
 
@@ -298,7 +336,7 @@ def create_app():
 
 
 # ======================================
-# Application Instance
+# Flask Application Instance
 # ======================================
 
 app = create_app()
@@ -323,7 +361,7 @@ def home():
                 "operational",
 
             "version":
-                "12.0"
+                "13.0"
 
         }
 
@@ -351,10 +389,11 @@ def health():
 
 
             "version":
-                "12.0",
+                "13.0",
 
 
             "services":
+
                 {
 
 
@@ -407,6 +446,10 @@ def health():
 
 
                     "knowledge_graph":
+                        "active",
+
+
+                    "autonomous_reasoning":
                         "active"
 
                 }
@@ -439,4 +482,4 @@ if __name__ == "__main__":
 
         debug=True
 
-    )
+    )  
