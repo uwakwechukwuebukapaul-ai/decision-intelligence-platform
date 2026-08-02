@@ -34,6 +34,11 @@ from app.routes.autonomous_operating_system import (
     autonomous_operating_system_bp
 )
 
+
+# ======================================
+# Collective Intelligence
+# ======================================
+
 from app.routes.collective_operating_intelligence import (
     collective_operating_intelligence_bp
 )
@@ -88,8 +93,19 @@ from app.routes.meta_intelligence import (
 )
 
 
+# ======================================
+# Intelligence Control Plane
+# ======================================
+
+from app.routes.intelligence_control_plane import (
+    intelligence_control_plane_bp
+)
+# ======================================
+# Blueprint Registration
+# ======================================
 
 def register_blueprints(app):
+
 
     # ======================================
     # Core Decision Intelligence
@@ -186,7 +202,7 @@ def register_blueprints(app):
     )
 
 
-      # ======================================
+    # ======================================
     # Meta Intelligence Layer
     # ======================================
 
@@ -195,6 +211,16 @@ def register_blueprints(app):
     )
 
 
+    # ======================================
+    # Intelligence Control Plane Layer
+    # ======================================
+
+    app.register_blueprint(
+        intelligence_control_plane_bp
+    )
+    # ======================================
+# Application Factory
+# ======================================
 
 def create_app():
 
@@ -212,12 +238,13 @@ def create_app():
 
 
 
-
 app = create_app()
 
 
 
-
+# ======================================
+# Root Endpoint
+# ======================================
 
 @app.route("/")
 def home():
@@ -225,9 +252,16 @@ def home():
     return jsonify(
 
         {
-            "platform": "Decision Intelligence Platform",
-            "status": "operational",
-            "version": "9.0"
+
+            "platform":
+                "Decision Intelligence Platform",
+
+            "status":
+                "operational",
+
+            "version":
+                "10.0"
+
         }
 
     )
@@ -235,6 +269,9 @@ def home():
 
 
 
+# ======================================
+# Health Endpoint
+# ======================================
 
 @app.route("/health")
 def health():
@@ -246,11 +283,14 @@ def health():
             "platform":
                 "Decision Intelligence Platform",
 
+
             "status":
                 "healthy",
 
+
             "version":
-                "9.0",
+                "10.0",
+
 
             "services":
                 {
@@ -258,31 +298,44 @@ def health():
                     "database":
                         "connected",
 
+
                     "intelligence_engine":
                         "active",
+
 
                     "autonomous_agents":
                         "running",
 
+
                     "collective_intelligence":
                         "enabled",
+
 
                     "operating_system_layer":
                         "active",
 
+
                     "governance_layer":
                         "active",
+
 
                     "reliability_layer":
                         "active",
 
+
                     "self_healing_layer":
                         "active",
+
 
                     "evolution_layer":
                         "active",
 
+
                     "meta_intelligence_layer":
+                        "active",
+
+
+                    "control_plane_layer":
                         "active"
 
                 }
@@ -294,6 +347,9 @@ def health():
 
 
 
+# ======================================
+# Application Runner
+# ======================================
 
 if __name__ == "__main__":
 
