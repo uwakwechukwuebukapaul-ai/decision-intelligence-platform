@@ -3,7 +3,7 @@ from flask_cors import CORS
 
 
 # ==================================================
-# Routes Imports
+# Route Imports
 # ==================================================
 
 from app.routes.autonomous_reasoning_engine import (
@@ -38,6 +38,10 @@ from app.routes.autonomous_memory_engine import (
     autonomous_memory_engine
 )
 
+from app.routes.autonomous_knowledge_fabric_engine import (
+    autonomous_knowledge_fabric_engine
+)
+
 
 
 # ==================================================
@@ -47,6 +51,7 @@ from app.routes.autonomous_memory_engine import (
 def create_app():
 
     app = Flask(__name__)
+
 
     CORS(app)
 
@@ -99,12 +104,21 @@ def create_app():
     )
 
 
+    app.register_blueprint(
+        autonomous_knowledge_fabric_engine
+    )
+
+
 
     # ==================================================
-    # Health Endpoint
+    # Platform Health
     # ==================================================
 
-    @app.route("/health", methods=["GET"])
+    @app.route(
+        "/health",
+        methods=["GET"]
+    )
+
     def health():
 
         return jsonify({
@@ -118,7 +132,8 @@ def create_app():
 
 
             "version":
-                "20.0",
+                "21.0",
+
 
 
             "services": {
@@ -156,6 +171,10 @@ def create_app():
                     "active",
 
 
+                "autonomous_knowledge_fabric_engine":
+                    "active",
+
+
                 "autonomous_agents":
                     "running",
 
@@ -172,6 +191,14 @@ def create_app():
                     "connected",
 
 
+                "governance_layer":
+                    "active",
+
+
+                "intelligence_engine":
+                    "active",
+
+
                 "knowledge_graph":
                     "active",
 
@@ -185,10 +212,6 @@ def create_app():
 
 
                 "operating_system_layer":
-                    "active",
-
-
-                "governance_layer":
                     "active",
 
 
@@ -210,6 +233,7 @@ def create_app():
     # ==================================================
 
     @app.errorhandler(404)
+
     def not_found(error):
 
         return jsonify({
@@ -225,6 +249,7 @@ def create_app():
 
 
     @app.errorhandler(500)
+
     def internal_error(error):
 
         return jsonify({
