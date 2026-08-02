@@ -130,6 +130,9 @@ from app.routes.autonomous_validation_engine import (
     autonomous_validation_engine
 )
 
+
+# Existing intelligence modules
+
 from app.routes.autonomous_intelligence_dashboard import (
     autonomous_intelligence_dashboard
 )
@@ -140,6 +143,13 @@ from app.routes.autonomous_intelligence_command_center import (
 
 from app.routes.autonomous_intelligence_memory import (
     autonomous_intelligence_memory
+)
+
+
+# NEW v42 ENGINE
+
+from app.routes.autonomous_intelligence_learning import (
+    autonomous_intelligence_learning
 )
 
 
@@ -169,67 +179,101 @@ Base.metadata.create_all(
 
 blueprints = [
 
+
     autonomous_adaptation_engine,
+
 
     autonomous_agent_workforce,
 
+
     autonomous_decision_core,
+
 
     autonomous_evolution_engine,
 
+
     autonomous_executive_intelligence_engine,
+
 
     autonomous_forecasting_engine,
 
+
     autonomous_governance_engine,
+
 
     autonomous_intelligence_fusion_engine,
 
+
     autonomous_intelligence_governance_engine,
+
 
     autonomous_intelligence_orchestrator,
 
+
     autonomous_intelligence_self_optimization_engine,
+
 
     autonomous_intelligence_evolution_engine,
 
+
     autonomous_cognitive_intelligence_engine,
+
 
     autonomous_knowledge_fabric_engine,
 
+
     autonomous_learning_engine,
+
 
     autonomous_memory_engine,
 
+
     autonomous_meta_intelligence_engine,
+
 
     autonomous_meta_intelligence_engine_v2,
 
+
     autonomous_predictive_intelligence_engine,
+
 
     autonomous_reasoning_engine,
 
+
     autonomous_security_intelligence_engine,
+
 
     autonomous_self_healing_engine,
 
+
     autonomous_simulation_engine,
+
 
     autonomous_strategic_decision_engine,
 
+
     autonomous_strategic_simulation_engine,
+
 
     autonomous_trust_intelligence_engine,
 
+
     autonomous_validation_engine,
+
 
     autonomous_intelligence_dashboard,
 
+
     autonomous_intelligence_command_center,
 
-    autonomous_intelligence_memory
+
+    autonomous_intelligence_memory,
+
+
+    autonomous_intelligence_learning
 
 ]
+
 
 
 for blueprint in blueprints:
@@ -244,6 +288,7 @@ for blueprint in blueprints:
 # Health Endpoint
 # ===============================
 
+
 @app.route("/health", methods=["GET"])
 def health():
 
@@ -252,11 +297,14 @@ def health():
         "platform":
             "Decision Intelligence Platform",
 
+
         "status":
             "healthy",
 
+
         "version":
-            "41.0",
+            "42.0",
+
 
         "services":
 
@@ -265,43 +313,60 @@ def health():
             "database":
                 "connected",
 
+
             "autonomous_intelligence_stack":
                 "active",
 
-            "predictive_engine":
-                "active",
-
-            "strategic_simulation_engine":
-                "active",
-
-            "validation_engine":
-                "active",
 
             "dashboard_engine":
                 "active",
 
+
             "command_center":
                 "active",
+
 
             "memory_engine":
                 "active",
 
+
+            "learning_engine":
+                "active",
+
+
+            "predictive_engine":
+                "active",
+
+
+            "strategic_simulation_engine":
+                "active",
+
+
+            "validation_engine":
+                "active",
+
+
             "meta_intelligence_layer":
                 "active",
+
 
             "cognitive_layer":
                 "active",
 
+
             "governance_layer":
                 "active",
 
+
             "self_optimization_layer":
                 "active",
+
 
             "evolution_layer":
                 "active"
 
         },
+
 
         "timestamp":
 
@@ -314,6 +379,7 @@ def health():
 # ===============================
 # Run
 # ===============================
+
 
 if __name__ == "__main__":
 
