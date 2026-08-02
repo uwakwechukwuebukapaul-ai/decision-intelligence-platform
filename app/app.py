@@ -10,7 +10,7 @@ from app.database.db import engine, Base
 
 
 # ===============================
-# Models Registration
+# Models
 # ===============================
 
 from app.models import *
@@ -18,8 +18,9 @@ from app.models import *
 
 
 # ===============================
-# Routes
+# Route Imports
 # ===============================
+
 
 from app.routes.autonomous_adaptation_engine import (
     autonomous_adaptation_engine
@@ -27,10 +28,6 @@ from app.routes.autonomous_adaptation_engine import (
 
 from app.routes.autonomous_agent_workforce import (
     autonomous_agent_workforce
-)
-
-from app.routes.autonomous_cognitive_intelligence_engine import (
-    autonomous_cognitive_intelligence_engine
 )
 
 from app.routes.autonomous_decision_core import (
@@ -73,6 +70,10 @@ from app.routes.autonomous_intelligence_evolution_engine import (
     autonomous_intelligence_evolution_engine
 )
 
+from app.routes.autonomous_cognitive_intelligence_engine import (
+    autonomous_cognitive_intelligence_engine
+)
+
 from app.routes.autonomous_knowledge_fabric_engine import (
     autonomous_knowledge_fabric_engine
 )
@@ -91,6 +92,10 @@ from app.routes.autonomous_meta_intelligence_engine import (
 
 from app.routes.autonomous_meta_intelligence_engine_v2 import (
     autonomous_meta_intelligence_engine_v2
+)
+
+from app.routes.autonomous_predictive_intelligence_engine import (
+    autonomous_predictive_intelligence_engine
 )
 
 from app.routes.autonomous_reasoning_engine import (
@@ -113,14 +118,22 @@ from app.routes.autonomous_strategic_decision_engine import (
     autonomous_strategic_decision_engine
 )
 
+from app.routes.autonomous_strategic_simulation_engine import (
+    autonomous_strategic_simulation_engine
+)
+
 from app.routes.autonomous_trust_intelligence_engine import (
     autonomous_trust_intelligence_engine
+)
+
+from app.routes.autonomous_validation_engine import (
+    autonomous_validation_engine
 )
 
 
 
 # ===============================
-# Application
+# Flask Application
 # ===============================
 
 app = Flask(__name__)
@@ -141,13 +154,12 @@ Base.metadata.create_all(
 # Blueprint Registration
 # ===============================
 
+
 blueprints = [
 
     autonomous_adaptation_engine,
 
     autonomous_agent_workforce,
-
-    autonomous_cognitive_intelligence_engine,
 
     autonomous_decision_core,
 
@@ -169,6 +181,8 @@ blueprints = [
 
     autonomous_intelligence_evolution_engine,
 
+    autonomous_cognitive_intelligence_engine,
+
     autonomous_knowledge_fabric_engine,
 
     autonomous_learning_engine,
@@ -178,6 +192,8 @@ blueprints = [
     autonomous_meta_intelligence_engine,
 
     autonomous_meta_intelligence_engine_v2,
+
+    autonomous_predictive_intelligence_engine,
 
     autonomous_reasoning_engine,
 
@@ -189,7 +205,11 @@ blueprints = [
 
     autonomous_strategic_decision_engine,
 
-    autonomous_trust_intelligence_engine
+    autonomous_strategic_simulation_engine,
+
+    autonomous_trust_intelligence_engine,
+
+    autonomous_validation_engine
 
 ]
 
@@ -218,98 +238,37 @@ def health():
             "healthy",
 
         "version":
-            "36.0",
+            "39.0",
 
-        "services": {
+        "services":
+
+        {
 
             "database":
                 "connected",
 
-            "autonomous_adaptation_engine":
+            "autonomous_intelligence_stack":
                 "active",
 
-            "autonomous_agent_workforce":
+            "predictive_engine":
                 "active",
 
-            "autonomous_cognitive_intelligence_engine":
+            "strategic_simulation_engine":
                 "active",
 
-            "autonomous_decision_core":
+            "validation_engine":
                 "active",
 
-            "autonomous_evolution_engine":
+            "meta_intelligence_layer":
                 "active",
 
-            "autonomous_executive_intelligence_engine":
-                "active",
-
-            "autonomous_forecasting_engine":
-                "active",
-
-            "autonomous_governance_engine":
-                "active",
-
-            "autonomous_intelligence_fusion_engine":
-                "active",
-
-            "autonomous_intelligence_governance_engine":
-                "active",
-
-            "autonomous_intelligence_orchestrator":
-                "active",
-
-            "autonomous_intelligence_self_optimization_engine":
-                "active",
-
-            "autonomous_intelligence_evolution_engine":
-                "active",
-
-            "autonomous_knowledge_fabric_engine":
-                "active",
-
-            "autonomous_learning_engine":
-                "active",
-
-            "autonomous_memory_engine":
-                "active",
-
-            "autonomous_meta_intelligence_engine":
-                "active",
-
-            "autonomous_meta_intelligence_engine_v2":
-                "active",
-
-            "autonomous_reasoning_engine":
-                "active",
-
-            "autonomous_security_intelligence_engine":
-                "active",
-
-            "autonomous_self_healing_engine":
-                "active",
-
-            "autonomous_simulation_engine":
-                "active",
-
-            "autonomous_strategic_decision_engine":
-                "active",
-
-            "autonomous_trust_intelligence_engine":
-                "active",
-
-            "knowledge_graph":
-                "active",
-
-            "memory_fabric":
+            "cognitive_layer":
                 "active",
 
             "governance_layer":
                 "active",
 
-            "self_healing_layer":
-                "active",
-
-            "meta_intelligence_layer":
+            "self_optimization_layer":
                 "active",
 
             "evolution_layer":
@@ -318,6 +277,7 @@ def health():
         },
 
         "timestamp":
+
             datetime.utcnow().isoformat()
 
     })
@@ -325,12 +285,15 @@ def health():
 
 
 # ===============================
-# Run Application
+# Run
 # ===============================
 
 if __name__ == "__main__":
 
     app.run(
+
         host="127.0.0.1",
+
         port=5000
+
     )
