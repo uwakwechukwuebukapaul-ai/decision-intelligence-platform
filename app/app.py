@@ -3,10 +3,9 @@ from flask import Flask, jsonify
 from app.database.db import engine, Base
 
 
-# ==============================
-# Autonomous Intelligence Layers
-# ==============================
-
+# ======================================
+# Autonomous Intelligence Routes
+# ======================================
 
 from app.routes.autonomous_goal import (
     autonomous_goal_bp
@@ -53,43 +52,46 @@ from app.routes.collective_intelligence import (
 )
 
 
-
-# ==============================
-# Governance Intelligence Layer
-# ==============================
-
+# ======================================
+# Governance Layer
+# ======================================
 
 from app.routes.intelligence_governance import (
     intelligence_governance_bp
 )
 
 
-
-# ==============================
-# Reliability Intelligence Layer
-# ==============================
-
+# ======================================
+# Reliability Layer
+# ======================================
 
 from app.routes.autonomous_reliability import (
     autonomous_reliability_bp
 )
 
 
-
-# ==============================
-# Self-Healing Intelligence Layer
-# ==============================
-
+# ======================================
+# Self Healing Layer
+# ======================================
 
 from app.routes.self_healing_intelligence import (
     self_healing_intelligence_bp
 )
+
+
+# ======================================
+# Evolution Layer
+# ======================================
+
+from app.routes.autonomous_evolution import (
+    autonomous_evolution_bp
+)
 def register_blueprints(app):
 
 
-    # ==============================
+    # ======================================
     # Autonomous Intelligence Stack
-    # ==============================
+    # ======================================
 
 
     app.register_blueprint(
@@ -148,9 +150,9 @@ def register_blueprints(app):
 
 
 
-    # ==============================
-    # Governance Layer
-    # ==============================
+    # ======================================
+    # Governance Intelligence
+    # ======================================
 
 
     app.register_blueprint(
@@ -159,9 +161,9 @@ def register_blueprints(app):
 
 
 
-    # ==============================
-    # Reliability Layer
-    # ==============================
+    # ======================================
+    # Reliability Intelligence
+    # ======================================
 
 
     app.register_blueprint(
@@ -170,13 +172,24 @@ def register_blueprints(app):
 
 
 
-    # ==============================
-    # Self-Healing Layer
-    # ==============================
+    # ======================================
+    # Self Healing Intelligence
+    # ======================================
 
 
     app.register_blueprint(
         self_healing_intelligence_bp
+    )
+
+
+
+    # ======================================
+    # Autonomous Evolution Intelligence
+    # ======================================
+
+
+    app.register_blueprint(
+        autonomous_evolution_bp
     )
 
 
@@ -221,7 +234,7 @@ def home():
 
             "version":
 
-                "7.0"
+                "8.0"
 
         }
 
@@ -251,7 +264,7 @@ def health():
 
             "version":
 
-                "7.0",
+                "8.0",
 
 
             "services":
@@ -296,8 +309,12 @@ def health():
 
                     "self_healing_layer":
 
-                        "active"
+                        "active",
 
+
+                    "evolution_layer":
+
+                        "active"
 
                 }
 
