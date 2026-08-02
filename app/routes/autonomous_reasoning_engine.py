@@ -7,7 +7,11 @@ from app.ai.autonomous_reasoning_engine.reasoning_controller import (
 
 
 
-autonomous_reasoning_engine_bp = Blueprint(
+# =====================================================
+# Blueprint Definition
+# =====================================================
+
+autonomous_reasoning_engine = Blueprint(
 
     "autonomous_reasoning_engine",
 
@@ -17,11 +21,19 @@ autonomous_reasoning_engine_bp = Blueprint(
 
 
 
+# =====================================================
+# Controller
+# =====================================================
+
 controller = ReasoningController()
 
 
 
-@autonomous_reasoning_engine_bp.route(
+# =====================================================
+# Autonomous Reasoning Endpoint
+# =====================================================
+
+@autonomous_reasoning_engine.route(
 
     "/autonomous-reasoning-engine/<int:user_id>",
 
@@ -29,7 +41,7 @@ controller = ReasoningController()
 
 )
 
-def autonomous_reasoning_engine(user_id):
+def get_autonomous_reasoning_engine(user_id):
 
 
     result = controller.generate_reasoning(
@@ -46,6 +58,11 @@ def autonomous_reasoning_engine(user_id):
             "status":
 
                 "operational",
+
+
+            "user_id":
+
+                user_id,
 
 
             "autonomous_reasoning_engine":

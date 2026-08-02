@@ -1,363 +1,92 @@
 from flask import Flask, jsonify
-
-from app.database.db import engine, Base
-
-
-# ======================================
-# Core Decision Intelligence Routes
-# ======================================
-
-from app.routes.autonomous_goal import autonomous_goal_bp
-from app.routes.autonomous_mission import autonomous_mission_bp
-from app.routes.strategic_planning import strategic_planning_bp
-from app.routes.execution_management import execution_management_bp
-from app.routes.performance_optimization import performance_optimization_bp
+from flask_cors import CORS
 
 
-# ======================================
-# Autonomous Intelligence Layers
-# ======================================
-
-from app.routes.autonomous_orchestrator import (
-    autonomous_orchestrator_bp
-)
-
-from app.routes.cognitive_core import (
-    cognitive_core_bp
-)
-
-from app.routes.autonomous_fabric import (
-    autonomous_fabric_bp
-)
-
-from app.routes.autonomous_operating_system import (
-    autonomous_operating_system_bp
-)
-
-
-# ======================================
-# Collective Intelligence
-# ======================================
-
-from app.routes.collective_operating_intelligence import (
-    collective_operating_intelligence_bp
-)
-
-from app.routes.collective_intelligence import (
-    collective_intelligence_bp
-)
-
-
-# ======================================
-# Governance Intelligence
-# ======================================
-
-from app.routes.intelligence_governance import (
-    intelligence_governance_bp
-)
-
-
-# ======================================
-# Reliability Intelligence
-# ======================================
-
-from app.routes.autonomous_reliability import (
-    autonomous_reliability_bp
-)
-
-
-# ======================================
-# Self Healing Intelligence
-# ======================================
-
-from app.routes.self_healing_intelligence import (
-    self_healing_intelligence_bp
-)
-
-
-# ======================================
-# Evolution Intelligence
-# ======================================
-
-from app.routes.autonomous_evolution import (
-    autonomous_evolution_bp
-)
-
-
-# ======================================
-# Meta Intelligence
-# ======================================
-
-from app.routes.meta_intelligence import (
-    meta_intelligence_bp
-)
-
-# ======================================
-# Intelligence Control Plane
-# ======================================
-
-from app.routes.intelligence_control_plane import (
-    intelligence_control_plane_bp
-)
-
-
-# ======================================
-# Intelligence Memory Fabric
-# ======================================
-
-from app.routes.intelligence_memory_fabric import (
-    intelligence_memory_fabric_bp
-)
-
-
-# ======================================
-# Knowledge Graph Intelligence
-# ======================================
-
-from app.routes.knowledge_graph_intelligence import (
-    knowledge_graph_intelligence_bp
-)
-
-
-# ======================================
-# Autonomous Reasoning Engine
-# ======================================
+# =====================================================
+# Blueprint Imports
+# =====================================================
 
 from app.routes.autonomous_reasoning_engine import (
-    autonomous_reasoning_engine_bp
+    autonomous_reasoning_engine
 )
-
-
-# ======================================
-# Autonomous Decision Core
-# ======================================
 
 from app.routes.autonomous_decision_core import (
-    autonomous_decision_core_bp
+    autonomous_decision_core
 )
-
-
-# ======================================
-# Autonomous Agent Workforce
-# ======================================
 
 from app.routes.autonomous_agent_workforce import (
-    autonomous_agent_workforce_bp
+    autonomous_agent_workforce
 )
-
-
-# ======================================
-# Autonomous Learning Engine
-# ======================================
 
 from app.routes.autonomous_learning_engine import (
-    autonomous_learning_engine_bp
+    autonomous_learning_engine
 )
-
-
-# ======================================
-# Autonomous Adaptation Engine v17
-# ======================================
 
 from app.routes.autonomous_adaptation_engine import (
-    autonomous_adaptation_engine_bp
+    autonomous_adaptation_engine
+)
+
+from app.routes.autonomous_evolution_engine import (
+    autonomous_evolution_engine
 )
 
 
+# =====================================================
+# Application Factory
+# =====================================================
 
-def register_blueprints(app):
-
-
-    # ======================================
-    # Core Intelligence
-    # ======================================
-
-    app.register_blueprint(
-        autonomous_goal_bp
-    )
-
-    app.register_blueprint(
-        autonomous_mission_bp
-    )
-
-    app.register_blueprint(
-        strategic_planning_bp
-    )
-
-    app.register_blueprint(
-        execution_management_bp
-    )
-
-    app.register_blueprint(
-        performance_optimization_bp
-    )
-
-
-    # ======================================
-    # Autonomous Intelligence Stack
-    # ======================================
-
-    app.register_blueprint(
-        autonomous_orchestrator_bp
-    )
-
-    app.register_blueprint(
-        cognitive_core_bp
-    )
-
-    app.register_blueprint(
-        autonomous_fabric_bp
-    )
-
-    app.register_blueprint(
-        autonomous_operating_system_bp
-    )
-
-
-    # ======================================
-    # Collective Intelligence
-    # ======================================
-
-    app.register_blueprint(
-        collective_operating_intelligence_bp
-    )
-
-    app.register_blueprint(
-        collective_intelligence_bp
-    )
-
-
-    # ======================================
-    # Governance / Reliability / Recovery
-    # ======================================
-
-    app.register_blueprint(
-        intelligence_governance_bp
-    )
-
-    app.register_blueprint(
-        autonomous_reliability_bp
-    )
-
-    app.register_blueprint(
-        self_healing_intelligence_bp
-    )
-
-
-    # ======================================
-    # Evolution + Meta Intelligence
-    # ======================================
-
-    app.register_blueprint(
-        autonomous_evolution_bp
-    )
-
-    app.register_blueprint(
-        meta_intelligence_bp
-    )
-
-
-    # ======================================
-    # Advanced Intelligence Infrastructure
-    # ======================================
-
-    app.register_blueprint(
-        intelligence_control_plane_bp
-    )
-
-    app.register_blueprint(
-        intelligence_memory_fabric_bp
-    )
-
-    app.register_blueprint(
-        knowledge_graph_intelligence_bp
-    )
-
-
-    # ======================================
-    # Autonomous Cognitive Systems
-    # ======================================
-
-    app.register_blueprint(
-        autonomous_reasoning_engine_bp
-    )
-
-    app.register_blueprint(
-        autonomous_decision_core_bp
-    )
-
-    app.register_blueprint(
-        autonomous_agent_workforce_bp
-    )
-
-    app.register_blueprint(
-        autonomous_learning_engine_bp
-    )
-
-
-    # ======================================
-    # Autonomous Adaptation Engine v17
-    # ======================================
-
-    app.register_blueprint(
-        autonomous_adaptation_engine_bp
-    )
-    
 def create_app():
 
     app = Flask(__name__)
+
+    CORS(app)
 
 
     app.config["JSON_SORT_KEYS"] = False
 
 
-    register_blueprints(app)
+    # =================================================
+    # Register Blueprints
+    # =================================================
 
-
-    return app
-
-
-
-app = create_app()
-
-
-
-# ======================================
-# Platform Root
-# ======================================
-
-@app.route("/")
-def home():
-
-    return jsonify(
-
-        {
-
-            "platform":
-                "Decision Intelligence Platform",
-
-            "status":
-                "operational",
-
-            "version":
-                "17.0"
-
-        }
-
+    app.register_blueprint(
+        autonomous_reasoning_engine
     )
 
 
+    app.register_blueprint(
+        autonomous_decision_core
+    )
 
-# ======================================
-# Platform Health Monitoring
-# ======================================
 
-@app.route("/health")
-def health():
+    app.register_blueprint(
+        autonomous_agent_workforce
+    )
 
-    return jsonify(
 
-        {
+    app.register_blueprint(
+        autonomous_learning_engine
+    )
+
+
+    app.register_blueprint(
+        autonomous_adaptation_engine
+    )
+
+
+    app.register_blueprint(
+        autonomous_evolution_engine
+    )
+
+
+    # =================================================
+    # Platform Health
+    # =================================================
+
+    @app.route("/health", methods=["GET"])
+    def health():
+
+        return jsonify({
 
             "platform":
                 "Decision Intelligence Platform",
@@ -368,112 +97,146 @@ def health():
 
 
             "version":
-                "17.0",
+                "18.0",
 
 
-            "services":
-
-                {
-
-                    "database":
-                        "connected",
+            "services": {
 
 
-                    "intelligence_engine":
-                        "active",
+                "autonomous_reasoning":
+                    "active",
 
 
-                    "autonomous_agents":
-                        "running",
+                "autonomous_decision_core":
+                    "active",
 
 
-                    "collective_intelligence":
-                        "enabled",
+                "autonomous_agent_workforce":
+                    "active",
 
 
-                    "operating_system_layer":
-                        "active",
+                "autonomous_learning":
+                    "active",
 
 
-                    "governance_layer":
-                        "active",
+                "autonomous_adaptation":
+                    "active",
 
 
-                    "reliability_layer":
-                        "active",
+                "autonomous_evolution":
+                    "active",
 
 
-                    "self_healing_layer":
-                        "active",
+                "autonomous_agents":
+                    "running",
 
 
-                    "evolution_layer":
-                        "active",
+                "collective_intelligence":
+                    "enabled",
 
 
-                    "meta_intelligence_layer":
-                        "active",
+                "control_plane":
+                    "active",
 
 
-                    "control_plane":
-                        "active",
+                "database":
+                    "connected",
 
 
-                    "memory_fabric":
-                        "active",
+                "evolution_layer":
+                    "active",
 
 
-                    "knowledge_graph":
-                        "active",
+                "governance_layer":
+                    "active",
 
 
-                    "autonomous_reasoning":
-                        "active",
+                "intelligence_engine":
+                    "active",
 
 
-                    "autonomous_decision_core":
-                        "active",
+                "knowledge_graph":
+                    "active",
 
 
-                    "autonomous_agent_workforce":
-                        "active",
+                "memory_fabric":
+                    "active",
 
 
-                    "autonomous_learning":
-                        "active",
+                "meta_intelligence_layer":
+                    "active",
 
 
-                    "autonomous_adaptation":
-                        "active"
-
-                }
-
-        }
-
-    )
+                "operating_system_layer":
+                    "active",
 
 
+                "reliability_layer":
+                    "active",
 
-# ======================================
-# Application Entry Point
-# ======================================
+
+                "self_healing_layer":
+                    "active"
+
+            }
+
+        })
+
+
+    # =================================================
+    # Error Handling
+    # =================================================
+
+    @app.errorhandler(404)
+    def not_found(error):
+
+        return jsonify({
+
+            "status":
+                "error",
+
+            "message":
+                "Endpoint not found"
+
+        }), 404
+
+
+
+    @app.errorhandler(500)
+    def internal_error(error):
+
+        return jsonify({
+
+            "status":
+                "error",
+
+            "message":
+                "Internal server error"
+
+        }), 500
+
+
+
+    return app
+
+
+
+# =====================================================
+# Flask Instance
+# =====================================================
+
+app = create_app()
+
+
+
+# =====================================================
+# Development Server
+# =====================================================
 
 if __name__ == "__main__":
 
-
-    Base.metadata.create_all(
-
-        bind=engine
-
-    )
-
-
     app.run(
-
         host="0.0.0.0",
-
         port=5000,
-
         debug=True
-
     )

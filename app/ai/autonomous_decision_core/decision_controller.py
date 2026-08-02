@@ -29,9 +29,11 @@ def generate_decision(user_id):
             ],
 
         "generated_at":
+
             datetime.utcnow().isoformat(),
 
         "version":
+
             "1.0"
 
     }

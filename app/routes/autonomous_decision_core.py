@@ -5,29 +5,9 @@ from app.ai.autonomous_decision_core.decision_controller import (
     generate_decision
 )
 
-from app.ai.autonomous_decision_core.action_planner import (
-    create_action_plan
-)
-
-from app.ai.autonomous_decision_core.priority_engine import (
-    evaluate_priority
-)
-
-from app.ai.autonomous_decision_core.execution_manager import (
-    manage_execution
-)
-
-from app.ai.autonomous_decision_core.feedback_loop import (
-    generate_feedback
-)
-
-from app.ai.autonomous_decision_core.decision_state import (
-    get_decision_state
-)
 
 
-
-autonomous_decision_core_bp = Blueprint(
+autonomous_decision_core = Blueprint(
 
     "autonomous_decision_core",
 
@@ -37,70 +17,32 @@ autonomous_decision_core_bp = Blueprint(
 
 
 
-@autonomous_decision_core_bp.route(
+@autonomous_decision_core.route(
+
     "/autonomous-decision-core/<int:user_id>",
+
     methods=["GET"]
+
 )
 
-def autonomous_decision_core(user_id):
+def get_autonomous_decision_core(user_id):
 
 
-    return jsonify(
-
-        {
-
-            "status":
-                "operational",
+    result = generate_decision(user_id)
 
 
-            "user_id":
-                user_id,
+    return jsonify({
 
+        "status":
 
-            "autonomous_decision_core":
+            "operational",
 
-                {
+        "user_id":
 
+            user_id,
 
-                    "decision_controller":
+        "autonomous_decision_core":
 
-                        generate_decision(user_id),
+            result
 
-
-                    "action_planner":
-
-                        create_action_plan(user_id),
-
-
-                    "priority_engine":
-
-                        evaluate_priority(user_id),
-
-
-                    "execution_manager":
-
-                        manage_execution(user_id),
-
-
-                    "feedback_loop":
-
-                        generate_feedback(user_id),
-
-
-                    "decision_state":
-
-                        get_decision_state(user_id),
-
-
-                    "overall_decision_score":
-                        99,
-
-
-                    "version":
-                        "1.0"
-
-                }
-
-        }
-
-    )
+    })
