@@ -92,6 +92,10 @@ from app.routes.autonomous_strategic_decision_engine import (
     autonomous_strategic_decision_engine
 )
 
+from app.routes.autonomous_executive_intelligence_engine import (
+    autonomous_executive_intelligence_engine
+)
+
 
 # ===============================
 # Flask Application
@@ -185,6 +189,10 @@ app.register_blueprint(
     autonomous_strategic_decision_engine
 )
 
+app.register_blueprint(
+    autonomous_executive_intelligence_engine
+)
+
 
 # ===============================
 # Health Endpoint
@@ -202,7 +210,7 @@ def health():
             "healthy",
 
         "version":
-            "29.0",
+            "30.0",
 
         "services":
 
@@ -263,6 +271,9 @@ def health():
                 "active",
 
             "autonomous_strategic_decision_engine":
+                "active",
+
+            "autonomous_executive_intelligence_engine":
                 "active",
 
             "knowledge_graph":
