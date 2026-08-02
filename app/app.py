@@ -76,7 +76,7 @@ from app.routes.memory_consolidation import memory_consolidation_bp
 
 
 # =====================================================
-# Knowledge Graph Routes
+# Knowledge Graph Intelligence
 # =====================================================
 
 from app.routes.intelligence_graph import intelligence_graph_bp
@@ -84,7 +84,7 @@ from app.routes.intelligence_graph import intelligence_graph_bp
 
 
 # =====================================================
-# Reasoning Intelligence Routes
+# Reasoning Intelligence
 # =====================================================
 
 from app.routes.decision_reasoning import decision_reasoning_bp
@@ -92,7 +92,7 @@ from app.routes.decision_reasoning import decision_reasoning_bp
 
 
 # =====================================================
-# Decision Orchestration Routes
+# Decision Orchestration
 # =====================================================
 
 from app.routes.decision_orchestrator import decision_orchestrator_bp
@@ -100,7 +100,7 @@ from app.routes.decision_orchestrator import decision_orchestrator_bp
 
 
 # =====================================================
-# Autonomous Agent Core Routes
+# Autonomous Agent Foundation
 # =====================================================
 
 from app.routes.agent_runtime import agent_runtime_bp
@@ -122,7 +122,7 @@ from app.routes.multi_agent import multi_agent_bp
 
 
 # =====================================================
-# Agent Communication Layer
+# Agent Communication
 # =====================================================
 
 from app.routes.agent_communication import agent_communication_bp
@@ -130,7 +130,7 @@ from app.routes.agent_communication import agent_communication_bp
 
 
 # =====================================================
-# Agent Governance Layer
+# Agent Governance
 # =====================================================
 
 from app.routes.agent_governance import agent_governance_bp
@@ -138,7 +138,7 @@ from app.routes.agent_governance import agent_governance_bp
 
 
 # =====================================================
-# Self Improving Intelligence Layer
+# Self Improving Intelligence
 # =====================================================
 
 from app.routes.agent_reflection import agent_reflection_bp
@@ -195,12 +195,24 @@ from app.routes.autonomous_goal import (
 
 
 # =====================================================
+# Strategic Planning Intelligence Layer
+# =====================================================
+
+from app.routes.strategic_planning import (
+
+    strategic_planning_bp
+
+)
+
+
+
+# =====================================================
 # Application Metadata
 # =====================================================
 
 APP_NAME = "Decision Intelligence Platform"
 
-APP_VERSION = "4.3"
+APP_VERSION = "4.4"
 
 APP_STATUS = "running"
 
@@ -247,7 +259,6 @@ Base.metadata.create_all(
 # =====================================================
 
 BLUEPRINTS = [
-
 
 
     # =================================================
@@ -347,7 +358,7 @@ BLUEPRINTS = [
 
 
     # =================================================
-    # Agent Communication
+    # Communication Intelligence
     # =================================================
 
     agent_communication_bp,
@@ -355,7 +366,7 @@ BLUEPRINTS = [
 
 
     # =================================================
-    # Agent Governance
+    # Governance Intelligence
     # =================================================
 
     agent_governance_bp,
@@ -363,7 +374,7 @@ BLUEPRINTS = [
 
 
     # =================================================
-    # Self Improving Intelligence
+    # Self Improvement Intelligence
     # =================================================
 
     agent_reflection_bp,
@@ -383,7 +394,7 @@ BLUEPRINTS = [
 
 
     # =================================================
-    # Agent Swarm Intelligence
+    # Swarm Intelligence
     # =================================================
 
     agent_swarm_bp,
@@ -402,7 +413,15 @@ BLUEPRINTS = [
     # Autonomous Goal Intelligence
     # =================================================
 
-    autonomous_goal_bp
+    autonomous_goal_bp,
+
+
+
+    # =================================================
+    # Strategic Planning Intelligence
+    # =================================================
+
+    strategic_planning_bp
 
 ]
 # =====================================================
@@ -465,7 +484,7 @@ def home():
 
         "intelligence_state":
 
-            "Autonomous Goal Driven Swarm Intelligence",
+            "Autonomous Strategic Goal Driven Swarm Intelligence",
 
 
 
@@ -496,7 +515,9 @@ def home():
 
             "Autonomous Mission Intelligence",
 
-            "Autonomous Goal Intelligence"
+            "Autonomous Goal Intelligence",
+
+            "Strategic Planning Intelligence"
 
 
         ],
@@ -513,7 +534,7 @@ def home():
 
             "architecture":
 
-                "Multi Agent Autonomous Goal Mission Network",
+                "Multi Agent Strategic Autonomous Intelligence Network",
 
 
             "agents":
@@ -521,7 +542,7 @@ def home():
                 6,
 
 
-            "cycle":[
+            "autonomous_cycle":[
 
 
                 "Observe",
@@ -534,9 +555,13 @@ def home():
 
                 "Prioritize Objectives",
 
-                "Plan Missions",
+                "Create Strategy",
 
-                "Execute",
+                "Build Roadmap",
+
+                "Allocate Resources",
+
+                "Execute Mission",
 
                 "Monitor",
 
@@ -577,6 +602,7 @@ def home():
             "Decision Orchestration Engine",
 
 
+
             "Agent Runtime Engine",
 
             "Agent Planner Engine",
@@ -590,11 +616,13 @@ def home():
             "Agent Loop Engine",
 
 
+
             "Multi Agent Coordination Engine",
 
             "Agent Communication Engine",
 
             "Agent Governance Engine",
+
 
 
             "Agent Reflection Engine",
@@ -608,11 +636,13 @@ def home():
             "Agent Meta Learning Engine",
 
 
+
             "Collective Intelligence Engine",
 
             "Consensus Engine",
 
             "Knowledge Pool Engine",
+
 
 
             "Agent Swarm Controller",
@@ -622,6 +652,7 @@ def home():
             "Agent Swarm Memory",
 
             "Agent Swarm Strategy",
+
 
 
             "Autonomous Mission Controller",
@@ -635,13 +666,26 @@ def home():
             "Autonomous Mission Learning",
 
 
+
             "Autonomous Goal Generator",
 
             "Objective Engine",
 
             "Priority Engine",
 
-            "Goal Memory Engine"
+            "Goal Memory Engine",
+
+
+
+            "Strategic Planning Engine",
+
+            "Strategy Generator",
+
+            "Roadmap Engine",
+
+            "Resource Engine",
+
+            "Timeline Engine"
 
 
         ],
@@ -697,7 +741,7 @@ def health():
 
         "architecture":
 
-            "Autonomous Goal Mission Swarm Platform",
+            "Autonomous Strategic Planning Swarm Platform",
 
 
         "blueprints":
@@ -750,6 +794,7 @@ def platform_info():
             "Decision Orchestration",
 
 
+
             "Agent Runtime",
 
             "Agent Planning",
@@ -761,11 +806,13 @@ def platform_info():
             "Agent Loop",
 
 
+
             "Multi Agent Collaboration",
 
             "Agent Communication",
 
             "Agent Governance",
+
 
 
             "Agent Reflection",
@@ -779,14 +826,18 @@ def platform_info():
             "Agent Meta Learning",
 
 
+
             "Collective Intelligence",
 
             "Agent Swarm Intelligence",
 
 
+
             "Autonomous Mission Intelligence",
 
-            "Autonomous Goal Intelligence"
+            "Autonomous Goal Intelligence",
+
+            "Strategic Planning Intelligence"
 
 
         ],
@@ -808,7 +859,7 @@ def platform_info():
 
             "architecture":
 
-                "Collaborative Autonomous Goal Driven Swarm"
+                "Collaborative Autonomous Strategic Swarm"
 
 
         }
