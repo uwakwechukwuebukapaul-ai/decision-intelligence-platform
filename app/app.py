@@ -126,6 +126,14 @@ from app.routes.agent_communication import agent_communication_bp
 
 
 
+# =====================================================
+# Agent Governance Routes
+# =====================================================
+
+from app.routes.agent_governance import agent_governance_bp
+
+
+
 
 # =====================================================
 # Application Metadata
@@ -133,7 +141,7 @@ from app.routes.agent_communication import agent_communication_bp
 
 APP_NAME = "Decision Intelligence Platform"
 
-APP_VERSION = "3.2"
+APP_VERSION = "3.3"
 
 APP_STATUS = "running"
 
@@ -183,7 +191,7 @@ Base.metadata.create_all(
 BLUEPRINTS = [
 
 
-    # Core Layer
+    # Core Platform
 
     profile_bp,
     analysis_bp,
@@ -197,7 +205,7 @@ BLUEPRINTS = [
 
 
 
-    # Intelligence Layer
+    # AI Intelligence Layer
 
     skill_analysis_bp,
     career_report_bp,
@@ -262,7 +270,13 @@ BLUEPRINTS = [
 
     # Communication Layer
 
-    agent_communication_bp
+    agent_communication_bp,
+
+
+
+    # Governance Layer
+
+    agent_governance_bp
 
 ]
 
@@ -322,34 +336,6 @@ def home():
 
 
 
-        "layers":[
-
-
-            "Core Intelligence",
-
-            "Career Intelligence",
-
-            "Simulation Intelligence",
-
-            "Memory Intelligence",
-
-            "Knowledge Graph Intelligence",
-
-            "Reasoning Intelligence",
-
-            "Decision Orchestration",
-
-            "Autonomous Agent Intelligence",
-
-            "Multi Agent Collaboration",
-
-            "Agent Communication Network"
-
-
-        ],
-
-
-
         "agent_system":{
 
 
@@ -374,18 +360,75 @@ def home():
 
                 "Plan",
 
+                "Communicate",
+
+                "Govern",
+
                 "Execute",
 
                 "Learn",
 
-                "Communicate",
-
-                "Collaborate"
+                "Reflect"
 
 
             ]
 
         },
+
+
+        "layers":[
+
+
+            "Core Intelligence",
+
+            "Career Intelligence",
+
+            "Simulation Intelligence",
+
+            "Memory Intelligence",
+
+            "Knowledge Graph Intelligence",
+
+            "Reasoning Intelligence",
+
+            "Decision Orchestration",
+
+            "Autonomous Agent Intelligence",
+
+            "Multi Agent Collaboration",
+
+            "Agent Communication Network",
+
+            "Agent Governance Control"
+
+        ],
+
+
+
+        "engines":[
+
+
+            "AI Agent Runtime Engine v1",
+
+            "AI Agent Tool Execution Engine v1",
+
+            "AI Agent Planner Engine v1",
+
+            "AI Agent Supervisor Engine v1",
+
+            "AI Agent Memory Engine v1",
+
+            "AI Agent Learning Engine v1",
+
+            "AI Autonomous Decision Loop Engine v1",
+
+            "AI Multi Agent Coordination Engine v1",
+
+            "AI Agent Communication Engine v1",
+
+            "AI Agent Governance Engine v1"
+
+        ],
 
 
 
@@ -464,29 +507,27 @@ def platform_info():
             APP_VERSION,
 
 
-
         "autonomous_agents":{
 
 
-            "runtime":
+            "enabled":
 
-                "online",
+                True,
 
 
-            "multi_agent":
+            "agents":
+
+                6,
+
+
+            "communication":
 
                 "enabled",
 
 
-            "communication_bus":
+            "governance":
 
-                "enabled",
-
-
-            "agent_count":
-
-                6
-
+                "enabled"
 
         },
 
@@ -504,10 +545,6 @@ def platform_info():
 
             "Digital Twin Simulation",
 
-            "Career Simulation Intelligence",
-
-            "Career Evolution Intelligence",
-
             "Decision Memory Intelligence",
 
             "Intelligence Graph Reasoning",
@@ -518,8 +555,6 @@ def platform_info():
 
             "Agent Runtime Intelligence",
 
-            "Agent Tool Execution Intelligence",
-
             "Agent Planning Intelligence",
 
             "Agent Supervisor Intelligence",
@@ -528,12 +563,13 @@ def platform_info():
 
             "Agent Learning Intelligence",
 
-            "Autonomous Decision Loop Intelligence",
+            "Agent Loop Intelligence",
 
-            "Multi Agent Collaboration Intelligence",
+            "Multi Agent Intelligence",
 
-            "Agent Communication Intelligence"
+            "Agent Communication Intelligence",
 
+            "Agent Governance Intelligence"
 
         ]
 
