@@ -111,7 +111,7 @@ from app.routes.agent_loop import agent_loop_bp
 
 
 # =====================================================
-# Multi Agent Routes
+# Multi Agent Intelligence Routes
 # =====================================================
 
 from app.routes.multi_agent import multi_agent_bp
@@ -142,6 +142,22 @@ from app.routes.agent_reflection import agent_reflection_bp
 
 
 
+# =====================================================
+# Agent Adaptation Routes
+# =====================================================
+
+from app.routes.agent_adaptation import agent_adaptation_bp
+
+
+
+# =====================================================
+# Memory Consolidation Routes
+# =====================================================
+
+from app.routes.memory_consolidation import memory_consolidation_bp
+
+
+
 
 # =====================================================
 # Application Metadata
@@ -149,7 +165,7 @@ from app.routes.agent_reflection import agent_reflection_bp
 
 APP_NAME = "Decision Intelligence Platform"
 
-APP_VERSION = "3.4"
+APP_VERSION = "3.6"
 
 APP_STATUS = "running"
 
@@ -199,7 +215,9 @@ Base.metadata.create_all(
 BLUEPRINTS = [
 
 
+    # =================================================
     # Core Platform
+    # =================================================
 
     profile_bp,
     analysis_bp,
@@ -213,7 +231,9 @@ BLUEPRINTS = [
 
 
 
+    # =================================================
     # AI Intelligence Layer
+    # =================================================
 
     skill_analysis_bp,
     career_report_bp,
@@ -226,7 +246,9 @@ BLUEPRINTS = [
 
 
 
+    # =================================================
     # Simulation Layer
+    # =================================================
 
     digital_twin_bp,
     career_simulation_bp,
@@ -234,31 +256,42 @@ BLUEPRINTS = [
 
 
 
+    # =================================================
     # Memory Layer
+    # =================================================
 
     memory_bp,
+    memory_consolidation_bp,
 
 
 
+    # =================================================
     # Knowledge Layer
+    # =================================================
 
     intelligence_graph_bp,
 
 
 
+    # =================================================
     # Reasoning Layer
+    # =================================================
 
     decision_reasoning_bp,
 
 
 
+    # =================================================
     # Orchestration Layer
+    # =================================================
 
     decision_orchestrator_bp,
 
 
 
+    # =================================================
     # Autonomous Agent Layer
+    # =================================================
 
     agent_runtime_bp,
     agent_tools_bp,
@@ -270,27 +303,43 @@ BLUEPRINTS = [
 
 
 
+    # =================================================
     # Multi Agent Layer
+    # =================================================
 
     multi_agent_bp,
 
 
 
-    # Communication Layer
+    # =================================================
+    # Agent Communication Layer
+    # =================================================
 
     agent_communication_bp,
 
 
 
-    # Governance Layer
+    # =================================================
+    # Agent Governance Layer
+    # =================================================
 
     agent_governance_bp,
 
 
 
-    # Reflection Layer
+    # =================================================
+    # Agent Reflection Layer
+    # =================================================
 
-    agent_reflection_bp
+    agent_reflection_bp,
+
+
+
+    # =================================================
+    # Agent Adaptation Layer
+    # =================================================
+
+    agent_adaptation_bp
 
 ]
 
@@ -360,15 +409,16 @@ def home():
 
             "agents":
 
-                6,
+                7,
 
 
-            "cycle":[
-
+            "autonomous_cycle":[
 
                 "Observe",
 
                 "Retrieve Memory",
+
+                "Consolidate Memory",
 
                 "Reason",
 
@@ -384,8 +434,9 @@ def home():
 
                 "Reflect",
 
-                "Optimize"
+                "Adapt",
 
+                "Optimize"
 
             ]
 
@@ -395,7 +446,6 @@ def home():
 
         "layers":[
 
-
             "Core Intelligence",
 
             "Career Intelligence",
@@ -404,21 +454,15 @@ def home():
 
             "Memory Intelligence",
 
+            "Memory Consolidation Intelligence",
+
             "Knowledge Graph Intelligence",
 
             "Reasoning Intelligence",
 
             "Decision Orchestration",
 
-            "Autonomous Agent Intelligence",
-
-            "Multi Agent Collaboration",
-
-            "Agent Communication",
-
-            "Agent Governance",
-
-            "Agent Reflection"
+            "Autonomous Agent Intelligence"
 
         ],
 
@@ -447,8 +491,11 @@ def home():
 
             "AI Agent Governance Engine v1",
 
-            "AI Agent Reflection Engine v1"
+            "AI Agent Reflection Engine v1",
 
+            "AI Agent Adaptation Engine v1",
+
+            "AI Memory Consolidation Engine v1"
 
         ],
 
@@ -537,20 +584,14 @@ def platform_info():
                 True,
 
 
-            "agents":
+            "total_agents":
 
-                6,
-
-
-            "governance":
-
-                "enabled",
+                7,
 
 
-            "reflection":
+            "self_improvement":
 
                 "enabled"
-
 
         },
 
@@ -566,11 +607,13 @@ def platform_info():
 
             "Cybersecurity Coach",
 
-            "Digital Twin Simulation",
+            "Digital Twin Intelligence",
 
             "Decision Memory Intelligence",
 
-            "Intelligence Graph Reasoning",
+            "Memory Consolidation Intelligence",
+
+            "Intelligence Graph Intelligence",
 
             "Decision Reasoning Intelligence",
 
@@ -594,8 +637,9 @@ def platform_info():
 
             "Agent Governance Intelligence",
 
-            "Agent Reflection Intelligence"
+            "Agent Reflection Intelligence",
 
+            "Agent Adaptation Intelligence"
 
         ]
 
