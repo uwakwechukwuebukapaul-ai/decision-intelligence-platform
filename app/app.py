@@ -138,6 +138,10 @@ from app.routes.autonomous_intelligence_command_center import (
     autonomous_intelligence_command_center
 )
 
+from app.routes.autonomous_intelligence_memory import (
+    autonomous_intelligence_memory
+)
+
 
 
 # ===============================
@@ -221,7 +225,9 @@ blueprints = [
 
     autonomous_intelligence_dashboard,
 
-    autonomous_intelligence_command_center
+    autonomous_intelligence_command_center,
+
+    autonomous_intelligence_memory
 
 ]
 
@@ -250,7 +256,7 @@ def health():
             "healthy",
 
         "version":
-            "40.0",
+            "41.0",
 
         "services":
 
@@ -275,6 +281,9 @@ def health():
                 "active",
 
             "command_center":
+                "active",
+
+            "memory_engine":
                 "active",
 
             "meta_intelligence_layer":
