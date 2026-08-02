@@ -11,7 +11,7 @@ from app.database.db import engine, Base
 
 
 # =====================================================
-# Register Models
+# Models Registration
 # =====================================================
 
 from app.models import (
@@ -84,7 +84,7 @@ from app.routes.intelligence_graph import intelligence_graph_bp
 
 
 # =====================================================
-# Reasoning Routes
+# Reasoning Intelligence Routes
 # =====================================================
 
 from app.routes.decision_reasoning import decision_reasoning_bp
@@ -100,7 +100,7 @@ from app.routes.decision_orchestrator import decision_orchestrator_bp
 
 
 # =====================================================
-# Autonomous Agent Routes
+# Autonomous Agent Core Routes
 # =====================================================
 
 from app.routes.agent_runtime import agent_runtime_bp
@@ -122,7 +122,7 @@ from app.routes.multi_agent import multi_agent_bp
 
 
 # =====================================================
-# Agent Communication
+# Agent Communication Layer
 # =====================================================
 
 from app.routes.agent_communication import agent_communication_bp
@@ -130,7 +130,7 @@ from app.routes.agent_communication import agent_communication_bp
 
 
 # =====================================================
-# Agent Governance
+# Agent Governance Layer
 # =====================================================
 
 from app.routes.agent_governance import agent_governance_bp
@@ -138,51 +138,33 @@ from app.routes.agent_governance import agent_governance_bp
 
 
 # =====================================================
-# Agent Reflection
+# Self Improvement Layer
 # =====================================================
 
 from app.routes.agent_reflection import agent_reflection_bp
-
-
-
-# =====================================================
-# Agent Adaptation
-# =====================================================
-
 from app.routes.agent_adaptation import agent_adaptation_bp
-
-
-
-# =====================================================
-# Agent Evolution
-# =====================================================
-
 from app.routes.agent_evolution import agent_evolution_bp
-
-
-
-# =====================================================
-# Agent Optimization
-# =====================================================
-
 from app.routes.agent_optimization import agent_optimization_bp
-
-
-
-# =====================================================
-# Agent Meta Learning
-# =====================================================
-
 from app.routes.agent_meta_learning import agent_meta_learning_bp
 
 
 
 # =====================================================
-# Collective Intelligence
+# Collective Intelligence Layer
 # =====================================================
 
 from app.routes.collective_intelligence import (
     collective_intelligence_bp
+)
+
+
+
+# =====================================================
+# Agent Swarm Intelligence Layer
+# =====================================================
+
+from app.routes.agent_swarm import (
+    agent_swarm_bp
 )
 
 
@@ -193,7 +175,7 @@ from app.routes.collective_intelligence import (
 
 APP_NAME = "Decision Intelligence Platform"
 
-APP_VERSION = "4.0"
+APP_VERSION = "4.1"
 
 APP_STATUS = "running"
 
@@ -256,7 +238,7 @@ BLUEPRINTS = [
 
 
     # =================================================
-    # AI Intelligence Layer
+    # Intelligence Layer
     # =================================================
 
     skill_analysis_bp,
@@ -271,7 +253,7 @@ BLUEPRINTS = [
 
 
     # =================================================
-    # Simulation Layer
+    # Simulation Intelligence
     # =================================================
 
     digital_twin_bp,
@@ -281,7 +263,7 @@ BLUEPRINTS = [
 
 
     # =================================================
-    # Memory Layer
+    # Memory Intelligence
     # =================================================
 
     memory_bp,
@@ -290,7 +272,7 @@ BLUEPRINTS = [
 
 
     # =================================================
-    # Knowledge Layer
+    # Knowledge Intelligence
     # =================================================
 
     intelligence_graph_bp,
@@ -298,7 +280,7 @@ BLUEPRINTS = [
 
 
     # =================================================
-    # Reasoning Layer
+    # Reasoning Intelligence
     # =================================================
 
     decision_reasoning_bp,
@@ -306,7 +288,7 @@ BLUEPRINTS = [
 
 
     # =================================================
-    # Orchestration Layer
+    # Decision Orchestration
     # =================================================
 
     decision_orchestrator_bp,
@@ -314,7 +296,7 @@ BLUEPRINTS = [
 
 
     # =================================================
-    # Autonomous Agent Layer
+    # Autonomous Agent Foundation
     # =================================================
 
     agent_runtime_bp,
@@ -328,7 +310,7 @@ BLUEPRINTS = [
 
 
     # =================================================
-    # Multi Agent Layer
+    # Multi Agent Intelligence
     # =================================================
 
     multi_agent_bp,
@@ -336,7 +318,7 @@ BLUEPRINTS = [
 
 
     # =================================================
-    # Communication Layer
+    # Communication Intelligence
     # =================================================
 
     agent_communication_bp,
@@ -344,7 +326,7 @@ BLUEPRINTS = [
 
 
     # =================================================
-    # Governance Layer
+    # Agent Governance
     # =================================================
 
     agent_governance_bp,
@@ -352,7 +334,7 @@ BLUEPRINTS = [
 
 
     # =================================================
-    # Self Improvement Layer
+    # Agent Self Improvement
     # =================================================
 
     agent_reflection_bp,
@@ -364,17 +346,25 @@ BLUEPRINTS = [
 
 
     # =================================================
-    # Collective Intelligence Layer
+    # Collective Intelligence
     # =================================================
 
-    collective_intelligence_bp
+    collective_intelligence_bp,
+
+
+
+    # =================================================
+    # Swarm Intelligence
+    # =================================================
+
+    agent_swarm_bp
 
 ]
 
 
 
 # =====================================================
-# Register Blueprints
+# Blueprint Registration
 # =====================================================
 
 for blueprint in BLUEPRINTS:
@@ -382,24 +372,28 @@ for blueprint in BLUEPRINTS:
     try:
 
         app.register_blueprint(
+
             blueprint
+
         )
+
 
     except Exception as error:
 
+
         print(
+
             f"Blueprint registration failed: {error}"
+
         )
-
-
-
-# =====================================================
+      # =====================================================
 # Root Endpoint
 # =====================================================
 
 @app.route("/")
 
 def home():
+
 
     return {
 
@@ -425,6 +419,12 @@ def home():
 
 
 
+        "intelligence_state":
+
+            "Autonomous Collective Swarm Intelligence",
+
+
+
         "layers":[
 
 
@@ -446,7 +446,9 @@ def home():
 
             "Self Improving Intelligence",
 
-            "Collective Intelligence"
+            "Collective Intelligence",
+
+            "Swarm Intelligence"
 
 
         ],
@@ -463,7 +465,7 @@ def home():
 
             "architecture":
 
-                "Collaborative Autonomous Intelligence Network",
+                "Autonomous Multi Agent Swarm Network",
 
 
             "agents":
@@ -471,7 +473,7 @@ def home():
                 6,
 
 
-            "cycle":[
+            "autonomous_cycle":[
 
 
                 "Observe",
@@ -483,6 +485,8 @@ def home():
                 "Plan",
 
                 "Communicate",
+
+                "Collaborate",
 
                 "Execute",
 
@@ -498,7 +502,9 @@ def home():
 
                 "Meta Learn",
 
-                "Collective Consensus"
+                "Consensus",
+
+                "Swarm Intelligence"
 
 
             ]
@@ -522,6 +528,7 @@ def home():
 
             "Decision Orchestration Engine",
 
+
             "Agent Runtime Engine",
 
             "Agent Planner Engine",
@@ -534,11 +541,13 @@ def home():
 
             "Agent Loop Engine",
 
-            "Multi Agent Engine",
+
+            "Multi Agent Coordination Engine",
 
             "Agent Communication Engine",
 
             "Agent Governance Engine",
+
 
             "Agent Reflection Engine",
 
@@ -550,7 +559,21 @@ def home():
 
             "Agent Meta Learning Engine",
 
-            "Collective Intelligence Engine"
+
+            "Collective Intelligence Engine",
+
+            "Consensus Engine",
+
+            "Knowledge Pool Engine",
+
+
+            "Agent Swarm Controller",
+
+            "Agent Swarm Coordinator",
+
+            "Agent Swarm Memory",
+
+            "Agent Swarm Strategy"
 
 
         ],
@@ -565,6 +588,8 @@ def home():
 
 
 
+
+
 # =====================================================
 # Health Endpoint
 # =====================================================
@@ -572,6 +597,7 @@ def home():
 @app.route("/health")
 
 def health():
+
 
     return {
 
@@ -601,11 +627,18 @@ def health():
             APP_VERSION,
 
 
+        "architecture":
+
+            "AI Autonomous Swarm Platform",
+
+
         "blueprints":
 
             len(BLUEPRINTS)
 
     }
+
+
 
 
 
@@ -616,6 +649,7 @@ def health():
 @app.route("/api/info")
 
 def platform_info():
+
 
     return {
 
@@ -628,12 +662,6 @@ def platform_info():
         "version":
 
             APP_VERSION,
-
-
-        "intelligence_state":
-
-            "collective autonomous intelligence",
-
 
 
         "modules":[
@@ -649,21 +677,28 @@ def platform_info():
 
             "Knowledge Graph Intelligence",
 
-            "Reasoning Intelligence",
+            "Decision Reasoning",
 
             "Decision Orchestration",
 
+
             "Agent Runtime",
+
+            "Agent Planning",
+
+            "Agent Memory",
 
             "Agent Learning",
 
             "Agent Loop",
+
 
             "Multi Agent Collaboration",
 
             "Agent Communication",
 
             "Agent Governance",
+
 
             "Agent Reflection",
 
@@ -675,17 +710,46 @@ def platform_info():
 
             "Agent Meta Learning",
 
-            "Collective Intelligence"
+
+            "Collective Intelligence",
+
+            "Consensus Intelligence",
+
+            "Agent Swarm Intelligence"
 
 
-        ]
+        ],
+
+
+
+        "autonomous_agents":{
+
+
+            "status":
+
+                "online",
+
+
+            "total_agents":
+
+                6,
+
+
+            "architecture":
+
+                "Collaborative Autonomous Swarm"
+
+
+        }
 
     }
 
 
 
+
+
 # =====================================================
-# Runner
+# Application Runner
 # =====================================================
 
 if __name__ == "__main__":
@@ -699,4 +763,4 @@ if __name__ == "__main__":
 
         debug=True
 
-    )
+    )  
