@@ -131,22 +131,26 @@ from app.routes.autonomous_validation_engine import (
 )
 
 
-# Existing intelligence modules
+
+# ===============================
+# Intelligence Modules
+# ===============================
+
 
 from app.routes.autonomous_intelligence_dashboard import (
     autonomous_intelligence_dashboard
 )
 
+
 from app.routes.autonomous_intelligence_command_center import (
     autonomous_intelligence_command_center
 )
+
 
 from app.routes.autonomous_intelligence_memory import (
     autonomous_intelligence_memory
 )
 
-
-# NEW v42 ENGINE
 
 from app.routes.autonomous_intelligence_learning import (
     autonomous_intelligence_learning
@@ -155,8 +159,41 @@ from app.routes.autonomous_intelligence_learning import (
 
 
 # ===============================
+# Agent Infrastructure Layer
+# ===============================
+
+
+from app.routes.autonomous_operating_system import (
+    autonomous_operating_system_bp
+)
+
+
+from app.routes.agent_runtime import (
+    agent_runtime_bp
+)
+
+
+from app.routes.agent_supervisor import (
+    agent_supervisor_bp
+)
+
+
+
+# ===============================
+# Decision Feedback Intelligence v43
+# ===============================
+
+
+from app.routes.intelligence_feedback import (
+    intelligence_feedback_bp
+)
+
+
+
+# ===============================
 # Flask Application
 # ===============================
+
 
 app = Flask(__name__)
 
@@ -165,6 +202,7 @@ app = Flask(__name__)
 # ===============================
 # Database Initialization
 # ===============================
+
 
 Base.metadata.create_all(
     bind=engine
@@ -182,95 +220,80 @@ blueprints = [
 
     autonomous_adaptation_engine,
 
-
     autonomous_agent_workforce,
-
 
     autonomous_decision_core,
 
-
     autonomous_evolution_engine,
-
 
     autonomous_executive_intelligence_engine,
 
-
     autonomous_forecasting_engine,
-
 
     autonomous_governance_engine,
 
-
     autonomous_intelligence_fusion_engine,
-
 
     autonomous_intelligence_governance_engine,
 
-
     autonomous_intelligence_orchestrator,
-
 
     autonomous_intelligence_self_optimization_engine,
 
-
     autonomous_intelligence_evolution_engine,
-
 
     autonomous_cognitive_intelligence_engine,
 
-
     autonomous_knowledge_fabric_engine,
-
 
     autonomous_learning_engine,
 
-
     autonomous_memory_engine,
-
 
     autonomous_meta_intelligence_engine,
 
-
     autonomous_meta_intelligence_engine_v2,
-
 
     autonomous_predictive_intelligence_engine,
 
-
     autonomous_reasoning_engine,
-
 
     autonomous_security_intelligence_engine,
 
-
     autonomous_self_healing_engine,
-
 
     autonomous_simulation_engine,
 
-
     autonomous_strategic_decision_engine,
-
 
     autonomous_strategic_simulation_engine,
 
-
     autonomous_trust_intelligence_engine,
-
 
     autonomous_validation_engine,
 
 
     autonomous_intelligence_dashboard,
 
-
     autonomous_intelligence_command_center,
-
 
     autonomous_intelligence_memory,
 
+    autonomous_intelligence_learning,
 
-    autonomous_intelligence_learning
+
+    # Agent Infrastructure
+
+    autonomous_operating_system_bp,
+
+    agent_runtime_bp,
+
+    agent_supervisor_bp,
+
+
+    # Decision Feedback Intelligence
+
+    intelligence_feedback_bp
 
 ]
 
@@ -303,12 +326,14 @@ def health():
 
 
         "version":
-            "42.0",
+            "43.0",
 
 
         "services":
 
+
         {
+
 
             "database":
                 "connected",
@@ -363,6 +388,22 @@ def health():
 
 
             "evolution_layer":
+                "active",
+
+
+            "agent_operating_system":
+                "active",
+
+
+            "agent_runtime":
+                "active",
+
+
+            "agent_supervisor":
+                "active",
+
+
+            "decision_feedback_engine":
                 "active"
 
         },
@@ -382,6 +423,7 @@ def health():
 
 
 if __name__ == "__main__":
+
 
     app.run(
 
