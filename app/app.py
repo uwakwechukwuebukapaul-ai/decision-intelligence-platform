@@ -3,7 +3,7 @@ from flask_cors import CORS
 
 
 # ==========================================
-# Blueprint Imports
+# Route Imports
 # ==========================================
 
 from app.routes.autonomous_reasoning_engine import (
@@ -46,6 +46,10 @@ from app.routes.autonomous_self_healing_engine import (
     autonomous_self_healing_engine
 )
 
+from app.routes.autonomous_governance_engine import (
+    autonomous_governance_engine
+)
+
 
 
 # ==========================================
@@ -54,7 +58,9 @@ from app.routes.autonomous_self_healing_engine import (
 
 def create_app():
 
+
     app = Flask(__name__)
+
 
     CORS(app)
 
@@ -66,6 +72,7 @@ def create_app():
     # ==========================================
     # Blueprint Registration
     # ==========================================
+
 
     app.register_blueprint(
         autonomous_reasoning_engine
@@ -117,24 +124,35 @@ def create_app():
     )
 
 
+    app.register_blueprint(
+        autonomous_governance_engine
+    )
+
+
 
     # ==========================================
     # Platform Health
     # ==========================================
 
+
     @app.route("/health", methods=["GET"])
     def health():
 
+
         return jsonify({
+
 
             "platform":
                 "Decision Intelligence Platform",
 
+
             "status":
                 "healthy",
 
+
             "version":
-                "22.0",
+                "23.0",
+
 
 
             "services": {
@@ -177,6 +195,10 @@ def create_app():
 
 
                 "autonomous_self_healing_engine":
+                    "active",
+
+
+                "autonomous_governance_engine":
                     "active",
 
 
@@ -227,41 +249,53 @@ def create_app():
                 "self_healing_layer":
                     "active"
 
+
             }
+
 
         })
 
 
 
     # ==========================================
-    # Error Handlers
+    # Error Handling
     # ==========================================
+
 
     @app.errorhandler(404)
     def not_found(error):
 
+
         return jsonify({
+
 
             "status":
                 "error",
 
+
             "message":
                 "Endpoint not found"
 
+
         }), 404
+
 
 
 
     @app.errorhandler(500)
     def internal_error(error):
 
+
         return jsonify({
+
 
             "status":
                 "error",
 
+
             "message":
                 "Internal server error"
+
 
         }), 500
 
@@ -285,6 +319,7 @@ app = create_app()
 # ==========================================
 
 if __name__ == "__main__":
+
 
     app.run(
 
