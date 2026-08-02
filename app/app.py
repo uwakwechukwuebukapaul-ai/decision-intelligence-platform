@@ -141,16 +141,13 @@ from app.routes.autonomous_intelligence_dashboard import (
     autonomous_intelligence_dashboard
 )
 
-
 from app.routes.autonomous_intelligence_command_center import (
     autonomous_intelligence_command_center
 )
 
-
 from app.routes.autonomous_intelligence_memory import (
     autonomous_intelligence_memory
 )
-
 
 from app.routes.autonomous_intelligence_learning import (
     autonomous_intelligence_learning
@@ -167,11 +164,9 @@ from app.routes.autonomous_operating_system import (
     autonomous_operating_system_bp
 )
 
-
 from app.routes.agent_runtime import (
     agent_runtime_bp
 )
-
 
 from app.routes.agent_supervisor import (
     agent_supervisor_bp
@@ -186,6 +181,17 @@ from app.routes.agent_supervisor import (
 
 from app.routes.intelligence_feedback import (
     intelligence_feedback_bp
+)
+
+
+
+# ===============================
+# Autonomous Evaluation Engine v44
+# ===============================
+
+
+from app.routes.intelligence_evaluation import (
+    intelligence_evaluation_bp
 )
 
 
@@ -291,9 +297,14 @@ blueprints = [
     agent_supervisor_bp,
 
 
-    # Decision Feedback Intelligence
+    # Decision Feedback v43
 
-    intelligence_feedback_bp
+    intelligence_feedback_bp,
+
+
+    # Autonomous Evaluation v44
+
+    intelligence_evaluation_bp
 
 ]
 
@@ -326,91 +337,72 @@ def health():
 
 
         "version":
-            "43.0",
+            "44.0",
 
 
-        "services":
-
-
-        {
-
+        "services": {
 
             "database":
                 "connected",
 
-
             "autonomous_intelligence_stack":
                 "active",
-
 
             "dashboard_engine":
                 "active",
 
-
             "command_center":
                 "active",
-
 
             "memory_engine":
                 "active",
 
-
             "learning_engine":
                 "active",
-
 
             "predictive_engine":
                 "active",
 
-
             "strategic_simulation_engine":
                 "active",
-
 
             "validation_engine":
                 "active",
 
-
             "meta_intelligence_layer":
                 "active",
-
 
             "cognitive_layer":
                 "active",
 
-
             "governance_layer":
                 "active",
-
 
             "self_optimization_layer":
                 "active",
 
-
             "evolution_layer":
                 "active",
-
 
             "agent_operating_system":
                 "active",
 
-
             "agent_runtime":
                 "active",
-
 
             "agent_supervisor":
                 "active",
 
-
             "decision_feedback_engine":
+                "active",
+
+            "evaluation_engine":
                 "active"
 
         },
 
 
         "timestamp":
-
             datetime.utcnow().isoformat()
 
     })
@@ -423,7 +415,6 @@ def health():
 
 
 if __name__ == "__main__":
-
 
     app.run(
 
