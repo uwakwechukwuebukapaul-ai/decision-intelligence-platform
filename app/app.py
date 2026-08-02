@@ -65,7 +65,7 @@ from app.routes.career_evolution import career_evolution_bp
 
 
 # =====================================================
-# Memory Routes
+# Memory Intelligence Routes
 # =====================================================
 
 from app.routes.memory import memory_bp
@@ -159,6 +159,13 @@ from app.routes.agent_evolution import agent_evolution_bp
 
 
 
+# =====================================================
+# Agent Optimization Routes
+# =====================================================
+
+from app.routes.agent_optimization import agent_optimization_bp
+
+
 
 # =====================================================
 # Application Metadata
@@ -166,10 +173,9 @@ from app.routes.agent_evolution import agent_evolution_bp
 
 APP_NAME = "Decision Intelligence Platform"
 
-APP_VERSION = "3.7"
+APP_VERSION = "3.8"
 
 APP_STATUS = "running"
-
 
 
 
@@ -195,7 +201,6 @@ app = Flask(
 
 
 
-
 # =====================================================
 # Database Initialization
 # =====================================================
@@ -205,10 +210,6 @@ Base.metadata.create_all(
     bind=engine
 
 )
-
-
-
-
 # =====================================================
 # Blueprint Registry
 # =====================================================
@@ -216,7 +217,9 @@ Base.metadata.create_all(
 BLUEPRINTS = [
 
 
+    # =================================================
     # Core Platform
+    # =================================================
 
     profile_bp,
     analysis_bp,
@@ -230,7 +233,9 @@ BLUEPRINTS = [
 
 
 
+    # =================================================
     # AI Intelligence Layer
+    # =================================================
 
     skill_analysis_bp,
     career_report_bp,
@@ -243,7 +248,9 @@ BLUEPRINTS = [
 
 
 
+    # =================================================
     # Simulation Layer
+    # =================================================
 
     digital_twin_bp,
     career_simulation_bp,
@@ -251,32 +258,42 @@ BLUEPRINTS = [
 
 
 
+    # =================================================
     # Memory Layer
+    # =================================================
 
     memory_bp,
     memory_consolidation_bp,
 
 
 
+    # =================================================
     # Knowledge Layer
+    # =================================================
 
     intelligence_graph_bp,
 
 
 
+    # =================================================
     # Reasoning Layer
+    # =================================================
 
     decision_reasoning_bp,
 
 
 
+    # =================================================
     # Orchestration Layer
+    # =================================================
 
     decision_orchestrator_bp,
 
 
 
+    # =================================================
     # Autonomous Agent Layer
+    # =================================================
 
     agent_runtime_bp,
     agent_tools_bp,
@@ -288,42 +305,40 @@ BLUEPRINTS = [
 
 
 
-    # Multi Agent Layer
+    # =================================================
+    # Multi Agent Intelligence Layer
+    # =================================================
 
     multi_agent_bp,
 
 
 
-    # Communication Layer
+    # =================================================
+    # Agent Communication Layer
+    # =================================================
 
     agent_communication_bp,
 
 
 
-    # Governance Layer
+    # =================================================
+    # Agent Governance Layer
+    # =================================================
 
     agent_governance_bp,
 
 
 
-    # Reflection Layer
+    # =================================================
+    # Agent Self Improvement Layer
+    # =================================================
 
     agent_reflection_bp,
-
-
-
-    # Adaptation Layer
-
     agent_adaptation_bp,
-
-
-
-    # Evolution Layer
-
-    agent_evolution_bp
+    agent_evolution_bp,
+    agent_optimization_bp
 
 ]
-
 
 
 
@@ -344,7 +359,6 @@ for blueprint in BLUEPRINTS:
         print(
             f"Blueprint registration failed: {error}"
         )
-
 
 
 
@@ -376,7 +390,7 @@ def home():
 
         "architecture":
 
-            "Autonomous AI Decision Intelligence Platform",
+            "AI Decision Intelligence Platform",
 
 
 
@@ -391,8 +405,6 @@ def home():
 
             "Memory Intelligence",
 
-            "Memory Consolidation Intelligence",
-
             "Knowledge Graph Intelligence",
 
             "Reasoning Intelligence",
@@ -401,7 +413,41 @@ def home():
 
             "Autonomous Agent Intelligence",
 
-            "Agent Evolution Intelligence"
+            "Self Optimizing Intelligence"
+
+
+        ],
+
+
+
+        "autonomous_cycle":[
+
+
+            "Observe",
+
+            "Retrieve Memory",
+
+            "Consolidate Memory",
+
+            "Reason",
+
+            "Plan",
+
+            "Communicate",
+
+            "Govern",
+
+            "Execute",
+
+            "Learn",
+
+            "Reflect",
+
+            "Adapt",
+
+            "Evolve",
+
+            "Optimize"
 
 
         ],
@@ -418,78 +464,15 @@ def home():
 
             "agents":
 
-                8,
+                6,
 
 
-            "autonomous_cycle":[
+            "architecture":
 
+                "Collaborative Self Improving Autonomous Agent Network"
 
-                "Observe",
-
-                "Retrieve Memory",
-
-                "Consolidate Memory",
-
-                "Reason",
-
-                "Plan",
-
-                "Communicate",
-
-                "Govern",
-
-                "Execute",
-
-                "Learn",
-
-                "Reflect",
-
-                "Adapt",
-
-                "Evolve",
-
-                "Optimize"
-
-
-            ]
 
         },
-
-
-
-        "engines":[
-
-
-            "AI Agent Runtime Engine v1",
-
-            "AI Agent Tool Execution Engine v1",
-
-            "AI Agent Planner Engine v1",
-
-            "AI Agent Supervisor Engine v1",
-
-            "AI Agent Memory Engine v1",
-
-            "AI Agent Learning Engine v1",
-
-            "AI Autonomous Decision Loop Engine v1",
-
-            "AI Multi Agent Coordination Engine v1",
-
-            "AI Agent Communication Engine v1",
-
-            "AI Agent Governance Engine v1",
-
-            "AI Agent Reflection Engine v1",
-
-            "AI Agent Adaptation Engine v1",
-
-            "AI Memory Consolidation Engine v1",
-
-            "AI Agent Evolution Engine v1"
-
-
-        ],
 
 
 
@@ -498,7 +481,6 @@ def home():
             len(BLUEPRINTS)
 
     }
-
 
 
 
@@ -546,7 +528,6 @@ def health():
 
 
 
-
 # =====================================================
 # Platform Information
 # =====================================================
@@ -568,25 +549,6 @@ def platform_info():
             APP_VERSION,
 
 
-        "autonomous_agents":{
-
-
-            "enabled":
-
-                True,
-
-
-            "total_agents":
-
-                8,
-
-
-            "self_improvement":
-
-                "enabled"
-
-        },
-
 
         "modules":[
 
@@ -595,52 +557,73 @@ def platform_info():
 
             "Career Intelligence",
 
-            "Digital Twin Intelligence",
+            "Digital Twin Simulation",
 
             "Decision Memory Intelligence",
 
             "Memory Consolidation Intelligence",
 
-            "Knowledge Graph Intelligence",
+            "Knowledge Graph Reasoning",
 
-            "Decision Reasoning Intelligence",
+            "Decision Reasoning",
 
-            "Decision Orchestration Intelligence",
-
-            "Agent Runtime Intelligence",
-
-            "Agent Planning Intelligence",
-
-            "Agent Supervisor Intelligence",
-
-            "Agent Memory Intelligence",
-
-            "Agent Learning Intelligence",
-
-            "Agent Loop Intelligence",
-
-            "Multi Agent Intelligence",
-
-            "Agent Communication Intelligence",
-
-            "Agent Governance Intelligence",
-
-            "Agent Reflection Intelligence",
-
-            "Agent Adaptation Intelligence",
-
-            "Agent Evolution Intelligence"
+            "Decision Orchestration",
 
 
-        ]
+            "Agent Runtime",
+
+            "Agent Tools",
+
+            "Agent Planner",
+
+            "Agent Supervisor",
+
+            "Agent Memory",
+
+            "Agent Learning",
+
+            "Agent Loop",
+
+            "Multi Agent Coordination",
+
+            "Agent Communication",
+
+            "Agent Governance",
+
+            "Agent Reflection",
+
+            "Agent Adaptation",
+
+            "Agent Evolution",
+
+            "Agent Optimization"
+
+
+        ],
+
+
+
+        "autonomous_intelligence":{
+
+
+            "state":
+
+                "self_optimizing",
+
+
+            "version":
+
+                "3.8"
+
+
+        }
 
     }
 
 
 
-
 # =====================================================
-# Runner
+# Application Runner
 # =====================================================
 
 if __name__ == "__main__":
