@@ -138,7 +138,7 @@ from app.routes.agent_governance import agent_governance_bp
 
 
 # =====================================================
-# Self Improvement Layer
+# Self Improving Intelligence Layer
 # =====================================================
 
 from app.routes.agent_reflection import agent_reflection_bp
@@ -183,12 +183,24 @@ from app.routes.autonomous_mission import (
 
 
 # =====================================================
+# Autonomous Goal Intelligence Layer
+# =====================================================
+
+from app.routes.autonomous_goal import (
+
+    autonomous_goal_bp
+
+)
+
+
+
+# =====================================================
 # Application Metadata
 # =====================================================
 
 APP_NAME = "Decision Intelligence Platform"
 
-APP_VERSION = "4.2"
+APP_VERSION = "4.3"
 
 APP_STATUS = "running"
 
@@ -335,7 +347,7 @@ BLUEPRINTS = [
 
 
     # =================================================
-    # Communication Intelligence
+    # Agent Communication
     # =================================================
 
     agent_communication_bp,
@@ -371,7 +383,7 @@ BLUEPRINTS = [
 
 
     # =================================================
-    # Swarm Intelligence
+    # Agent Swarm Intelligence
     # =================================================
 
     agent_swarm_bp,
@@ -382,7 +394,15 @@ BLUEPRINTS = [
     # Autonomous Mission Intelligence
     # =================================================
 
-    autonomous_mission_bp
+    autonomous_mission_bp,
+
+
+
+    # =================================================
+    # Autonomous Goal Intelligence
+    # =================================================
+
+    autonomous_goal_bp
 
 ]
 # =====================================================
@@ -401,7 +421,6 @@ for blueprint in BLUEPRINTS:
 
 
     except Exception as error:
-
 
         print(
 
@@ -440,13 +459,13 @@ def home():
 
         "architecture":
 
-            "AI Decision Intelligence Platform",
+            "AI Autonomous Decision Intelligence Platform",
 
 
 
         "intelligence_state":
 
-            "Autonomous Collective Swarm Mission Intelligence",
+            "Autonomous Goal Driven Swarm Intelligence",
 
 
 
@@ -475,14 +494,16 @@ def home():
 
             "Swarm Intelligence",
 
-            "Autonomous Mission Intelligence"
+            "Autonomous Mission Intelligence",
+
+            "Autonomous Goal Intelligence"
 
 
         ],
 
 
 
-        "agent_system":{
+        "autonomous_system":{
 
 
             "status":
@@ -492,7 +513,7 @@ def home():
 
             "architecture":
 
-                "Autonomous Multi Agent Swarm Mission Network",
+                "Multi Agent Autonomous Goal Mission Network",
 
 
             "agents":
@@ -500,7 +521,7 @@ def home():
                 6,
 
 
-            "autonomous_cycle":[
+            "cycle":[
 
 
                 "Observe",
@@ -509,13 +530,15 @@ def home():
 
                 "Reason",
 
-                "Plan",
+                "Generate Goals",
 
-                "Communicate",
+                "Prioritize Objectives",
 
-                "Collaborate",
+                "Plan Missions",
 
                 "Execute",
+
+                "Monitor",
 
                 "Learn",
 
@@ -527,17 +550,9 @@ def home():
 
                 "Optimize",
 
-                "Meta Learn",
-
                 "Consensus",
 
-                "Swarm Intelligence",
-
-                "Mission Planning",
-
-                "Mission Execution",
-
-                "Mission Learning"
+                "Swarm Intelligence"
 
 
             ]
@@ -617,7 +632,16 @@ def home():
 
             "Autonomous Mission Monitor",
 
-            "Autonomous Mission Learning Engine"
+            "Autonomous Mission Learning",
+
+
+            "Autonomous Goal Generator",
+
+            "Objective Engine",
+
+            "Priority Engine",
+
+            "Goal Memory Engine"
 
 
         ],
@@ -673,7 +697,7 @@ def health():
 
         "architecture":
 
-            "AI Autonomous Swarm Mission Platform",
+            "Autonomous Goal Mission Swarm Platform",
 
 
         "blueprints":
@@ -757,12 +781,12 @@ def platform_info():
 
             "Collective Intelligence",
 
-            "Consensus Intelligence",
-
             "Agent Swarm Intelligence",
 
 
-            "Autonomous Mission Intelligence"
+            "Autonomous Mission Intelligence",
+
+            "Autonomous Goal Intelligence"
 
 
         ],
@@ -784,7 +808,7 @@ def platform_info():
 
             "architecture":
 
-                "Collaborative Autonomous Swarm Mission Network"
+                "Collaborative Autonomous Goal Driven Swarm"
 
 
         }
