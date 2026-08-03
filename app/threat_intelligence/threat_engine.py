@@ -1,94 +1,70 @@
 from datetime import datetime
 
 from .ioc_manager import IOCManager
-from .ioc_enrichment import IOCEnrichment
+from .ioc_enricher import IOCEnricher
 from .reputation_engine import ReputationEngine
-from .feed_connector import FeedConnector
+from .campaign_tracker import CampaignTracker
 from .threat_actor_tracker import ThreatActorTracker
-from .malware_intelligence import MalwareIntelligence
-from .indicator_database import IndicatorDatabase
-from .threat_memory import ThreatMemory
-from .threat_logger import ThreatLogger
+from .malware_tracker import MalwareTracker
+from .intel_memory import IntelMemory
+from .intel_logger import IntelLogger
 
 
 class ThreatIntelligenceEngine:
 
-
     def __init__(self):
 
-        self.ioc = IOCManager()
-        self.enrichment = IOCEnrichment()
+        self.ioc_manager = IOCManager()
+        self.enricher = IOCEnricher()
         self.reputation = ReputationEngine()
-        self.feeds = FeedConnector()
+        self.campaign = CampaignTracker()
         self.actor = ThreatActorTracker()
-        self.malware = MalwareIntelligence()
-        self.database = IndicatorDatabase()
-        self.memory = ThreatMemory()
-        self.logger = ThreatLogger()
+        self.malware = MalwareTracker()
+        self.memory = IntelMemory()
+        self.logger = IntelLogger()
 
 
-    def analyze(self, event):
+    def analyze(self, threat):
 
-        ioc_result = self.ioc.extract(event)
+        iocs = self.ioc_manager.extract(threat)
 
-        enrichment_result = self.enrichment.enrich(
-            ioc_result
+        enrichment = self.enricher.enrich(iocs)
+
+        reputation = self.reputation.check(
+            enrichment
         )
 
-        reputation_result = self.reputation.score(
-            ioc_result
+        campaign = self.campaign.track(
+            threat
         )
 
-        feed_result = self.feeds.lookup(
-            event
+        actor = self.actor.identify(
+            threat
         )
 
-        actor_result = self.actor.analyze(
-            event
+        malware = self.malware.identify(
+            threat
         )
 
-        malware_result = self.malware.analyze(
-            event
+        memory = self.memory.store(
+            threat
         )
 
-        database_result = self.database.store(
-            ioc_result
-        )
-
-        memory_result = self.memory.store(
-            event
-        )
-
-        log_result = self.logger.record(
-            event
+        log = self.logger.log(
+            threat
         )
 
 
         return {
-
             "status": "completed",
-
-            "event": event,
-
-            "ioc_analysis": ioc_result,
-
-            "enrichment": enrichment_result,
-
-            "reputation": reputation_result,
-
-            "feeds": feed_result,
-
-            "threat_actor": actor_result,
-
-            "malware": malware_result,
-
-            "indicator_database": database_result,
-
-            "memory": memory_result,
-
-            "log": log_result,
-
-            "created_at":
-                datetime.utcnow().isoformat()
-
+            "threat": threat,
+            "iocs": iocs,
+            "enrichment": enrichment,
+            "reputation": reputation,
+            "campaign": campaign,
+            "threat_actor": actor,
+            "malware": malware,
+            "memory": memory,
+            "log": log,
+            "created_at": datetime.utcnow().isoformat()
         }

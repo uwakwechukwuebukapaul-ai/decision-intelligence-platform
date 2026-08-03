@@ -1,47 +1,34 @@
 from datetime import datetime
-import re
+import uuid
 
 
 class IOCManager:
 
 
-    def extract(self, event):
-
-        ips = re.findall(
-            r"\b(?:\d{1,3}\.){3}\d{1,3}\b",
-            event
-        )
-
-        domains = re.findall(
-            r"\b[a-zA-Z0-9.-]+\.(?:com|net|org|xyz|ru|top)\b",
-            event
-        )
-
+    def extract(self, threat):
 
         indicators = []
 
-        indicators.extend(
-            ips
-        )
+        text = threat.lower()
 
-        indicators.extend(
-            domains
-        )
+
+        if "powershell" in text:
+            indicators.append({
+                "id": f"IOC-{uuid.uuid4().hex[:6].upper()}",
+                "type": "Technique",
+                "value": "PowerShell"
+            })
+
+
+        if "ransomware" in text:
+            indicators.append({
+                "id": f"IOC-{uuid.uuid4().hex[:6].upper()}",
+                "type": "Malware",
+                "value": "Ransomware"
+            })
 
 
         return {
-
-            "indicators":
-                indicators,
-
-            "types":
-                [
-                    "IP Address",
-                    "Domain",
-                    "Hash"
-                ],
-
-            "timestamp":
-                datetime.utcnow().isoformat()
-
+            "indicators": indicators,
+            "timestamp": datetime.utcnow().isoformat()
         }

@@ -2,28 +2,16 @@ from datetime import datetime
 
 
 class CampaignTracker:
-    """
-    Tracks threat campaigns.
-    """
 
 
-    def track(
-        self,
-        event
-    ):
+    def track(self, threat):
 
         return {
-
-            "campaign":
-                "Unknown Threat Campaign",
-
-            "event":
-                event,
-
-            "status":
-                "MONITORING",
-
-            "timestamp":
-                datetime.utcnow().isoformat()
-
+            "campaign": "Ransomware Campaign Analysis",
+            "activity": [
+                "Initial Access",
+                "Execution",
+                "Impact"
+            ],
+            "timestamp": datetime.utcnow().isoformat()
         }

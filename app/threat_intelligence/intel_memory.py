@@ -1,10 +1,8 @@
 from datetime import datetime
+import uuid
 
 
 class IntelMemory:
-    """
-    Stores intelligence records.
-    """
 
 
     def __init__(self):
@@ -12,34 +10,27 @@ class IntelMemory:
         self.records = []
 
 
-    def store(
-        self,
-        record
-    ):
+    def store(self, threat):
 
-        entry = {
+        record = {
 
-            "record":
-                record,
+            "memory_id":
+            f"INTEL-{uuid.uuid4().hex[:8].upper()}",
+
+            "threat": threat,
+
+            "stored": [
+                "IOC intelligence",
+                "Threat actors",
+                "Campaign history",
+                "Malware intelligence"
+            ],
 
             "timestamp":
-                datetime.utcnow().isoformat()
-
+            datetime.utcnow().isoformat()
         }
 
-        self.records.append(entry)
 
-        return entry
+        self.records.append(record)
 
-
-    def get_history(self):
-
-        return {
-
-            "records":
-                self.records,
-
-            "count":
-                len(self.records)
-
-        }
+        return record

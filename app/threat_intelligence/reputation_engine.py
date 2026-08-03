@@ -4,23 +4,20 @@ from datetime import datetime
 class ReputationEngine:
 
 
-    def score(self, iocs):
+    def check(self, enrichment):
 
         risk = "low"
 
-        if iocs["indicators"]:
-            risk = "high"
+
+        if len(
+            enrichment["enriched_indicators"]
+        ) >= 2:
+
+            risk = "critical"
 
 
         return {
-
-            "risk_score":
-                85 if risk == "high" else 10,
-
-            "reputation":
-                risk,
-
-            "timestamp":
-                datetime.utcnow().isoformat()
-
+            "reputation": risk,
+            "confidence": "high",
+            "timestamp": datetime.utcnow().isoformat()
         }
