@@ -3,33 +3,19 @@ from datetime import datetime
 
 class ResponseMemory:
 
-
-
     def __init__(self):
+        self.history = []
 
-        self.history=[]
+    def store(self, incident):
 
-
-
-    def store(self,response):
-
-
-        record={
-
-            "response":response,
-
-            "timestamp":
-                datetime.utcnow().isoformat()
-
+        record = {
+            "incident": incident,
+            "stored_at": datetime.utcnow().isoformat()
         }
-
 
         self.history.append(record)
 
-
         return record
-
-
 
     def get_history(self):
 

@@ -1,18 +1,5 @@
-"""
-Sentinel DNA Incident Response Platform
-
-Capabilities:
-- Incident creation
-- Case management
-- Evidence tracking
-- Timeline reconstruction
-- Analyst workflow
-- Severity classification
-- Automated reporting
-"""
-
-from .incident_engine import IncidentEngine
+from .response_engine import IncidentResponseEngine
 
 __all__ = [
-    "IncidentEngine"
+    "IncidentResponseEngine"
 ]
