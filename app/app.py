@@ -236,6 +236,20 @@ from app.routes.intelligence_orchestration import (
 from app.routes.intelligence_control_plane import (
     intelligence_control_plane_bp
 )
+
+
+
+# ===============================
+# Agent Management Layer v48
+# ===============================
+
+
+from app.routes.agent_management import (
+    agent_management_bp
+)
+
+
+
 # ===============================
 # Flask Application
 # ===============================
@@ -264,6 +278,7 @@ Base.metadata.create_all(
 
 
 blueprints = [
+
 
     # ===========================
     # Autonomous Intelligence Core
@@ -374,9 +389,21 @@ blueprints = [
     # ===========================
 
 
-    intelligence_control_plane_bp
+    intelligence_control_plane_bp,
+
+
+
+    # ===========================
+    # Agent Management v48
+    # ===========================
+
+
+    agent_management_bp
 
 ]
+
+
+
 # ===============================
 # Register Blueprints
 # ===============================
@@ -387,10 +414,7 @@ for blueprint in blueprints:
     app.register_blueprint(
         blueprint
     )
-
-
-
-# ===============================
+    # ===============================
 # Health Endpoint
 # ===============================
 
@@ -413,7 +437,7 @@ def health():
 
 
         "version":
-            "47.0",
+            "48.0",
 
 
         "services": {
@@ -504,6 +528,10 @@ def health():
 
 
             "control_plane":
+                "active",
+
+
+            "agent_management_engine":
                 "active"
 
         },
@@ -514,6 +542,9 @@ def health():
             datetime.utcnow().isoformat()
 
     })
+
+
+
 # ===============================
 # Run Application
 # ===============================
