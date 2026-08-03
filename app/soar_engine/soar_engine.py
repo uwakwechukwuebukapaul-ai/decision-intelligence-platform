@@ -1,106 +1,67 @@
 from datetime import datetime
 
-
 from .playbook_manager import PlaybookManager
-from .action_engine import ActionEngine
-from .approval_manager import ApprovalManager
-from .automation_executor import AutomationExecutor
-from .workflow_orchestrator import WorkflowOrchestrator
+from .automation_engine import AutomationEngine
+from .action_executor import ActionExecutor
 from .integration_manager import IntegrationManager
+from .approval_manager import ApprovalManager
+from .workflow_orchestrator import WorkflowOrchestrator
 from .soar_memory import SOARMemory
-
+from .soar_logger import SOARLogger
 
 
 class SOAREngine:
-    """
-    Sentinel DNA Autonomous SOAR Engine.
-    """
-
 
     def __init__(self):
-
         self.playbooks = PlaybookManager()
-
-        self.actions = ActionEngine()
-
-        self.approvals = ApprovalManager()
-
-        self.executor = AutomationExecutor()
-
-        self.workflow = WorkflowOrchestrator()
-
+        self.automation = AutomationEngine()
+        self.executor = ActionExecutor()
         self.integrations = IntegrationManager()
-
+        self.approvals = ApprovalManager()
+        self.workflow = WorkflowOrchestrator()
         self.memory = SOARMemory()
+        self.logger = SOARLogger()
 
+    def execute(self, incident):
 
+        playbook = self.playbooks.select(incident)
 
-    def execute(
-        self,
-        incident
-    ):
+        automation = self.automation.analyze(incident)
 
-
-        playbook = self.playbooks.get_playbook(
-            incident
+        actions = self.executor.prepare(
+            automation
         )
 
-
-        actions = self.actions.generate(
-            incident
-        )
-
+        integrations = self.integrations.connect()
 
         approval = self.approvals.check(
-            actions["actions"][0]
+            actions
         )
 
-
-        execution = self.executor.execute(
-            actions["actions"][0]
+        workflow = self.workflow.create(
+            incident,
+            actions
         )
 
+        memory = self.memory.store(
+            incident,
+            actions
+        )
 
-        workflow = self.workflow.orchestrate(
+        log = self.logger.log(
             incident
         )
 
-
-        result = {
-
-            "status":
-                "completed",
-
-            "incident":
-                incident,
-
-            "playbook":
-                playbook,
-
-            "actions":
-                actions,
-
-            "approval":
-                approval,
-
-            "execution":
-                execution,
-
-            "workflow":
-                workflow,
-
-            "integrations":
-                self.integrations.available_services(),
-
-            "created_at":
-                datetime.utcnow().isoformat()
-
+        return {
+            "status": "completed",
+            "incident": incident,
+            "playbook": playbook,
+            "automation": automation,
+            "actions": actions,
+            "integrations": integrations,
+            "approval": approval,
+            "workflow": workflow,
+            "memory": memory,
+            "log": log,
+            "created_at": datetime.utcnow().isoformat()
         }
-
-
-        self.memory.store(
-            result
-        )
-
-
-        return result

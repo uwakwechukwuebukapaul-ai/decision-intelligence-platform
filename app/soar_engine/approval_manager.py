@@ -2,40 +2,12 @@ from datetime import datetime
 
 
 class ApprovalManager:
-    """
-    Controls human approval requirements.
-    """
 
-
-    def check(
-        self,
-        action
-    ):
-
-
-        approval_required = True
-
-
-        if "isolate" in action.lower():
-
-            approval_required = True
-
-
+    def check(self, actions):
 
         return {
-
-            "action":
-                action,
-
-            "approval_required":
-                approval_required,
-
-            "status":
-                "PENDING_APPROVAL"
-                if approval_required
-                else "APPROVED",
-
-            "timestamp":
-                datetime.utcnow().isoformat()
-
+            "approval_required": True,
+            "approved_by": "SOC Analyst",
+            "status": "pending",
+            "timestamp": datetime.utcnow().isoformat()
         }

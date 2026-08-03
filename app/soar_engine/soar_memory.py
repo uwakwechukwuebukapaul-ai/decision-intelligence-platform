@@ -1,49 +1,18 @@
+import uuid
 from datetime import datetime
 
 
 class SOARMemory:
-    """
-    Stores automation history and executed actions.
-    """
 
-
-    def __init__(self):
-
-        self.executions = []
-
-
-
-    def store(
-        self,
-        execution
-    ):
-
-        record = {
-
-            "execution":
-                execution,
-
-            "timestamp":
-                datetime.utcnow().isoformat()
-
-        }
-
-
-        self.executions.append(record)
-
-
-        return record
-
-
-
-    def history(self):
+    def store(self, incident, actions):
 
         return {
-
-            "executions":
-                self.executions,
-
-            "count":
-                len(self.executions)
-
+            "memory_id": f"SOAR-{uuid.uuid4().hex[:8].upper()}",
+            "incident": incident,
+            "stored": [
+                "Response actions",
+                "Playbook execution",
+                "Automation history"
+            ],
+            "timestamp": datetime.utcnow().isoformat()
         }

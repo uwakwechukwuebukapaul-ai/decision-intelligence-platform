@@ -2,41 +2,19 @@ from datetime import datetime
 
 
 class WorkflowOrchestrator:
-    """
-    Controls SOAR workflow execution.
-    """
 
-
-    def orchestrate(
-        self,
-        incident
-    ):
-
+    def create(self, incident, actions):
 
         return {
-
-            "incident":
-                incident,
-
-            "workflow":
-                [
-
-                    "Detection received",
-
-                    "Playbook selected",
-
-                    "Approval evaluated",
-
-                    "Actions executed",
-
-                    "Audit recorded"
-
-                ],
-
-            "status":
-                "completed",
-
-            "timestamp":
-                datetime.utcnow().isoformat()
-
+            "workflow": [
+                "Detection",
+                "Investigation",
+                "Containment",
+                "Response",
+                "Recovery"
+            ],
+            "incident": incident,
+            "actions": actions["actions"],
+            "status": "ready_for_execution",
+            "timestamp": datetime.utcnow().isoformat()
         }
