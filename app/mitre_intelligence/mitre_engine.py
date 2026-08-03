@@ -1,62 +1,124 @@
 from datetime import datetime
 
 from .technique_mapper import TechniqueMapper
-from .tactic_analyzer import TacticAnalyzer
-from .group_tracker import GroupTracker
-from .software_tracker import SoftwareTracker
-from .attack_navigator import AttackNavigator
+from .tactic_mapper import TacticMapper
+from .attack_chain_builder import AttackChainBuilder
 from .coverage_analyzer import CoverageAnalyzer
+from .detection_mapper import DetectionMapper
 from .mitre_memory import MITREMemory
+from .mitre_logger import MITRELogger
+
 
 
 class MITREIntelligenceEngine:
 
+
     def __init__(self):
-        self.technique_mapper = TechniqueMapper()
-        self.tactic_analyzer = TacticAnalyzer()
-        self.group_tracker = GroupTracker()
-        self.software_tracker = SoftwareTracker()
-        self.navigator = AttackNavigator()
+
+        self.techniques = TechniqueMapper()
+
+        self.tactics = TacticMapper()
+
+        self.attack_chain = AttackChainBuilder()
+
         self.coverage = CoverageAnalyzer()
+
+        self.detection = DetectionMapper()
+
         self.memory = MITREMemory()
 
+        self.logger = MITRELogger()
 
-    def analyze(self, incident):
 
-        techniques = self.technique_mapper.map(incident)
 
-        tactics = self.tactic_analyzer.analyze(
-            techniques
+    def analyze(self, event):
+
+
+        techniques = self.techniques.map(
+            event
         )
 
-        groups = self.group_tracker.identify(
-            incident
+
+        tactics = self.tactics.map(
+            event
         )
 
-        software = self.software_tracker.identify(
-            incident
+
+        chain = self.attack_chain.build(
+            event
         )
 
-        navigator = self.navigator.build(
-            techniques
-        )
 
         coverage = self.coverage.analyze(
             techniques
         )
 
-        result = {
-            "status": "completed",
-            "incident": incident,
-            "techniques": techniques,
-            "tactics": tactics,
-            "groups": groups,
-            "software": software,
-            "navigator": navigator,
-            "coverage": coverage,
-            "created_at": datetime.now().isoformat()
+
+        detections = self.detection.map(
+            techniques
+        )
+
+
+        memory = self.memory.store(
+            event
+        )
+
+
+        log = self.logger.log(
+            event
+        )
+
+
+        return {
+
+
+            "status":
+
+                "completed",
+
+
+            "event":
+
+                event,
+
+
+            "techniques":
+
+                techniques,
+
+
+            "tactics":
+
+                tactics,
+
+
+            "attack_chain":
+
+                chain,
+
+
+            "coverage":
+
+                coverage,
+
+
+            "detections":
+
+                detections,
+
+
+            "memory":
+
+                memory,
+
+
+            "log":
+
+                log,
+
+
+            "created_at":
+
+                datetime.utcnow().isoformat()
+
         }
-
-        self.memory.store(result)
-
-        return result

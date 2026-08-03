@@ -1,16 +1,39 @@
+import uuid
+from datetime import datetime
+
+
 class MITREMemory:
 
 
-    def __init__(self):
+    def store(self, event):
 
-        self.history = []
+        return {
+
+            "memory_id":
+
+                "MITRE-"
+                + uuid.uuid4().hex[:8].upper(),
 
 
-    def store(self, data):
+            "event":
 
-        self.history.append(data)
+                event,
 
 
-    def get_history(self):
+            "stored":
 
-        return self.history
+            [
+
+                "Techniques",
+                "Tactics",
+                "Attack Chains",
+                "Detection Coverage"
+
+            ],
+
+
+            "timestamp":
+
+                datetime.utcnow().isoformat()
+
+        }
