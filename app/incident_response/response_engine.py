@@ -1,59 +1,85 @@
 from datetime import datetime
 
-from .containment_manager import ContainmentManager
+from .incident_manager import IncidentManager
+from .containment_engine import ContainmentEngine
 from .eradication_engine import EradicationEngine
 from .recovery_manager import RecoveryManager
 from .forensics_engine import ForensicsEngine
-from .timeline_reconstructor import TimelineReconstructor
-from .incident_reporter import IncidentReporter
-from .lessons_learned import LessonsLearned
+from .communication_manager import CommunicationManager
 from .response_memory import ResponseMemory
+from .response_logger import ResponseLogger
 
 
 class IncidentResponseEngine:
 
     def __init__(self):
-        self.forensics = ForensicsEngine()
-        self.containment = ContainmentManager()
+
+        self.incident_manager = IncidentManager()
+        self.containment = ContainmentEngine()
         self.eradication = EradicationEngine()
         self.recovery = RecoveryManager()
-        self.timeline = TimelineReconstructor()
-        self.reporter = IncidentReporter()
-        self.lessons = LessonsLearned()
+        self.forensics = ForensicsEngine()
+        self.communication = CommunicationManager()
         self.memory = ResponseMemory()
+        self.logger = ResponseLogger()
+
 
     def respond(self, incident):
 
-        forensic_result = self.forensics.collect(incident)
-
-        containment_result = self.containment.contain(incident)
-
-        eradication_result = self.eradication.remove(incident)
-
-        recovery_result = self.recovery.restore(incident)
-
-        timeline_result = self.timeline.reconstruct(incident)
-
-        report_result = self.reporter.generate(
-            incident,
-            forensic_result,
-            containment_result,
-            recovery_result
+        incident_data = self.incident_manager.create_incident(
+            incident
         )
 
-        lessons_result = self.lessons.analyze(incident)
+        containment = self.containment.contain(
+            incident
+        )
 
-        self.memory.store(incident)
+        eradication = self.eradication.eradicate(
+            incident
+        )
+
+        recovery = self.recovery.recover(
+            incident
+        )
+
+        forensics = self.forensics.analyze(
+            incident
+        )
+
+        communication = self.communication.notify(
+            incident
+        )
+
+        memory = self.memory.store(
+            incident
+        )
+
+        log = self.logger.log(
+            incident
+        )
 
         return {
+
             "status": "completed",
+
             "incident": incident,
-            "forensics": forensic_result,
-            "containment": containment_result,
-            "eradication": eradication_result,
-            "recovery": recovery_result,
-            "timeline": timeline_result,
-            "report": report_result,
-            "lessons_learned": lessons_result,
+
+            "incident_record": incident_data,
+
+            "containment": containment,
+
+            "eradication": eradication,
+
+            "recovery": recovery,
+
+            "forensics": forensics,
+
+            "communication": communication,
+
+            "memory": memory,
+
+            "log": log,
+
             "created_at": datetime.utcnow().isoformat()
+
         }

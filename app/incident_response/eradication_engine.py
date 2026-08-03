@@ -3,16 +3,15 @@ from datetime import datetime
 
 class EradicationEngine:
 
-    def remove(self, incident):
+    def eradicate(self, incident):
 
         return {
             "incident": incident,
             "actions": [
                 "Remove malware",
-                "Delete persistence mechanisms",
                 "Patch vulnerabilities",
-                "Reset compromised credentials"
+                "Delete persistence mechanisms"
             ],
-            "status": "ERADICATION_READY",
+            "status": "eradication_completed",
             "timestamp": datetime.utcnow().isoformat()
         }

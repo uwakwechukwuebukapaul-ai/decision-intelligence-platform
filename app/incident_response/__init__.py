@@ -1,5 +1,11 @@
-from .response_engine import IncidentResponseEngine
+"""
+Sentinel DNA Incident Response Engine
 
-__all__ = [
-    "IncidentResponseEngine"
-]
+Handles:
+- Incident lifecycle management
+- Containment
+- Eradication
+- Recovery
+- Digital forensics
+- Communication workflows
+"""

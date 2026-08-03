@@ -3,16 +3,15 @@ from datetime import datetime
 
 class ForensicsEngine:
 
-    def collect(self, incident):
+    def analyze(self, incident):
 
         return {
             "incident": incident,
-            "evidence": [
-                "System artifacts",
-                "Network activity",
-                "User activity logs",
-                "Malware indicators"
+            "forensics": [
+                "Collect evidence",
+                "Analyze artifacts",
+                "Identify attack timeline"
             ],
-            "status": "EVIDENCE_COLLECTED",
+            "status": "forensics_completed",
             "timestamp": datetime.utcnow().isoformat()
         }

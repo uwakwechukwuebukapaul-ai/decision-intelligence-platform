@@ -1,22 +1,18 @@
 from datetime import datetime
+import uuid
 
 
 class ResponseMemory:
 
-    def __init__(self):
-        self.history = []
-
     def store(self, incident):
 
-        record = {
+        return {
+            "memory_id": f"RESP-{uuid.uuid4().hex[:8].upper()}",
             "incident": incident,
-            "stored_at": datetime.utcnow().isoformat()
+            "stored": [
+                "Response actions",
+                "Containment history",
+                "Recovery information"
+            ],
+            "timestamp": datetime.utcnow().isoformat()
         }
-
-        self.history.append(record)
-
-        return record
-
-    def get_history(self):
-
-        return self.history
