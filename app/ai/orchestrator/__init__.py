@@ -1,5 +1,6 @@
 """
-AI Engine Orchestrator
+Autonomous Intelligence Orchestrator
 
-Central controller for all AI intelligence modules.
+Coordinates all intelligence layers
+into a unified decision pipeline.
 """
