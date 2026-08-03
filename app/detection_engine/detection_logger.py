@@ -1,20 +1,19 @@
-from datetime import datetime
 import uuid
+from datetime import datetime
 
 
 class DetectionLogger:
 
 
-    def record(self, event):
+    def record(self,event):
 
         return {
 
             "log_id":
-                "DETLOG-" +
-                str(uuid.uuid4())[:8].upper(),
+                "DETECTLOG-" + str(uuid.uuid4())[:8].upper(),
 
             "event":
-                "Detection executed",
+                "Detection engine executed",
 
             "data":
                 event,

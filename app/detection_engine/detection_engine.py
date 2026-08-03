@@ -1,11 +1,10 @@
 from datetime import datetime
 
-from .rule_engine import RuleEngine
-from .behavior_analyzer import BehaviorAnalyzer
-from .signature_engine import SignatureEngine
-from .correlation_engine import CorrelationEngine
-from .alert_generator import AlertGenerator
-from .mitre_mapper import MITREMapper
+from .rule_manager import RuleManager
+from .rule_generator import RuleGenerator
+from .behavior_detector import BehaviorDetector
+from .sigma_mapper import SigmaMapper
+from .alert_tuner import AlertTuner
 from .detection_memory import DetectionMemory
 from .detection_logger import DetectionLogger
 
@@ -13,70 +12,51 @@ from .detection_logger import DetectionLogger
 class DetectionEngine:
 
     def __init__(self):
-
-        self.rules = RuleEngine()
-        self.behavior = BehaviorAnalyzer()
-        self.signature = SignatureEngine()
-        self.correlation = CorrelationEngine()
-        self.alert = AlertGenerator()
-        self.mitre = MITREMapper()
+        self.rules = RuleManager()
+        self.generator = RuleGenerator()
+        self.behavior = BehaviorDetector()
+        self.sigma = SigmaMapper()
+        self.tuner = AlertTuner()
         self.memory = DetectionMemory()
         self.logger = DetectionLogger()
 
 
     def detect(self, event):
 
-        rule_result = self.rules.evaluate(event)
+        behavior = self.behavior.analyze(event)
 
-        behavior_result = self.behavior.analyze(event)
+        rules = self.rules.match(event)
 
-        signature_result = self.signature.match(event)
+        generated = self.generator.generate(event)
 
-        correlation_result = self.correlation.correlate(
-            event
-        )
+        sigma = self.sigma.map(event)
 
-        mitre_result = self.mitre.map(
-            event
-        )
-
-        alert_result = self.alert.generate(
-            event,
-            rule_result
-        )
-
-        memory_result = self.memory.store(
-            event
-        )
-
-        log_result = self.logger.record(
-            event
-        )
+        tuning = self.tuner.optimize(event)
 
 
-        return {
+        result = {
 
             "status": "completed",
 
             "event": event,
 
-            "rule_analysis": rule_result,
+            "behavior_analysis": behavior,
 
-            "behavior_analysis": behavior_result,
+            "matched_rules": rules,
 
-            "signature_analysis": signature_result,
+            "generated_detection": generated,
 
-            "correlation": correlation_result,
+            "sigma_mapping": sigma,
 
-            "mitre": mitre_result,
+            "alert_tuning": tuning,
 
-            "alert": alert_result,
+            "memory": self.memory.store(event),
 
-            "memory": memory_result,
+            "log": self.logger.record(event),
 
-            "log": log_result,
-
-            "created_at":
-                datetime.utcnow().isoformat()
+            "created_at": datetime.utcnow().isoformat()
 
         }
+
+
+        return result

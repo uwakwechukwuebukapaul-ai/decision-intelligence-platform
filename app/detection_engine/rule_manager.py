@@ -4,49 +4,31 @@ from datetime import datetime
 class RuleManager:
 
 
-    def __init__(self):
+    def match(self, event):
 
-        self.rules = [
-
-            {
-                "name": "Suspicious Login Detection",
-                "severity": "high"
-            },
-
-            {
-                "name": "Malware Execution Detection",
-                "severity": "critical"
-            },
-
-            {
-                "name": "Privilege Escalation Detection",
-                "severity": "high"
-            }
-
-        ]
+        rules = []
 
 
-    def evaluate(self,event):
+        if "PowerShell" in event:
 
-        matches=[]
+            rules.append(
+                "Detect PowerShell Execution"
+            )
 
 
-        text=str(event).lower()
+        if "ransomware" in event.lower():
 
-
-        for rule in self.rules:
-
-            if "login" in text or "malware" in text or "admin" in text:
-
-                matches.append(rule)
+            rules.append(
+                "Detect Ransomware Activity"
+            )
 
 
         return {
 
-            "matched_rules":matches,
+            "matched_rules": rules,
 
-            "count":len(matches),
+            "count": len(rules),
 
-            "timestamp":datetime.utcnow().isoformat()
+            "timestamp": datetime.utcnow().isoformat()
 
         }
