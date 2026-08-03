@@ -1,56 +1,47 @@
 from datetime import datetime
+import re
 
 
 class IOCManager:
-    """
-    Indicator of Compromise management.
-    """
 
 
-    def __init__(self):
+    def extract(self, event):
 
-        self.iocs = []
+        ips = re.findall(
+            r"\b(?:\d{1,3}\.){3}\d{1,3}\b",
+            event
+        )
+
+        domains = re.findall(
+            r"\b[a-zA-Z0-9.-]+\.(?:com|net|org|xyz|ru|top)\b",
+            event
+        )
 
 
+        indicators = []
 
-    def add_ioc(
-        self,
-        indicator,
-        ioc_type
-    ):
+        indicators.extend(
+            ips
+        )
 
-        ioc = {
+        indicators.extend(
+            domains
+        )
 
-            "indicator":
-                indicator,
 
-            "type":
-                ioc_type,
+        return {
 
-            "status":
-                "ACTIVE",
+            "indicators":
+                indicators,
 
-            "created_at":
+            "types":
+                [
+                    "IP Address",
+                    "Domain",
+                    "Hash"
+                ],
+
+            "timestamp":
                 datetime.utcnow().isoformat()
 
         }
-
-
-        self.iocs.append(ioc)
-
-        return ioc
-
-
-
-    def search(
-        self,
-        indicator
-    ):
-
-        return [
-
-            ioc
-            for ioc in self.iocs
-            if indicator in ioc["indicator"]
-
-        ]

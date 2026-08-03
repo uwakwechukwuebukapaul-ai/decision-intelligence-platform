@@ -2,48 +2,23 @@ from datetime import datetime
 
 
 class ReputationEngine:
-    """
-    Calculates IOC reputation.
-    """
 
 
-    def analyze(
-        self,
-        indicator
-    ):
+    def score(self, iocs):
 
-        malicious = any(
+        risk = "low"
 
-            keyword in indicator.lower()
-
-            for keyword in [
-
-                "malware",
-                "ransomware",
-                "phishing",
-                "evil"
-
-            ]
-
-        )
-
-
-        score = 90 if malicious else 10
+        if iocs["indicators"]:
+            risk = "high"
 
 
         return {
 
-            "indicator":
-                indicator,
+            "risk_score":
+                85 if risk == "high" else 10,
 
-            "reputation_score":
-                score,
-
-            "classification":
-                "malicious"
-                if malicious
-                else
-                "unknown",
+            "reputation":
+                risk,
 
             "timestamp":
                 datetime.utcnow().isoformat()
