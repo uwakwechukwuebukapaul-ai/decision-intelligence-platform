@@ -1,16 +1,12 @@
 from datetime import datetime
 
 
-
 class DecisionEngine:
 
 
-    def decide(
-
+    def make_decision(
         self,
-
         reasoning
-
     ):
 
 
@@ -47,3 +43,14 @@ class DecisionEngine:
                 datetime.utcnow().isoformat()
 
         }
+
+
+    # Backward compatibility
+    def decide(
+        self,
+        reasoning
+    ):
+
+        return self.make_decision(
+            reasoning
+        )

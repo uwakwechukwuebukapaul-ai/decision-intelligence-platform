@@ -1,18 +1,13 @@
 from datetime import datetime
 
 
-
 class ReasoningEngine:
 
+    def __init__(self):
+        pass
 
-    def reason(
 
-        self,
-
-        context
-
-    ):
-
+    def reason(self, context):
 
         mission = context.get(
             "mission",
@@ -44,23 +39,27 @@ class ReasoningEngine:
             )
 
 
+        confidence = min(
+            50 + len(reasoning) * 20,
+            95
+        )
+
+
         return {
 
-            "reasoning":
+            "reasoning": reasoning,
 
-                reasoning,
-
-
-            "confidence":
-
-                min(
-                    50 + len(reasoning) * 20,
-                    95
-                ),
-
+            "confidence": confidence,
 
             "timestamp":
-
                 datetime.utcnow().isoformat()
 
         }
+
+
+    # compatibility method
+    # supports older v63 brain calls
+
+    def analyze(self, context):
+
+        return self.reason(context)
