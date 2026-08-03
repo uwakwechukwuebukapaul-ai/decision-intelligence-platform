@@ -1,7 +1,9 @@
 """
-AI Career Simulation Engine
+AI SOC Automation Simulation Layer
 
-Predicts possible career growth paths
-based on skills, labs, certifications,
-and learning progress.
+Purpose:
+- Simulate SOC transformation scenarios
+- Compare manual vs AI-assisted SOC operations
+- Estimate ROI impact
+- Measure automation benefits
 """
