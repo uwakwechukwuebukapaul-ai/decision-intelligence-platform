@@ -1,70 +1,52 @@
-def generate_learning_plan(
-    career,
-    missing_skills,
-    level="Beginner"
-):
-
-
-    roadmap = []
-
-
-    week = 1
+from app.ai.memory.memory_engine import MemoryEngine
+from app.ai.learning.pattern_analyzer import PatternAnalyzer
+from app.ai.learning.improvement_engine import ImprovementEngine
 
 
 
-    for skill in missing_skills:
+class LearningEngine:
 
 
-        roadmap.append({
+    def __init__(self):
 
-            "week": week,
+        self.memory = MemoryEngine()
 
-            "skill": skill,
+        self.patterns = PatternAnalyzer()
 
-            "objective":
-            f"Master {skill} fundamentals",
-
-            "tasks":[
-
-                f"Study {skill}",
-
-                f"Complete practical labs for {skill}",
-
-                f"Build project related to {skill}"
-
-            ],
-
-            "status":
-            "Not Started"
-
-        })
-
-
-        week += 1
+        self.improver = ImprovementEngine()
 
 
 
-
-    return {
-
-
-        "engine":
-        "AI Learning Roadmap Intelligence v1",
+    def learn(
+        self,
+        agent_id
+    ):
 
 
-        "career":
-        career,
+        context = self.memory.recall(
+            agent_id
+        )
 
 
-        "level":
-        level,
+        analysis = self.patterns.analyze(
+            context["memories"]
+        )
 
 
-        "duration_weeks":
-        len(roadmap),
+        improvement = self.improver.generate_improvement(
+            analysis["patterns"]
+        )
 
 
-        "roadmap":
-        roadmap
+        return {
 
-    }
+            "agent_id":
+                agent_id,
+
+            "analysis":
+                analysis,
+
+            "improvement":
+                improvement
+
+        }

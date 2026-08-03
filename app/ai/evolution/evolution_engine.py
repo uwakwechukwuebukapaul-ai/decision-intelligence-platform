@@ -1,92 +1,68 @@
-from app.ai.evolution.evolution_database import EVOLUTION_DATABASE
+from datetime import datetime
 
 
-
-def calculate_growth(
-    career,
-    completed_skills
-):
+class EvolutionEngine:
 
 
-    career_data = EVOLUTION_DATABASE.get(
-        career,
-        {}
-    )
+    def evolve(self, agent_profile, learning_result):
 
 
-    required = career_data.get(
-        "skills",
-        []
-    )
+        improvements = []
 
 
-    completed = [
-        skill.lower()
-        for skill in completed_skills
-    ]
-
-
-
-    achieved = []
-
-    remaining = []
-
-
-
-    for skill in required:
-
-
-        if skill in completed:
-
-            achieved.append(skill)
-
-        else:
-
-            remaining.append(skill)
-
-
-
-    if required:
-
-        readiness = round(
-            (len(achieved) / len(required))
-            * 100
+        patterns = learning_result.get(
+            "analysis",
+            {}
+        ).get(
+            "patterns",
+            []
         )
 
-    else:
 
-        readiness = 0
+        for pattern in patterns:
 
+            if "Artificial intelligence" in pattern:
 
-
-    return {
-
-
-        "career":
-
-            career,
+                improvements.append(
+                    "Improve AI reasoning capability"
+                )
 
 
-        "readiness_score":
+            if "Market" in pattern:
 
-            readiness,
-
-
-        "skills_completed":
-
-            achieved,
+                improvements.append(
+                    "Upgrade market intelligence capability"
+                )
 
 
-        "skills_remaining":
+            if "Security" in pattern:
 
-            remaining,
-
-
-        "growth_status":
-
-            "Improving"
-            if readiness < 100
-            else "Career Ready"
+                improvements.append(
+                    "Increase security analysis capability"
+                )
 
 
-    }
+        return {
+
+            "agent":
+
+                agent_profile.get(
+                    "name"
+                ),
+
+
+            "evolution_status":
+
+                "completed",
+
+
+            "upgrades":
+
+                improvements,
+
+
+            "timestamp":
+
+                datetime.utcnow().isoformat()
+
+        }

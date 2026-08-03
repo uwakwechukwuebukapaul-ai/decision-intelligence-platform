@@ -1,47 +1,107 @@
-from app.ai.agent_management.agent_registry import AgentRegistry
-from app.ai.agent_management.lifecycle_manager import LifecycleManager
+"""
+Agent Manager v49
+
+Controls:
+- Agent creation
+- Workforce bootstrap
+- Registry integration
+"""
+
+
+from app.ai.agent_management.agent_registry import (
+    AgentRegistry
+)
+
+
+from app.ai.agents.decision_agent import (
+    DecisionAgent
+)
+
+
+from app.ai.agents.forecasting_agent import (
+    ForecastingAgent
+)
+
+
+from app.ai.agents.research_agent import (
+    ResearchAgent
+)
 
 
 
 class AgentManager:
-    """
-    Central manager for autonomous agent operations.
-    """
 
 
     def __init__(self):
 
         self.registry = AgentRegistry()
 
-        self.lifecycle = LifecycleManager()
+
+        self.bootstrap_workforce()
 
 
 
-    def register_agent(self, agent_id, metadata=None):
+    # =====================================
+    # Bootstrap Default Workforce
+    # =====================================
 
-        return self.registry.register_agent(
-            agent_id,
-            metadata
-        )
+    def bootstrap_workforce(self):
+
+        agents = [
+
+            DecisionAgent(),
+
+            ForecastingAgent(),
+
+            ResearchAgent()
+
+        ]
 
 
+        for agent in agents:
+
+            profile = agent.profile()
+
+
+            self.registry.register_agent(
+
+                name=profile["name"],
+
+                agent_type=profile["type"],
+
+                capabilities=profile["capabilities"]
+
+            )
+
+
+
+    # =====================================
+    # List Agents
+    # =====================================
 
     def list_agents(self):
 
-        return self.registry.get_agents()
+        return self.registry.list_agents()
 
 
 
-    def start_agent(self, agent_id):
+    # =====================================
+    # Create Agent
+    # =====================================
 
-        return self.lifecycle.start_agent(
-            agent_id
-        )
+    def create_agent(
+        self,
+        name,
+        agent_type,
+        capabilities=None
+    ):
 
+        return self.registry.register_agent(
 
+            name,
 
-    def stop_agent(self, agent_id):
+            agent_type,
 
-        return self.lifecycle.stop_agent(
-            agent_id
+            capabilities
+
         )
