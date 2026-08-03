@@ -18,6 +18,9 @@ from app.models.agent_message import AgentMessage
 
 from app.models.consensus_result import ConsensusResult
 
+from app.models.knowledge_node import KnowledgeNode
+
+from app.models.knowledge_relationship import KnowledgeRelationship
 
 
 __all__ = [
@@ -40,6 +43,10 @@ __all__ = [
 
     "AgentMessage",
 
-    "ConsensusResult"
+    "ConsensusResult",
+
+    "KnowledgeNode",
+
+    "KnowledgeRelationship"
 
 ]
