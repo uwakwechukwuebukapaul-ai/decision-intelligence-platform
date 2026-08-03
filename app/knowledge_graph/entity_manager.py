@@ -1,45 +1,49 @@
-from .security_entity import SecurityEntity
+from datetime import datetime
+import uuid
 
 
 class EntityManager:
 
-    def __init__(self):
-        self.entities = []
-        self.creator = SecurityEntity()
 
     def extract(self, event):
 
         entities = []
 
-        keywords = {
-            "ransomware": "Malware",
-            "powershell": "Technique",
-            "finance": "Business Asset",
-            "server": "Infrastructure",
-            "actor": "Threat Actor",
-            "database": "Data Asset"
-        }
 
-        text = event.lower()
+        if "powershell" in event.lower():
 
-        for keyword, entity_type in keywords.items():
+            entities.append({
 
-            if keyword in text:
+                "id": f"ENTITY-{uuid.uuid4().hex[:6].upper()}",
+                "type": "Technique",
+                "value": "PowerShell"
 
-                entity = self.creator.create(
-                    keyword,
-                    entity_type,
-                    "high"
-                )
+            })
 
-                self.entities.append(entity)
-                entities.append(entity)
+
+        if "ransomware" in event.lower():
+
+            entities.append({
+
+                "id": f"ENTITY-{uuid.uuid4().hex[:6].upper()}",
+                "type": "Malware",
+                "value": "Ransomware"
+
+            })
+
+
+        entities.append({
+
+            "id": f"ENTITY-{uuid.uuid4().hex[:6].upper()}",
+            "type": "Asset",
+            "value": "Enterprise Server"
+
+        })
+
 
         return {
+
             "entities": entities,
-            "count": len(entities)
+            "timestamp": datetime.utcnow().isoformat()
+
         }
-
-    def get_entities(self):
-
-        return self.entities

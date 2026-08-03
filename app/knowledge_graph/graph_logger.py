@@ -4,11 +4,21 @@ import uuid
 
 class GraphLogger:
 
-    def log(self, incident):
+
+    def record(self,event):
 
         return {
-            "log_id": f"GRAPHLOG-{uuid.uuid4().hex[:8].upper()}",
-            "event": "Knowledge graph analysis executed",
-            "incident": incident,
-            "timestamp": datetime.utcnow().isoformat()
+
+            "log_id":
+                f"GRAPHLOG-{uuid.uuid4().hex[:8].upper()}",
+
+            "event":
+                "Knowledge graph generated",
+
+            "data":
+                event,
+
+            "timestamp":
+                datetime.utcnow().isoformat()
+
         }

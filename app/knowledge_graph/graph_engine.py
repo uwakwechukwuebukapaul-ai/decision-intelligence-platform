@@ -1,11 +1,11 @@
 from datetime import datetime
 
-from .node_manager import NodeManager
-from .relationship_engine import RelationshipEngine
-from .entity_resolver import EntityResolver
-from .attack_graph import AttackGraph
-from .threat_graph import ThreatGraph
-from .asset_graph import AssetGraph
+from .entity_manager import EntityManager
+from .relationship_mapper import RelationshipMapper
+from .attack_graph_builder import AttackGraphBuilder
+from .threat_relationships import ThreatRelationshipManager
+from .asset_mapper import AssetMapper
+from .campaign_graph import CampaignGraph
 from .graph_memory import GraphMemory
 from .graph_logger import GraphLogger
 
@@ -13,59 +13,75 @@ from .graph_logger import GraphLogger
 class KnowledgeGraphEngine:
 
     def __init__(self):
-        self.nodes = NodeManager()
-        self.relationships = RelationshipEngine()
-        self.entities = EntityResolver()
-        self.attack_graph = AttackGraph()
-        self.threat_graph = ThreatGraph()
-        self.asset_graph = AssetGraph()
+
+        self.entities = EntityManager()
+        self.relationships = RelationshipMapper()
+        self.attack_graph = AttackGraphBuilder()
+        self.threats = ThreatRelationshipManager()
+        self.assets = AssetMapper()
+        self.campaigns = CampaignGraph()
         self.memory = GraphMemory()
         self.logger = GraphLogger()
 
-    def analyze(self, incident):
 
-        entities = self.entities.resolve(incident)
+    def build(self, event):
 
-        nodes = self.nodes.create_nodes(
-            incident,
+        entities = self.entities.extract(event)
+
+        relationships = self.relationships.map(
             entities
         )
 
-        relationships = self.relationships.create_relationships(
-            nodes
+        attack_graph = self.attack_graph.build(
+            event
         )
 
-        attack_path = self.attack_graph.build(
-            incident
+        threat_relationships = self.threats.analyze(
+            event
         )
 
-        threat_context = self.threat_graph.build(
-            incident
+        assets = self.assets.map(
+            event
         )
 
-        asset_context = self.asset_graph.build(
-            incident
+        campaign = self.campaigns.track(
+            event
         )
+
 
         memory = self.memory.store(
-            incident,
+            event,
             relationships
         )
 
-        log = self.logger.log(
-            incident
+        log = self.logger.record(
+            event
         )
 
+
         return {
+
             "status": "completed",
-            "incident": incident,
+
+            "event": event,
+
             "entities": entities,
-            "nodes": nodes,
+
             "relationships": relationships,
-            "attack_graph": attack_path,
-            "threat_graph": threat_context,
-            "asset_graph": asset_context,
+
+            "attack_graph": attack_graph,
+
+            "threat_relationships": threat_relationships,
+
+            "assets": assets,
+
+            "campaign_graph": campaign,
+
             "memory": memory,
+
             "log": log,
-            "created_at": datetime.utcnow().isoformat()
+
+            "created_at":
+                datetime.utcnow().isoformat()
+
         }
