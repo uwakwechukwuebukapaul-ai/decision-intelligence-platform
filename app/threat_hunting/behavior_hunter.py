@@ -4,43 +4,32 @@ from datetime import datetime
 class BehaviorHunter:
 
 
-    def search(self, intelligence):
+    def analyze(self, event):
+
+        behaviors = []
 
 
-        indicators=[]
+        if "powershell" in event.lower():
+
+            behaviors.append(
+                "Command execution"
+            )
 
 
-        text=str(intelligence).lower()
+        if "ransomware" in event.lower():
 
-
-        behaviours=[
-
-            "credential theft",
-
-            "lateral movement",
-
-            "privilege escalation",
-
-            "data encryption"
-
-        ]
-
-
-        for item in behaviours:
-
-            if item.split()[0] in text:
-
-                indicators.append(item)
-
+            behaviors.append(
+                "Encryption activity"
+            )
 
 
         return {
 
-            "behaviors_detected":
-                indicators,
+            "behaviors":
+                behaviors,
 
-            "count":
-                len(indicators),
+            "risk":
+                "high",
 
             "timestamp":
                 datetime.utcnow().isoformat()

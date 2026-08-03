@@ -1,36 +1,34 @@
 from datetime import datetime
+import uuid
 
 
 class HuntMemory:
 
 
-    def __init__(self):
+    def store(self, event):
 
-        self.history=[]
+        return {
 
+            "memory_id":
+                "HUNT-" +
+                str(uuid.uuid4())[:8].upper(),
 
+            "event":
+                event,
 
-    def store(self, hunt):
+            "stored_patterns":
 
+                [
 
-        record={
+                    "Behavior patterns",
 
-            "hunt":
-                hunt,
+                    "Attack techniques",
+
+                    "Investigation results"
+
+                ],
 
             "timestamp":
                 datetime.utcnow().isoformat()
 
         }
-
-
-        self.history.append(record)
-
-
-        return record
-
-
-
-    def get_history(self):
-
-        return self.history

@@ -4,43 +4,25 @@ from datetime import datetime
 class IOCHunter:
 
 
-    def search(self, intelligence):
+    def search(self, event):
+
+        matches = []
 
 
-        text=str(intelligence)
+        if "malicious" in event.lower():
 
-
-        found=[]
-
-
-        indicators=[
-
-            "ip",
-
-            "domain",
-
-            "hash",
-
-            "malware"
-
-        ]
-
-
-        for item in indicators:
-
-            if item in text.lower():
-
-                found.append(item)
-
+            matches.append(
+                "Suspicious indicator detected"
+            )
 
 
         return {
 
-            "ioc_types_found":
-                found,
+            "matched_indicators":
+                matches,
 
-            "count":
-                len(found),
+            "status":
+                "completed",
 
             "timestamp":
                 datetime.utcnow().isoformat()

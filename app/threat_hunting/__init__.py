@@ -1,5 +1,5 @@
-from .hunter_engine import ThreatHunterEngine
+from .hunting_engine import ThreatHuntingEngine
 
 __all__ = [
-    "ThreatHunterEngine"
+    "ThreatHuntingEngine"
 ]
