@@ -3,44 +3,31 @@ from datetime import datetime
 
 class HypothesisGenerator:
 
+    def generate(self, threat):
 
-    def generate(self, intelligence):
+        hypotheses = []
 
-
-        text = str(intelligence).lower()
-
-
-        hypotheses=[]
-
+        text = threat.lower()
 
         if "ransomware" in text:
+            hypotheses.extend([
+                "Possible ransomware execution",
+                "Possible data encryption activity",
+                "Possible lateral movement"
+            ])
 
+        if "powershell" in text:
             hypotheses.append(
-                "Threat actor may have gained initial access before encryption activity"
+                "Suspicious PowerShell execution"
             )
-
-
-        if "phishing" in text:
-
-            hypotheses.append(
-                "Compromised credentials may be used for unauthorized access"
-            )
-
 
         if not hypotheses:
-
             hypotheses.append(
-                "Unknown threat behaviour requires investigation"
+                "Unknown threat behavior requiring investigation"
             )
 
-
         return {
-
             "hypotheses": hypotheses,
-
             "count": len(hypotheses),
-
-            "timestamp":
-                datetime.utcnow().isoformat()
-
+            "timestamp": datetime.utcnow().isoformat()
         }

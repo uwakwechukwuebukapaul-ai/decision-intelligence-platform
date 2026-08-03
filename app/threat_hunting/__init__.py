@@ -1,17 +1,5 @@
-"""
-Sentinel DNA Autonomous Threat Hunting Engine
-
-Capabilities:
-- Hunt hypothesis generation
-- MITRE ATT&CK mapping
-- Query generation
-- IOC hunting
-- Behavioral hunting
-- Investigation tracking
-"""
-
-from .hunt_engine import HuntEngine
+from .hunter_engine import ThreatHunterEngine
 
 __all__ = [
-    "HuntEngine"
+    "ThreatHunterEngine"
 ]
