@@ -12,6 +12,13 @@ from app.models.mission_result import MissionResult
 
 from app.models.agent_memory import AgentMemory
 
+from app.models.team import Team
+
+from app.models.agent_message import AgentMessage
+
+from app.models.consensus_result import ConsensusResult
+
+
 
 __all__ = [
 
@@ -27,6 +34,12 @@ __all__ = [
 
     "MissionResult",
 
-    "AgentMemory"
+    "AgentMemory",
+
+    "Team",
+
+    "AgentMessage",
+
+    "ConsensusResult"
 
 ]
