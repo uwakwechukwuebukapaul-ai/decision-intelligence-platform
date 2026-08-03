@@ -4,41 +4,34 @@ from datetime import datetime
 class BehaviorAnalyzer:
 
 
-    def analyze(self,event):
+    def analyze(self, event):
 
-        text=str(event).lower()
+        patterns = []
 
+        text = event.lower()
 
-        suspicious=False
+        if "powershell" in text:
+            patterns.append(
+                "Command execution"
+            )
 
-
-        indicators=[
-
-            "ransomware",
-            "powershell",
-            "credential",
-            "lateral movement"
-
-        ]
-
-
-        detected=[]
-
-
-        for item in indicators:
-
-            if item in text:
-
-                suspicious=True
-                detected.append(item)
+        if "ransomware" in text:
+            patterns.append(
+                "Encryption behavior"
+            )
 
 
         return {
 
-            "suspicious_behavior":suspicious,
+            "patterns":
+                patterns,
 
-            "indicators":detected,
+            "risk":
+                "high"
+                if patterns
+                else "low",
 
-            "timestamp":datetime.utcnow().isoformat()
+            "timestamp":
+                datetime.utcnow().isoformat()
 
         }

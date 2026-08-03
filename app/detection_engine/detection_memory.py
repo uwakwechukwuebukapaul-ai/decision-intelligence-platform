@@ -1,31 +1,29 @@
 from datetime import datetime
+import uuid
 
 
 class DetectionMemory:
 
 
-    def __init__(self):
+    def store(self, event):
 
-        self.history=[]
+        return {
 
+            "memory_id":
+                "DET-" +
+                str(uuid.uuid4())[:8].upper(),
 
-    def store(self,data):
+            "event":
+                event,
 
-        record={
+            "stored_patterns":
+                [
+                    "Detection rule",
+                    "Attack behavior",
+                    "MITRE mapping"
+                ],
 
-            "data":data,
-
-            "timestamp":datetime.utcnow().isoformat()
+            "timestamp":
+                datetime.utcnow().isoformat()
 
         }
-
-
-        self.history.append(record)
-
-
-        return record
-
-
-    def get_history(self):
-
-        return self.history

@@ -4,37 +4,31 @@ from datetime import datetime
 class SignatureEngine:
 
 
-    def detect(self,event):
+    def match(self, event):
 
-        signatures=[
+        indicators = []
 
-            "malware",
-            "trojan",
+        keywords = [
             "ransomware",
-            "backdoor"
-
+            "malware",
+            "powershell"
         ]
 
+        for keyword in keywords:
 
-        matched=[]
-
-
-        text=str(event).lower()
-
-
-        for signature in signatures:
-
-            if signature in text:
-
-                matched.append(signature)
+            if keyword in event.lower():
+                indicators.append(keyword)
 
 
         return {
 
-            "signatures_found":matched,
+            "indicators":
+                indicators,
 
-            "count":len(matched),
+            "matched":
+                len(indicators) > 0,
 
-            "timestamp":datetime.utcnow().isoformat()
+            "timestamp":
+                datetime.utcnow().isoformat()
 
         }
