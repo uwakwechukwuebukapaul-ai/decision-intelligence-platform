@@ -3,14 +3,10 @@ from datetime import datetime
 
 class ActionExecutor:
 
-    def prepare(self, automation):
+    def execute(self, action):
 
         return {
-            "actions": [
-                "Isolate affected system",
-                "Block malicious indicators",
-                "Notify SOC team"
-            ],
-            "execution_mode": "approval_required",
+            "action": action,
+            "execution_status": "completed",
             "timestamp": datetime.utcnow().isoformat()
         }

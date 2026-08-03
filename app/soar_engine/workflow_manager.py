@@ -1,20 +1,18 @@
 from datetime import datetime
 
 
-class WorkflowOrchestrator:
+class WorkflowManager:
 
-    def create(self, incident, actions):
+    def manage(self, incident):
 
         return {
             "workflow": [
                 "Detection",
-                "Investigation",
+                "Analysis",
                 "Containment",
-                "Response",
                 "Recovery"
             ],
             "incident": incident,
-            "actions": actions["actions"],
-            "status": "ready_for_execution",
+            "workflow_status": "active",
             "timestamp": datetime.utcnow().isoformat()
         }

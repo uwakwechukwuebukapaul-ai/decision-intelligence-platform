@@ -1,13 +1,13 @@
 from datetime import datetime
 
 
-class ApprovalManager:
+class ApprovalEngine:
 
-    def check(self, actions):
+    def approve(self, action):
 
         return {
-            "approval_required": True,
+            "action": action,
+            "approval": "approved",
             "approved_by": "SOC Analyst",
-            "status": "pending",
             "timestamp": datetime.utcnow().isoformat()
         }
