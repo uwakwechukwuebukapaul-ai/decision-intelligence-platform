@@ -2,43 +2,38 @@ from datetime import datetime
 
 
 class ThreatView:
-    """
-    Displays threat intelligence summary.
-    """
 
 
-    def analyze(self, event):
-
-        text = str(event).lower()
-
+    def generate(self, incident):
 
         threats = []
 
 
-        if "ransomware" in text:
+        if "ransomware" in incident.lower():
+
             threats.append(
-                "Ransomware Campaign"
+                "Ransomware activity"
             )
 
 
-        if "phishing" in text:
+        if "powershell" in incident.lower():
+
             threats.append(
-                "Phishing Activity"
+                "PowerShell execution"
             )
 
 
         return {
 
             "identified_threats":
+
                 threats,
 
-            "count":
-                len(threats),
+            "threat_level":
 
-            "framework":
-                "MITRE ATT&CK",
+                "critical",
 
             "timestamp":
-                datetime.utcnow().isoformat()
 
+                datetime.utcnow().isoformat()
         }

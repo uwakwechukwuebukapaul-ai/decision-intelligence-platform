@@ -2,17 +2,15 @@ from datetime import datetime
 
 from .incident_view import IncidentView
 from .threat_view import ThreatView
-from .risk_visualizer import RiskVisualizer
-from .ai_insights import AIInsights
-from .metrics_engine import MetricsEngine
+from .risk_dashboard import RiskDashboard
+from .investigation_view import InvestigationView
+from .analytics_view import AnalyticsView
 from .dashboard_memory import DashboardMemory
+from .dashboard_logger import DashboardLogger
 
 
 
-class DashboardEngine:
-    """
-    Sentinel DNA Enterprise SOC Command Center.
-    """
+class SOCDashboardEngine:
 
 
     def __init__(self):
@@ -21,55 +19,95 @@ class DashboardEngine:
 
         self.threats = ThreatView()
 
-        self.risk = RiskVisualizer()
+        self.risk = RiskDashboard()
 
-        self.ai = AIInsights()
+        self.investigation = InvestigationView()
 
-        self.metrics = MetricsEngine()
+        self.analytics = AnalyticsView()
 
         self.memory = DashboardMemory()
 
+        self.logger = DashboardLogger()
 
 
-    def generate(self, event):
+
+    def generate(self, incident):
 
 
-        dashboard = {
-
-            "status":
-                "completed",
-
-            "event":
-                event,
+        incident_view = self.incidents.generate(
+            incident
+        )
 
 
-            "incident_view":
-                self.incidents.analyze(event),
+        threat_view = self.threats.generate(
+            incident
+        )
 
 
-            "threat_view":
-                self.threats.analyze(event),
+        risk_view = self.risk.calculate(
+            incident
+        )
 
+
+        investigation_view = self.investigation.generate(
+            incident
+        )
+
+
+        analytics_view = self.analytics.generate(
+            incident
+        )
+
+
+        dashboard_data = {
+
+            "incident":
+                incident_view,
+
+            "threats":
+                threat_view,
 
             "risk":
-                self.risk.calculate(event),
+                risk_view,
 
+            "investigation":
+                investigation_view,
 
-            "ai_insights":
-                self.ai.generate(event),
-
-
-            "metrics":
-                self.metrics.generate(),
-
-
-            "created_at":
-                datetime.utcnow().isoformat()
+            "analytics":
+                analytics_view
 
         }
 
 
-        self.memory.store(dashboard)
+        memory = self.memory.store(
+            dashboard_data
+        )
 
 
-        return dashboard
+        log = self.logger.log(
+            incident
+        )
+
+
+        return {
+
+            "status":
+
+                "completed",
+
+            "dashboard":
+
+                dashboard_data,
+
+            "memory":
+
+                memory,
+
+            "log":
+
+                log,
+
+            "created_at":
+
+                datetime.utcnow().isoformat()
+        }

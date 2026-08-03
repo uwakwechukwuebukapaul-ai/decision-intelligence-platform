@@ -2,43 +2,27 @@ from datetime import datetime
 
 
 class IncidentView:
-    """
-    Generates incident intelligence view.
-    """
 
 
-    def analyze(self, incident):
-
-        text = str(incident).lower()
-
-        severity = "low"
-
-        if "ransomware" in text:
-            severity = "critical"
-
-        elif "malware" in text:
-            severity = "high"
-
+    def generate(self, incident):
 
         return {
 
-            "incident": incident,
+            "incident":
 
-            "severity": severity,
+                incident,
 
-            "status": "ACTIVE",
+            "severity":
 
-            "recommended_actions": [
+                "critical"
+                if "ransomware" in incident.lower()
+                else "medium",
 
-                "Collect evidence",
+            "status":
 
-                "Validate indicators",
-
-                "Begin containment"
-
-            ],
+                "active investigation",
 
             "timestamp":
-                datetime.utcnow().isoformat()
 
+                datetime.utcnow().isoformat()
         }
