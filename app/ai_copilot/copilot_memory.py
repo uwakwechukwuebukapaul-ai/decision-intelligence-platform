@@ -1,48 +1,26 @@
+import uuid
 from datetime import datetime
 
 
 class CopilotMemory:
-    """
-    Stores analyst interactions and AI decisions.
-    """
 
-
-    def __init__(self):
-
-        self.history = []
-
-
-    def store(
-        self,
-        interaction
-    ):
-
-        record = {
-
-            "interaction":
-                interaction,
-
-            "timestamp":
-                datetime.utcnow().isoformat()
-
-        }
-
-
-        self.history.append(record)
-
-
-        return record
-
-
-
-    def get_history(self):
+    def store(self, incident):
 
         return {
 
-            "records":
-                self.history,
+            "memory_id":
+                f"COPILOT-{uuid.uuid4().hex[:8].upper()}",
 
-            "count":
-                len(self.history)
+            "incident":
+                incident,
 
+            "stored":
+                [
+                    "Analyst conversation",
+                    "Investigation context",
+                    "Recommendations"
+                ],
+
+            "timestamp":
+                datetime.utcnow().isoformat()
         }

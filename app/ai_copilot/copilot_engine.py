@@ -1,82 +1,95 @@
 from datetime import datetime
 
-from .query_interpreter import QueryInterpreter
-from .security_reasoner import SecurityReasoner
-from .investigation_assistant import InvestigationAssistant
-from .response_assistant import ResponseAssistant
-from .knowledge_engine import KnowledgeEngine
+from .prompt_manager import PromptManager
+from .analyst_assistant import AnalystAssistant
+from .incident_explainer import IncidentExplainer
+from .query_assistant import QueryAssistant
+from .report_assistant import ReportAssistant
+from .recommendation_assistant import RecommendationAssistant
 from .copilot_memory import CopilotMemory
+from .copilot_logger import CopilotLogger
 
 
-class CopilotEngine:
-    """
-    Sentinel DNA AI Security Copilot Engine.
-    """
+
+class AICopilotEngine:
 
 
     def __init__(self):
 
-        self.query = QueryInterpreter()
-
-        self.reasoner = SecurityReasoner()
-
-        self.investigator = InvestigationAssistant()
-
-        self.response = ResponseAssistant()
-
-        self.knowledge = KnowledgeEngine()
-
+        self.prompt = PromptManager()
+        self.analyst = AnalystAssistant()
+        self.explainer = IncidentExplainer()
+        self.query = QueryAssistant()
+        self.report = ReportAssistant()
+        self.recommendation = RecommendationAssistant()
         self.memory = CopilotMemory()
+        self.logger = CopilotLogger()
 
 
 
-    def assist(
-        self,
-        request
-    ):
-
-        interpretation = self.query.interpret(
-            request
-        )
+    def assist(self, incident):
 
 
-        reasoning = self.reasoner.reason(
-            request
-        )
+        return {
 
 
-        investigation = self.investigator.assist(
-            request
-        )
+            "status":
+                "completed",
 
 
-        response = self.response.recommend(
-            request
-        )
+            "incident":
+                incident,
 
 
-        result = {
+            "prompt":
+                self.prompt.build_prompt(
+                    incident
+                ),
 
-            "status": "completed",
 
-            "request": request,
+            "analyst_assistance":
+                self.analyst.assist(
+                    incident
+                ),
 
-            "interpretation": interpretation,
 
-            "reasoning": reasoning,
+            "incident_explanation":
+                self.explainer.explain(
+                    incident
+                ),
 
-            "investigation": investigation,
 
-            "response": response,
+            "query_generation":
+                self.query.generate(
+                    incident
+                ),
 
-            "created_at": datetime.utcnow().isoformat()
+
+            "report_generation":
+                self.report.generate(
+                    incident
+                ),
+
+
+            "recommendations":
+                self.recommendation.recommend(
+                    incident
+                ),
+
+
+            "memory":
+                self.memory.store(
+                    incident
+                ),
+
+
+            "log":
+                self.logger.log(
+                    incident
+                ),
+
+
+            "created_at":
+                datetime.utcnow().isoformat()
 
         }
-
-
-        self.memory.store(
-            result
-        )
-
-
-        return result
