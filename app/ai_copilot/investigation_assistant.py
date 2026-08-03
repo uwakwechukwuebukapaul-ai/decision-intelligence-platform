@@ -2,40 +2,16 @@ from datetime import datetime
 
 
 class InvestigationAssistant:
-    """
-    Helps analysts investigate incidents.
-    """
 
-
-    def assist(
-        self,
-        incident
-    ):
+    def assist(self, incident):
 
         return {
-
-            "incident":
-                incident,
-
-
-            "investigation_steps":
-
-                [
-
-                    "Collect evidence",
-
-                    "Analyze indicators of compromise",
-
-                    "Review user activity",
-
-                    "Map attacker behaviour",
-
-                    "Determine containment strategy"
-
-                ],
-
-
-            "timestamp":
-                datetime.utcnow().isoformat()
-
+            "investigation_steps": [
+                "Analyze security evidence",
+                "Review attack timeline",
+                "Identify affected assets",
+                "Validate attacker behavior"
+            ],
+            "incident": incident,
+            "timestamp": datetime.utcnow().isoformat()
         }

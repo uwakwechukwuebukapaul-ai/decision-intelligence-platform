@@ -1,28 +1,32 @@
 from datetime import datetime
 
-from .prompt_manager import PromptManager
-from .analyst_assistant import AnalystAssistant
-from .incident_explainer import IncidentExplainer
+from .conversation_manager import ConversationManager
+from .investigation_assistant import InvestigationAssistant
+from .explanation_engine import ExplanationEngine
+from .recommendation_engine import RecommendationEngine
 from .query_assistant import QueryAssistant
-from .report_assistant import ReportAssistant
-from .recommendation_assistant import RecommendationAssistant
 from .copilot_memory import CopilotMemory
 from .copilot_logger import CopilotLogger
 
 
 
-class AICopilotEngine:
+class SecurityCopilotEngine:
 
 
     def __init__(self):
 
-        self.prompt = PromptManager()
-        self.analyst = AnalystAssistant()
-        self.explainer = IncidentExplainer()
+        self.conversation = ConversationManager()
+
+        self.investigation = InvestigationAssistant()
+
+        self.explanation = ExplanationEngine()
+
+        self.recommendation = RecommendationEngine()
+
         self.query = QueryAssistant()
-        self.report = ReportAssistant()
-        self.recommendation = RecommendationAssistant()
+
         self.memory = CopilotMemory()
+
         self.logger = CopilotLogger()
 
 
@@ -30,66 +34,70 @@ class AICopilotEngine:
     def assist(self, incident):
 
 
-        return {
+        conversation = self.conversation.manage(
+            incident
+        )
 
+
+        investigation = self.investigation.assist(
+            incident
+        )
+
+
+        explanation = self.explanation.explain(
+            incident
+        )
+
+
+        recommendations = self.recommendation.recommend(
+            incident
+        )
+
+
+        queries = self.query.generate(
+            incident
+        )
+
+
+        memory = self.memory.store(
+            incident
+        )
+
+
+        log = self.logger.log(
+            incident
+        )
+
+
+        return {
 
             "status":
                 "completed",
 
-
             "incident":
                 incident,
 
+            "conversation":
+                conversation,
 
-            "prompt":
-                self.prompt.build_prompt(
-                    incident
-                ),
+            "investigation":
+                investigation,
 
-
-            "analyst_assistance":
-                self.analyst.assist(
-                    incident
-                ),
-
-
-            "incident_explanation":
-                self.explainer.explain(
-                    incident
-                ),
-
-
-            "query_generation":
-                self.query.generate(
-                    incident
-                ),
-
-
-            "report_generation":
-                self.report.generate(
-                    incident
-                ),
-
+            "explanation":
+                explanation,
 
             "recommendations":
-                self.recommendation.recommend(
-                    incident
-                ),
+                recommendations,
 
+            "queries":
+                queries,
 
             "memory":
-                self.memory.store(
-                    incident
-                ),
-
+                memory,
 
             "log":
-                self.logger.log(
-                    incident
-                ),
-
+                log,
 
             "created_at":
                 datetime.utcnow().isoformat()
-
         }

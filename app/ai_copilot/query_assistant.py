@@ -3,20 +3,14 @@ from datetime import datetime
 
 class QueryAssistant:
 
-    def generate(self, incident):
+    def generate(self, question):
 
         return {
-            "queries": [
-                "Search PowerShell execution logs",
-                "Find suspicious process activity",
-                "Identify abnormal network connections",
-                "Review endpoint telemetry"
+            "generated_queries": [
+                "Search related security events",
+                "Find affected assets",
+                "Review attacker behavior"
             ],
-            "formats": [
-                "KQL",
-                "Splunk SPL",
-                "Elastic Query"
-            ],
-            "timestamp":
-                datetime.utcnow().isoformat()
+            "question": question,
+            "timestamp": datetime.utcnow().isoformat()
         }

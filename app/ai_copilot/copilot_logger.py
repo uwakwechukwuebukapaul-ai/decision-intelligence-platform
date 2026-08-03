@@ -4,18 +4,19 @@ from datetime import datetime
 
 class CopilotLogger:
 
-    def log(self, incident):
+    def log(self, query):
 
         return {
 
             "log_id":
-                f"COPLOG-{uuid.uuid4().hex[:8].upper()}",
+                "COPILOTLOG-"
+                + uuid.uuid4().hex[:8].upper(),
 
             "event":
                 "AI Copilot interaction",
 
-            "incident":
-                incident,
+            "query":
+                query,
 
             "timestamp":
                 datetime.utcnow().isoformat()

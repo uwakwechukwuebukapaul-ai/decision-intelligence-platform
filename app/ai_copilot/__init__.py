@@ -1,5 +1,5 @@
-from .copilot_engine import AICopilotEngine
+from .copilot_engine import SecurityCopilotEngine
 
 __all__ = [
-    "AICopilotEngine"
+    "SecurityCopilotEngine"
 ]

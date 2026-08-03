@@ -4,21 +4,22 @@ from datetime import datetime
 
 class CopilotMemory:
 
-    def store(self, incident):
+    def store(self, conversation):
 
         return {
 
             "memory_id":
-                f"COPILOT-{uuid.uuid4().hex[:8].upper()}",
+                "COPILOT-"
+                + uuid.uuid4().hex[:8].upper(),
 
-            "incident":
-                incident,
+            "conversation":
+                conversation,
 
             "stored":
                 [
-                    "Analyst conversation",
+                    "Analyst queries",
                     "Investigation context",
-                    "Recommendations"
+                    "Security decisions"
                 ],
 
             "timestamp":
