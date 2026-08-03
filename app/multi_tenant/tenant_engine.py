@@ -1,98 +1,76 @@
 from datetime import datetime
-import uuid
 
 from .organization_manager import OrganizationManager
-from .user_manager import UserManager
-from .role_manager import RoleManager
-from .permission_engine import PermissionEngine
-from .data_isolation import DataIsolation
+from .tenant_isolation import TenantIsolation
+from .subscription_manager import SubscriptionManager
+from .quota_manager import QuotaManager
+from .data_partition import DataPartition
 from .tenant_memory import TenantMemory
+from .tenant_logger import TenantLogger
 
 
-
-class TenantEngine:
-    """
-    Sentinel DNA Enterprise Multi-Tenant Engine.
-    """
-
+class MultiTenantEngine:
 
     def __init__(self):
 
         self.organizations = OrganizationManager()
-
-        self.users = UserManager()
-
-        self.roles = RoleManager()
-
-        self.permissions = PermissionEngine()
-
-        self.isolation = DataIsolation()
-
+        self.isolation = TenantIsolation()
+        self.subscription = SubscriptionManager()
+        self.quota = QuotaManager()
+        self.partition = DataPartition()
         self.memory = TenantMemory()
+        self.logger = TenantLogger()
 
 
+    def create_tenant(self, organization_name):
 
-    def create_tenant(
-        self,
-        organization_name
-    ):
+        organization = self.organizations.create(
+            organization_name
+        )
 
+        isolation = self.isolation.configure(
+            organization_name
+        )
 
-        tenant = {
+        subscription = self.subscription.assign(
+            organization_name
+        )
 
+        quota = self.quota.allocate(
+            subscription["plan"]
+        )
 
-            "tenant_id":
-                "TEN-" + uuid.uuid4().hex[:8].upper(),
+        partition = self.partition.create(
+            organization_name
+        )
 
+        memory = self.memory.store(
+            organization_name
+        )
 
-            "organization":
-                self.organizations.create(
-                    organization_name
-                ),
-
-
-            "status":
-                "ACTIVE",
-
-
-            "created_at":
-                datetime.utcnow().isoformat()
-
-        }
-
-
-        self.memory.store(tenant)
-
-
-        return tenant
-
-
-
-    def onboard_user(
-        self,
-        tenant_id,
-        name,
-        email,
-        role
-    ):
-
-
-        user = self.users.create_user(
-            name,
-            email,
-            role
+        log = self.logger.record(
+            organization_name
         )
 
 
         return {
 
-            "tenant_id":
-                tenant_id,
+            "status": "completed",
 
-            "user":
-                user,
+            "organization": organization,
 
-            "permissions":
-                self.permissions.get_permissions(role)
+            "isolation": isolation,
 
+            "subscription": subscription,
+
+            "quota": quota,
+
+            "data_partition": partition,
+
+            "memory": memory,
+
+            "log": log,
+
+            "created_at":
+                datetime.utcnow().isoformat()
         }

@@ -3,28 +3,22 @@ import uuid
 
 
 class OrganizationManager:
-    """
-    Enterprise customer organization management.
-    """
 
 
     def create(self, name):
 
-        organization = {
+        return {
 
             "organization_id":
-                "ORG-" + uuid.uuid4().hex[:8].upper(),
+                "ORG-" + str(uuid.uuid4())[:8].upper(),
 
             "name":
                 name,
 
             "status":
-                "ACTIVE",
+                "active",
 
             "created_at":
                 datetime.utcnow().isoformat()
 
         }
-
-
-        return organization

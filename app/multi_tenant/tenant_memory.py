@@ -1,31 +1,28 @@
 from datetime import datetime
+import uuid
 
 
 class TenantMemory:
-    """
-    Stores tenant events and configuration history.
-    """
-
-    def __init__(self):
-
-        self.records = []
 
 
-    def store(self, data):
-
-        record = {
-            "data": data,
-            "timestamp": datetime.utcnow().isoformat()
-        }
-
-        self.records.append(record)
-
-        return record
-
-
-    def get_history(self):
+    def store(self, organization):
 
         return {
-            "records": self.records,
-            "count": len(self.records)
+
+            "memory_id":
+                "TEN-" + str(uuid.uuid4())[:8].upper(),
+
+            "tenant":
+                organization,
+
+            "stored":
+                [
+                    "Organization profile",
+                    "Subscription data",
+                    "Usage history"
+                ],
+
+            "timestamp":
+                datetime.utcnow().isoformat()
+
         }
