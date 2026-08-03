@@ -4,11 +4,30 @@ from datetime import datetime
 class ThreatActorTracker:
 
 
-    def identify(self, threat):
+    def track(self,event):
 
         return {
-            "actor": "Unknown Ransomware Threat Group",
-            "confidence": "medium",
-            "tracking": "Active Investigation",
-            "timestamp": datetime.utcnow().isoformat()
+
+            "actor":
+
+                "Unknown Ransomware Operator",
+
+            "behavior":
+
+                [
+
+                    "PowerShell execution",
+
+                    "Enterprise targeting"
+
+                ],
+
+            "confidence":
+
+                "high",
+
+            "timestamp":
+
+                datetime.utcnow().isoformat()
+
         }

@@ -5,32 +5,34 @@ import uuid
 class IntelMemory:
 
 
-    def __init__(self):
+    def store(self,event,data):
 
-        self.records = []
-
-
-    def store(self, threat):
-
-        record = {
+        return {
 
             "memory_id":
-            f"INTEL-{uuid.uuid4().hex[:8].upper()}",
 
-            "threat": threat,
+                "INTEL-" + str(uuid.uuid4())[:8],
 
-            "stored": [
-                "IOC intelligence",
-                "Threat actors",
-                "Campaign history",
-                "Malware intelligence"
-            ],
+            "event":
+
+                event,
+
+            "stored":
+
+                [
+
+                    "IOC Intelligence",
+
+                    "Threat Actors",
+
+                    "Malware Intelligence",
+
+                    "Campaign Data"
+
+                ],
 
             "timestamp":
-            datetime.utcnow().isoformat()
+
+                datetime.utcnow().isoformat()
+
         }
-
-
-        self.records.append(record)
-
-        return record

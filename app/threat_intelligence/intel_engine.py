@@ -1,112 +1,75 @@
 from datetime import datetime
 
-
 from .ioc_manager import IOCManager
-from .threat_feed_engine import ThreatFeedEngine
-from .reputation_engine import ReputationEngine
-from .actor_tracker import ActorTracker
+from .feed_connector import FeedConnector
+from .threat_actor_tracker import ThreatActorTracker
+from .malware_intelligence import MalwareIntelligence
 from .campaign_tracker import CampaignTracker
-from .threat_graph import ThreatGraph
 from .intel_memory import IntelMemory
+from .intel_logger import IntelLogger
 
 
-
-class IntelligenceEngine:
-    """
-    Sentinel DNA Threat Intelligence Operating System.
-    """
-
+class ThreatIntelligenceEngine:
 
     def __init__(self):
 
         self.ioc = IOCManager()
-
-        self.feeds = ThreatFeedEngine()
-
-        self.reputation = ReputationEngine()
-
-        self.actor = ActorTracker()
-
+        self.feed = FeedConnector()
+        self.actor = ThreatActorTracker()
+        self.malware = MalwareIntelligence()
         self.campaign = CampaignTracker()
 
-        self.graph = ThreatGraph()
-
         self.memory = IntelMemory()
+        self.logger = IntelLogger()
 
 
+    def analyze(self, event):
 
-    def analyze(
-        self,
-        event
-    ):
+        iocs = self.ioc.extract(event)
 
+        feeds = self.feed.enrich(event)
 
-        feed = self.feeds.collect(
-            "Sentinel DNA Intelligence Feed"
-        )
+        actors = self.actor.track(event)
 
+        malware = self.malware.analyze(event)
 
-        reputation = self.reputation.analyze(
-            event
-        )
+        campaigns = self.campaign.identify(event)
 
 
-        actor = self.actor.identify(
-            event
-        )
-
-
-        campaign = self.campaign.track(
-            event
-        )
-
-
-        graph = self.graph.build(
+        memory = self.memory.store(
             event,
-            actor["actors"]
+            {
+                "IOCs": iocs,
+                "Actors": actors,
+                "Malware": malware,
+                "Campaigns": campaigns
+            }
         )
 
 
-        result = {
+        log = self.logger.log(event)
 
 
-            "status":
-                "completed",
+        return {
 
+            "status": "completed",
 
-            "event":
-                event,
+            "event": event,
 
+            "ioc_analysis": iocs,
 
-            "feed":
-                feed,
+            "threat_feeds": feeds,
 
+            "threat_actor": actors,
 
-            "reputation":
-                reputation,
+            "malware": malware,
 
+            "campaign": campaigns,
 
-            "actor":
-                actor,
+            "memory": memory,
 
+            "log": log,
 
-            "campaign":
-                campaign,
-
-
-            "threat_graph":
-                graph,
-
-
-            "created_at":
-                datetime.utcnow().isoformat()
+            "created_at": datetime.utcnow().isoformat()
 
         }
-
-
-        self.memory.store(
-            result
-        )
-
-
-        return result

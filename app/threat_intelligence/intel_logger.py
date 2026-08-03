@@ -5,29 +5,24 @@ import uuid
 class IntelLogger:
 
 
-    def __init__(self):
+    def log(self,event):
 
-        self.logs = []
-
-
-    def log(self, threat):
-
-        record = {
+        return {
 
             "log_id":
-            f"INTLOG-{uuid.uuid4().hex[:8].upper()}",
+
+                "INTELLOG-" + str(uuid.uuid4())[:8],
 
             "event":
-            "Threat intelligence analysis executed",
+
+                "Threat intelligence analysis executed",
 
             "data":
-            threat,
+
+                event,
 
             "timestamp":
-            datetime.utcnow().isoformat()
+
+                datetime.utcnow().isoformat()
+
         }
-
-
-        self.logs.append(record)
-
-        return record

@@ -4,14 +4,30 @@ from datetime import datetime
 class CampaignTracker:
 
 
-    def track(self, threat):
+    def identify(self,event):
 
         return {
-            "campaign": "Ransomware Campaign Analysis",
-            "activity": [
-                "Initial Access",
-                "Execution",
-                "Impact"
-            ],
-            "timestamp": datetime.utcnow().isoformat()
+
+            "campaign":
+
+                "Ransomware Campaign",
+
+            "phases":
+
+                [
+
+                    "Initial Access",
+
+                    "Execution",
+
+                    "Encryption",
+
+                    "Impact"
+
+                ],
+
+            "timestamp":
+
+                datetime.utcnow().isoformat()
+
         }
