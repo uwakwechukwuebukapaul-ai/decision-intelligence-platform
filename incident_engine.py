@@ -4,8 +4,8 @@ from .incident_classifier import IncidentClassifier
 from .containment_planner import ContainmentPlanner
 from .eradication_planner import EradicationPlanner
 from .recovery_planner import RecoveryPlanner
-from .lessons_learned import LessonsLearned
 from .response_coordinator import ResponseCoordinator
+from .lessons_learned import LessonsLearned
 from .response_memory import ResponseMemory
 from .response_logger import ResponseLogger
 
@@ -19,12 +19,10 @@ class IncidentResponseEngine:
         self.containment = ContainmentPlanner()
         self.eradication = EradicationPlanner()
         self.recovery = RecoveryPlanner()
-        self.lessons = LessonsLearned()
-
         self.coordinator = ResponseCoordinator()
+        self.lessons = LessonsLearned()
         self.memory = ResponseMemory()
         self.logger = ResponseLogger()
-
 
 
     def respond(self, incident):
@@ -33,36 +31,29 @@ class IncidentResponseEngine:
             incident
         )
 
-
         containment = self.containment.plan(
             incident
         )
-
 
         eradication = self.eradication.plan(
             incident
         )
 
-
         recovery = self.recovery.plan(
             incident
         )
-
 
         coordination = self.coordinator.coordinate(
             incident
         )
 
-
         lessons = self.lessons.generate(
             incident
         )
 
-
         memory = self.memory.store(
             incident
         )
-
 
         log = self.logger.record(
             incident
@@ -73,49 +64,24 @@ class IncidentResponseEngine:
 
             "status": "completed",
 
-            "incident":
-                incident,
+            "incident": incident,
 
+            "classification": classification,
 
-            "classification":
-                classification,
+            "containment": containment,
 
+            "eradication": eradication,
 
-            "containment":
-                containment,
+            "recovery": recovery,
 
+            "coordination": coordination,
 
-            "eradication":
-                eradication,
+            "lessons_learned": lessons,
 
+            "memory": memory,
 
-            "recovery":
-                recovery,
-
-
-            "coordination":
-                coordination,
-
-
-            "lessons_learned":
-                lessons,
-
-
-            "memory":
-                memory,
-
-
-            "log":
-                log,
-
-
-            "severity":
-                "critical"
-                if "ransomware" in incident.lower()
-                else "medium",
-
+            "log": log,
 
             "created_at":
                 datetime.utcnow().isoformat()
-
         }

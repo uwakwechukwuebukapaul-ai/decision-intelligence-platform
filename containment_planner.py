@@ -3,29 +3,15 @@ from datetime import datetime
 
 class ContainmentPlanner:
 
-
     def plan(self, incident):
 
         return {
-
             "containment_actions": [
-
                 "Isolate affected systems",
-
                 "Block malicious indicators",
-
                 "Disable compromised accounts",
-
                 "Restrict network access"
-
             ],
-
-            "status":
-                "planned",
-
-            "incident":
-                incident,
-
-            "timestamp":
-                datetime.utcnow().isoformat()
+            "status": "planned",
+            "timestamp": datetime.utcnow().isoformat()
         }

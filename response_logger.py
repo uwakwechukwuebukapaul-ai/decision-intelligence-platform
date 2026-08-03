@@ -4,7 +4,6 @@ import uuid
 
 class ResponseLogger:
 
-
     def record(self, incident):
 
         return {
@@ -15,10 +14,9 @@ class ResponseLogger:
             "event":
                 "Incident response executed",
 
-            "incident":
+            "data":
                 incident,
 
             "timestamp":
                 datetime.utcnow().isoformat()
-
         }

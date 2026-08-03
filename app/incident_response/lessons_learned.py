@@ -3,14 +3,30 @@ from datetime import datetime
 
 class LessonsLearned:
 
-    def analyze(self, incident):
+
+    def generate(self, incident):
 
         return {
-            "incident": incident,
-            "recommendations": [
+
+            "review_points": [
+
+                "Analyze attack entry point",
+
                 "Improve detection coverage",
-                "Strengthen security controls",
-                "Update response playbooks"
+
+                "Update incident response playbooks",
+
+                "Strengthen security controls"
+
             ],
-            "timestamp": datetime.utcnow().isoformat()
+
+            "incident":
+                incident,
+
+            "status":
+                "generated",
+
+            "timestamp":
+                datetime.utcnow().isoformat()
+
         }
