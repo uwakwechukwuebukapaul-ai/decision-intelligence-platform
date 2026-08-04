@@ -1,30 +1,94 @@
-from .intelligence_merger import IntelligenceMerger
-from .investigation_builder import InvestigationBuilder
-from .risk_combiner import RiskCombiner
-from .fused_memory import FusedMemory
-from .fused_logger import FusedLogger
+from services.intelligence_fusion.context_builder import ContextBuilder
+from services.intelligence_fusion.intelligence_model import IntelligenceModel
 
 
 class IntelligenceFusionEngine:
     """
-    Sentinel DNA Intelligence Fusion Engine.
+    Intelligence Fusion Layer.
 
-    Combines security intelligence
-    into a unified investigation view.
+    Combines:
+    - Evidence intelligence
+    - Detection intelligence
+    - Threat intelligence
+    - Cognitive risk intelligence
+
+    Produces a unified intelligence response.
     """
 
 
     def __init__(self):
 
-        self.merger = IntelligenceMerger()
+        self.context_builder = ContextBuilder()
 
-        self.builder = InvestigationBuilder()
 
-        self.risk = RiskCombiner()
 
-        self.memory = FusedMemory()
+    def classify(
+        self,
+        event,
+        threat=None
+    ):
 
-        self.logger = FusedLogger()
+        threat = threat or {}
+
+        malware = threat.get(
+            "malware",
+            ""
+        )
+
+
+        if malware:
+
+            return "malware_activity"
+
+
+        if "ransomware" in event.lower():
+
+            return "ransomware_attack"
+
+
+        if "phishing" in event.lower():
+
+            return "phishing_attack"
+
+
+        return "unknown"
+
+
+
+    def calculate_confidence(
+        self,
+        context,
+        evidence,
+        detection
+    ):
+
+        score = 0
+
+
+        if context.entities:
+
+            score += 0.3
+
+
+        if context.relationships:
+
+            score += 0.2
+
+
+        if evidence:
+
+            score += 0.3
+
+
+        if detection:
+
+            score += 0.2
+
+
+        return min(
+            score,
+            1.0
+        )
 
 
 
@@ -34,62 +98,117 @@ class IntelligenceFusionEngine:
         evidence=None,
         detection=None,
         threat=None,
-        hunting=None,
-        knowledge=None,
         cognitive=None
     ):
 
+        evidence = evidence or {}
 
-        merged = self.merger.merge(
+        detection = detection or {}
 
-            evidence,
-            detection,
-            threat,
-            hunting,
-            knowledge,
-            cognitive
+        threat = threat or {}
 
-        )
+        cognitive = cognitive or {}
 
 
-        risk = self.risk.calculate(
-            merged
-        )
 
-
-        investigation = self.builder.build(
-            merged
-        )
-
-
-        memory = self.memory.store(
-            investigation
-        )
-
-
-        log = self.logger.log(
+        context = self.context_builder.build(
             event
         )
 
 
+
+        risk_score = evidence.get(
+            "risk_score",
+            0
+        )
+
+
+
+        classification = self.classify(
+            event,
+            threat
+        )
+
+
+
+        confidence = self.calculate_confidence(
+            context,
+            evidence,
+            detection
+        )
+
+
+
+        intelligence = IntelligenceModel(
+
+            event=event,
+
+            entities=context.entities,
+
+            relationships=context.relationships,
+
+            threats=[
+
+                {
+                    "name": threat.get(
+                        "malware",
+                        "unknown"
+                    ),
+
+                    "severity": cognitive.get(
+                        "risk_level",
+                        "unknown"
+                    )
+                }
+
+            ],
+
+            confidence=confidence,
+
+            risk_score=risk_score,
+
+            classification=classification,
+
+            recommendations=[
+
+                "Investigate affected systems",
+
+                "Review detection telemetry",
+
+                "Correlate threat intelligence"
+
+            ]
+
+        )
+
+
+
         return {
 
-            "status":
-                "completed",
+            "status": "completed",
 
-            "event":
-                event,
+            "risk": {
 
-            "risk":
-                risk,
+                "risk_level": cognitive.get(
+                    "risk_level",
+                    "unknown"
+                ),
 
-            "investigation":
-                investigation,
+                "risk_score": risk_score
 
-            "memory":
-                memory,
+            },
 
-            "log":
-                log
+            "intelligence": intelligence.to_dict()
 
         }
+
+
+
+    def analyze(
+        self,
+        event
+    ):
+
+        return self.fuse(
+            event
+        )
