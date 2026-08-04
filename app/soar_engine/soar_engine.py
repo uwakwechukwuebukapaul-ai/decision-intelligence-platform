@@ -1,87 +1,62 @@
 from datetime import datetime
 
-from .playbook_engine import PlaybookEngine
+from .playbook_manager import PlaybookManager
 from .action_executor import ActionExecutor
-from .response_orchestrator import ResponseOrchestrator
-from .workflow_manager import WorkflowManager
+from .automation_router import AutomationRouter
+from .containment_actions import ContainmentActions
 from .integration_manager import IntegrationManager
-from .approval_engine import ApprovalEngine
-from .soar_memory import SOARMemory
-from .soar_logger import SOARLogger
+from .workflow_memory import WorkflowMemory
+from .workflow_logger import WorkflowLogger
 
 
 class SOAREngine:
 
-
     def __init__(self):
-
-        self.playbooks = PlaybookEngine()
-        self.actions = ActionExecutor()
-        self.response = ResponseOrchestrator()
-        self.workflow = WorkflowManager()
+        self.playbooks = PlaybookManager()
+        self.executor = ActionExecutor()
+        self.router = AutomationRouter()
+        self.containment = ContainmentActions()
         self.integrations = IntegrationManager()
-        self.approval = ApprovalEngine()
-        self.memory = SOARMemory()
-        self.logger = SOARLogger()
-
+        self.memory = WorkflowMemory()
+        self.logger = WorkflowLogger()
 
     def execute(self, incident):
 
-        playbook = self.playbooks.generate(
+        playbook = self.playbooks.select(incident)
+
+        routing = self.router.route(
             incident
         )
 
-        action = self.actions.execute(
-            "Isolate affected endpoint"
-        )
-
-        response = self.response.orchestrate(
+        actions = self.containment.execute(
             incident
         )
 
-        workflow = self.workflow.manage(
-            incident
+        execution = self.executor.execute(
+            actions
         )
 
         integrations = self.integrations.connect(
             incident
         )
 
-        approval = self.approval.approve(
-            "Containment Action"
-        )
-
         memory = self.memory.store(
             incident
         )
 
-        log = self.logger.log(
+        log = self.logger.record(
             incident
         )
 
-
         return {
-
             "status": "completed",
-
             "incident": incident,
-
             "playbook": playbook,
-
-            "action_execution": action,
-
-            "response": response,
-
-            "workflow": workflow,
-
+            "routing": routing,
+            "actions": actions,
+            "execution": execution,
             "integrations": integrations,
-
-            "approval": approval,
-
             "memory": memory,
-
             "log": log,
-
-            "created_at":
-                datetime.utcnow().isoformat()
+            "created_at": datetime.utcnow().isoformat()
         }
