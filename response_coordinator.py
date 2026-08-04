@@ -3,17 +3,36 @@ from datetime import datetime
 
 class ResponseCoordinator:
 
-    def coordinate(self, incident):
+
+    def prepare(self,decision):
 
         return {
-            "response_flow": [
-                "Detection",
-                "Analysis",
-                "Containment",
-                "Eradication",
-                "Recovery"
+
+
+            "actions":[
+
+                "Validate threat",
+
+                "Contain affected systems",
+
+                "Block malicious indicators",
+
+                "Collect forensic evidence",
+
+                "Start recovery workflow"
+
             ],
-            "incident": incident,
-            "status": "coordinated",
-            "timestamp": datetime.utcnow().isoformat()
+
+
+            "decision":
+                decision["decision"],
+
+
+            "status":
+                "ready",
+
+
+            "timestamp":
+                datetime.utcnow().isoformat()
+
         }
