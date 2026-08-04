@@ -10,10 +10,10 @@ class KnowledgeGraphEngine:
     Knowledge Graph Engine.
 
     Responsibilities:
-    - Entity creation
-    - Relationship creation
-    - Event analysis
-    - Sentinel Core compatibility processing
+    - Create entities
+    - Create relationships
+    - Analyze security events
+    - Provide Sentinel Core graph processing
     """
 
 
@@ -52,13 +52,16 @@ class KnowledgeGraphEngine:
 
 
         if hasattr(self.store, "add_entity"):
-            self.store.add_entity(entity)
 
-        elif hasattr(self.store, "save_entity"):
-            self.store.save_entity(entity)
+            self.store.add_entity(
+                entity
+            )
 
         elif hasattr(self.store, "add_node"):
-            self.store.add_node(entity)
+
+            self.store.add_node(
+                entity
+            )
 
 
         return entity
@@ -72,7 +75,6 @@ class KnowledgeGraphEngine:
         target
     ):
 
-
         relationship = self.relationship_engine.create_relationship(
             source,
             relation,
@@ -80,16 +82,14 @@ class KnowledgeGraphEngine:
         )
 
 
+        if hasattr(self.store, "add_relationship"):
+
+            self.store.add_relationship(
+                relationship
+            )
+
+
         return relationship
-
-
-
-    def _get_relationships(self):
-
-        if hasattr(self.store, "relationships"):
-            return self.store.relationships
-
-        return []
 
 
 
@@ -100,15 +100,19 @@ class KnowledgeGraphEngine:
 
         entities = []
 
-        relationships = self._get_relationships()
+        relationships = []
 
 
         keywords = [
 
             "ransomware",
+
             "powershell",
+
             "malware",
+
             "phishing",
+
             "attack"
 
         ]
@@ -131,24 +135,22 @@ class KnowledgeGraphEngine:
 
                 )
 
-                entities.append(entity)
+                entities.append(
+                    entity
+                )
 
 
 
         return {
 
-
             "event":
                 event,
-
 
             "entities":
                 entities,
 
-
             "relationships":
                 relationships,
-
 
             "status":
                 "knowledge_graph_processed"
@@ -162,4 +164,9 @@ class KnowledgeGraphEngine:
         event
     ):
 
-        return self.analyze(event)
+        result = self.analyze(
+            event
+        )
+
+
+        return result

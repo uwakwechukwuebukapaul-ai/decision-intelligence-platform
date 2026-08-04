@@ -1,12 +1,23 @@
-import uuid
-
-
 class EntityManager:
 
+    """
+    Entity management layer for Knowledge Graph.
 
-    def __init__(self, store):
+    Responsible for:
+    - Creating graph entities
+    - Assigning identifiers
+    - Managing entity metadata
+    """
+
+
+    def __init__(
+        self,
+        store=None
+    ):
 
         self.store = store
+
+        self.counter = 0
 
 
 
@@ -14,13 +25,20 @@ class EntityManager:
         self,
         entity_type,
         name,
-        attributes
+        attributes=None
     ):
+
+        if attributes is None:
+            attributes = {}
+
+
+        self.counter += 1
+
 
         entity = {
 
             "id":
-                f"ENTITY-{uuid.uuid4().hex[:8].upper()}",
+                self.counter,
 
             "type":
                 entity_type,
@@ -30,10 +48,8 @@ class EntityManager:
 
             "attributes":
                 attributes
+
         }
-
-
-        self.store.entities.append(entity)
 
 
         return entity
