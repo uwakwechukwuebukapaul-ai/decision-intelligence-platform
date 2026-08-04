@@ -1,24 +1,14 @@
-from datetime import datetime
 import uuid
+from datetime import datetime
 
 
 class GraphLogger:
 
-
-    def record(self,event):
+    def log(self, event):
 
         return {
-
-            "log_id":
-                f"GRAPHLOG-{uuid.uuid4().hex[:8].upper()}",
-
-            "event":
-                "Knowledge graph generated",
-
-            "data":
-                event,
-
-            "timestamp":
-                datetime.utcnow().isoformat()
-
+            "log_id": f"GRAPHLOG-{uuid.uuid4().hex[:8].upper()}",
+            "event": "Knowledge graph analysis executed",
+            "data": event,
+            "timestamp": datetime.utcnow().isoformat()
         }

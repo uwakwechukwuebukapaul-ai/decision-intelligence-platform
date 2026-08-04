@@ -3,16 +3,17 @@ from datetime import datetime
 
 class AttackGraph:
 
-    def build(self, incident):
+    def analyze(self, event):
 
         return {
-            "framework": "MITRE ATT&CK",
             "attack_path": [
                 "Initial Access",
                 "Execution",
-                "Persistence",
+                "Privilege Escalation",
+                "Defense Evasion",
                 "Impact"
             ],
-            "incident": incident,
+            "framework": "MITRE ATT&CK",
+            "event": event,
             "timestamp": datetime.utcnow().isoformat()
         }

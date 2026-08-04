@@ -3,15 +3,16 @@ from datetime import datetime
 
 class AssetGraph:
 
-    def build(self, incident):
+    def analyze(self, event):
 
         return {
             "assets": [
-                "Endpoint",
-                "Database Server",
-                "User Account"
+                {
+                    "asset": "Finance Database Server",
+                    "criticality": "high",
+                    "status": "potentially affected"
+                }
             ],
-            "impact": "high",
-            "incident": incident,
+            "event": event,
             "timestamp": datetime.utcnow().isoformat()
         }

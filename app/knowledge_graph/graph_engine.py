@@ -1,11 +1,11 @@
 from datetime import datetime
 
 from .entity_manager import EntityManager
-from .relationship_mapper import RelationshipMapper
-from .attack_graph_builder import AttackGraphBuilder
-from .threat_relationships import ThreatRelationshipManager
-from .asset_mapper import AssetMapper
-from .campaign_graph import CampaignGraph
+from .relationship_builder import RelationshipBuilder
+from .attack_graph import AttackGraph
+from .asset_graph import AssetGraph
+from .threat_graph import ThreatGraph
+from .graph_query import GraphQuery
 from .graph_memory import GraphMemory
 from .graph_logger import GraphLogger
 
@@ -15,48 +15,39 @@ class KnowledgeGraphEngine:
     def __init__(self):
 
         self.entities = EntityManager()
-        self.relationships = RelationshipMapper()
-        self.attack_graph = AttackGraphBuilder()
-        self.threats = ThreatRelationshipManager()
-        self.assets = AssetMapper()
-        self.campaigns = CampaignGraph()
+        self.relationships = RelationshipBuilder()
+        self.attack = AttackGraph()
+        self.assets = AssetGraph()
+        self.threats = ThreatGraph()
+        self.query = GraphQuery()
         self.memory = GraphMemory()
         self.logger = GraphLogger()
 
 
-    def build(self, event):
+    def analyze(self, event):
 
         entities = self.entities.extract(event)
 
-        relationships = self.relationships.map(
+        relationships = self.relationships.build(
             entities
         )
 
-        attack_graph = self.attack_graph.build(
-            event
-        )
+        attack_graph = self.attack.analyze(event)
 
-        threat_relationships = self.threats.analyze(
-            event
-        )
+        asset_graph = self.assets.analyze(event)
 
-        assets = self.assets.map(
-            event
-        )
+        threat_graph = self.threats.analyze(event)
 
-        campaign = self.campaigns.track(
-            event
-        )
-
+        query = self.query.search(event)
 
         memory = self.memory.store(
-            event,
-            relationships
+            {
+                "entities": entities,
+                "relationships": relationships
+            }
         )
 
-        log = self.logger.record(
-            event
-        )
+        log = self.logger.log(event)
 
 
         return {
@@ -71,17 +62,16 @@ class KnowledgeGraphEngine:
 
             "attack_graph": attack_graph,
 
-            "threat_relationships": threat_relationships,
+            "asset_graph": asset_graph,
 
-            "assets": assets,
+            "threat_graph": threat_graph,
 
-            "campaign_graph": campaign,
+            "query": query,
 
             "memory": memory,
 
             "log": log,
 
-            "created_at":
-                datetime.utcnow().isoformat()
+            "created_at": datetime.utcnow().isoformat()
 
         }

@@ -4,46 +4,33 @@ import uuid
 
 class EntityManager:
 
-
     def extract(self, event):
 
         entities = []
 
+        keywords = {
+            "ransomware": "Malware",
+            "powershell": "Execution Technique",
+            "database": "Asset",
+            "finance": "Organization",
+            "server": "Infrastructure"
+        }
 
-        if "powershell" in event.lower():
+        lower_event = event.lower()
 
-            entities.append({
+        for keyword, entity_type in keywords.items():
 
-                "id": f"ENTITY-{uuid.uuid4().hex[:6].upper()}",
-                "type": "Technique",
-                "value": "PowerShell"
+            if keyword in lower_event:
 
-            })
-
-
-        if "ransomware" in event.lower():
-
-            entities.append({
-
-                "id": f"ENTITY-{uuid.uuid4().hex[:6].upper()}",
-                "type": "Malware",
-                "value": "Ransomware"
-
-            })
-
-
-        entities.append({
-
-            "id": f"ENTITY-{uuid.uuid4().hex[:6].upper()}",
-            "type": "Asset",
-            "value": "Enterprise Server"
-
-        })
-
+                entities.append(
+                    {
+                        "entity_id": f"ENTITY-{uuid.uuid4().hex[:6].upper()}",
+                        "name": keyword,
+                        "type": entity_type
+                    }
+                )
 
         return {
-
             "entities": entities,
             "timestamp": datetime.utcnow().isoformat()
-
         }

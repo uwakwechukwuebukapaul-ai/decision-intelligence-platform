@@ -3,16 +3,15 @@ from datetime import datetime
 
 class ThreatGraph:
 
-    def build(self, incident):
+    def analyze(self, event):
 
         return {
-            "graph": "Threat Relationship Graph",
-            "nodes": [
-                "Threat Actor",
-                "Malware",
-                "IOC",
-                "Campaign"
+            "threat_entities": [
+                "Ransomware Operator",
+                "Malware Family",
+                "Attack Technique"
             ],
-            "incident": incident,
+            "risk": "critical",
+            "event": event,
             "timestamp": datetime.utcnow().isoformat()
         }

@@ -1,36 +1,19 @@
-from datetime import datetime
 import uuid
+from datetime import datetime
 
 
 class GraphMemory:
 
-
-    def store(self,event,relationships):
+    def store(self, data):
 
         return {
-
-            "memory_id":
-                f"GRAPH-{uuid.uuid4().hex[:8].upper()}",
-
-            "event":
-                event,
-
-            "stored":[
-
+            "memory_id": f"GRAPH-{uuid.uuid4().hex[:8].upper()}",
+            "stored": [
                 "Entities",
-
                 "Relationships",
-
-                "Attack Graph",
-
-                "Threat Intelligence"
-
+                "Attack Paths",
+                "Security Context"
             ],
-
-            "relationships":
-                relationships,
-
-            "timestamp":
-                datetime.utcnow().isoformat()
-
+            "data": data,
+            "timestamp": datetime.utcnow().isoformat()
         }
