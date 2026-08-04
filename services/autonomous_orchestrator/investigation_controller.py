@@ -1,4 +1,4 @@
-from datetime import datetime
+import datetime
 
 
 class InvestigationController:
@@ -15,5 +15,5 @@ class InvestigationController:
             ],
             "event": event,
             "status": "controlled",
-            "timestamp": datetime.now().isoformat()
+            "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat()
         }

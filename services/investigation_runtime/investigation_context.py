@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime
+import datetime
 
 
 class InvestigationContext:
@@ -9,5 +9,5 @@ class InvestigationContext:
         return {
             "context_id": f"INVCTX-{uuid.uuid4().hex[:8].upper()}",
             "event": event,
-            "created_at": datetime.utcnow().isoformat()
+            "created_at": datetime.datetime.now(datetime.timezone.utc).isoformat()
         }

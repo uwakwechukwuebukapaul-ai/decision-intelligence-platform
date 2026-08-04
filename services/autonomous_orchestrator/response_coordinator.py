@@ -1,4 +1,4 @@
-from datetime import datetime
+import datetime
 
 
 class ResponseCoordinator:
@@ -16,5 +16,5 @@ class ResponseCoordinator:
             ],
             "decision": decision["decision"],
             "status": "ready",
-            "timestamp": datetime.now().isoformat()
+            "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat()
         }

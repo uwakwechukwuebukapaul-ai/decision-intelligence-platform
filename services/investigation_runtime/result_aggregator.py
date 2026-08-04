@@ -1,4 +1,4 @@
-from datetime import datetime
+import datetime
 
 
 class ResultAggregator:
@@ -16,5 +16,5 @@ class ResultAggregator:
             "investigation": investigation,
             "engine_results": engines,
             "final_status": "completed",
-            "timestamp": datetime.utcnow().isoformat()
+            "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat()
         }

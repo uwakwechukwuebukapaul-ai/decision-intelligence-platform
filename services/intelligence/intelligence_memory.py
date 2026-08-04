@@ -26,7 +26,7 @@ class IntelligenceMemory:
             "data": data,
 
             "timestamp":
-                datetime.datetime.utcnow().isoformat()
+                datetime.datetime.now(datetime.timezone.utc).isoformat()
 
         }
 

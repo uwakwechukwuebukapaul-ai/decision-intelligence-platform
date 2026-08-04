@@ -88,6 +88,6 @@ class AutonomousSecurityIntelligenceCore:
 
 
             "created_at":
-                datetime.datetime.utcnow().isoformat()
+                datetime.datetime.now(datetime.timezone.utc).isoformat()
 
         }

@@ -1,4 +1,4 @@
-from datetime import datetime
+import datetime
 import uuid
 
 
@@ -19,5 +19,5 @@ class OrchestratorMemory:
                 "decision": decision,
                 "response": response
             },
-            "timestamp": datetime.now().isoformat()
+            "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat()
         }

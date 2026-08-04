@@ -1,4 +1,4 @@
-from datetime import datetime
+import datetime
 
 
 class EngineCoordinator:
@@ -17,5 +17,5 @@ class EngineCoordinator:
             ],
             "event": event,
             "status": "coordinated",
-            "timestamp": datetime.now().isoformat()
+            "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat()
         }

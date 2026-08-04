@@ -1,4 +1,4 @@
-from datetime import datetime
+import datetime
 
 from .investigation_context import InvestigationContext
 from .investigation_manager import InvestigationManager
@@ -55,5 +55,5 @@ class InvestigationRuntimeEngine:
             "result": result,
             "memory": memory,
             "log": log,
-            "created_at": datetime.utcnow().isoformat()
+            "created_at": datetime.datetime.now(datetime.timezone.utc).isoformat()
         }

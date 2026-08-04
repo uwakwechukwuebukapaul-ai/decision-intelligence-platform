@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime
+import datetime
 
 
 class RuntimeMemory:
@@ -14,5 +14,5 @@ class RuntimeMemory:
                 "Aggregated Results"
             ],
             "data": data,
-            "timestamp": datetime.utcnow().isoformat()
+            "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat()
         }

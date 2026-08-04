@@ -1,4 +1,4 @@
-from datetime import datetime
+import datetime
 
 
 class DecisionPipeline:
@@ -15,5 +15,5 @@ class DecisionPipeline:
                 "Multiple intelligence engines correlated",
                 "Security impact evaluated"
             ],
-            "timestamp": datetime.now().isoformat()
+            "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat()
         }

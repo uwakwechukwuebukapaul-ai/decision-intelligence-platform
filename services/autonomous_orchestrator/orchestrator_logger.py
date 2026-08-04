@@ -1,4 +1,4 @@
-from datetime import datetime
+import datetime
 import uuid
 
 
@@ -11,5 +11,5 @@ class OrchestratorLogger:
             "log_id": f"ORCHLOG-{uuid.uuid4().hex[:8].upper()}",
             "event": "Autonomous orchestration executed",
             "data": event,
-            "timestamp": datetime.now().isoformat()
+            "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat()
         }

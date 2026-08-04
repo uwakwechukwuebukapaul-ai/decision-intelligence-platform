@@ -1,4 +1,4 @@
-from datetime import datetime
+import datetime
 
 from .investigation_controller import InvestigationController
 from .engine_coordinator import EngineCoordinator
@@ -50,5 +50,5 @@ class AutonomousOrchestrator:
             "response": response,
             "memory": memory,
             "log": log,
-            "created_at": datetime.now().isoformat()
+            "created_at": datetime.datetime.now(datetime.timezone.utc).isoformat()
         }

@@ -1,4 +1,4 @@
-from datetime import datetime
+import datetime
 
 
 class EngineOrchestrator:
@@ -16,5 +16,5 @@ class EngineOrchestrator:
             ],
             "event": event,
             "status": "completed",
-            "timestamp": datetime.utcnow().isoformat()
+            "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat()
         }
