@@ -4,7 +4,6 @@ from .threat_memory import ThreatMemory
 from .case_memory import CaseMemory
 
 
-
 class IntelligenceMemoryEngine:
 
 
@@ -22,8 +21,10 @@ class IntelligenceMemoryEngine:
 
         self.case_memory = CaseMemory(
             self.store
-        )
 
+
+
+        )
 
 
     def remember_entity(
@@ -40,7 +41,6 @@ class IntelligenceMemoryEngine:
         )
 
 
-
     def remember_threat(
         self,
         name,
@@ -51,7 +51,6 @@ class IntelligenceMemoryEngine:
             name,
             techniques
         )
-
 
 
     def remember_case(
@@ -65,6 +64,19 @@ class IntelligenceMemoryEngine:
             resolution
         )
 
+
+    def remember(
+        self,
+        event
+    ):
+        """
+        Compatibility adapter used by Sentinel Core.
+        """
+
+        return self.threat_memory.remember(
+            event,
+            []
+        )
 
 
     def recall(self):

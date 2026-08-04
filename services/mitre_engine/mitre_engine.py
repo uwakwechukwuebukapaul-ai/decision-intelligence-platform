@@ -4,10 +4,7 @@ from .tactic_mapper import TacticMapper
 from .mitre_logger import MitreLogger
 
 
-
 class MitreEngine:
-
-
 
     def __init__(self):
 
@@ -22,19 +19,15 @@ class MitreEngine:
         self.logger = MitreLogger()
 
 
-
     def analyze(self, event):
-
 
         techniques = self.technique_mapper.map(
             event
         )
 
-
         tactics = self.tactic_mapper.map(
             techniques
         )
-
 
         return {
 
@@ -51,5 +44,39 @@ class MitreEngine:
                 self.logger.log(
                     "MITRE analysis completed"
                 )
+
+        }
+
+
+    def map(self, event):
+
+        """
+        Compatibility adapter for Sentinel Core.
+
+        Sentinel Core expects a mapping interface,
+        while the original MITRE engine exposes
+        analyze().
+        """
+
+        result = self.analyze(event)
+
+        return {
+
+            "event": event,
+
+            "techniques":
+                result.get(
+                    "techniques",
+                    []
+                ),
+
+            "tactics":
+                result.get(
+                    "tactics",
+                    []
+                ),
+
+            "status":
+                "mitre_mapping_completed"
 
         }

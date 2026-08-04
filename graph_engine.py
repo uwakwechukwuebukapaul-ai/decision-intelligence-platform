@@ -11,31 +11,66 @@ class KnowledgeGraphEngine:
 
         self.store = GraphStore()
 
-        self.entities = EntityManager()
+        self.entities = EntityManager(
+            self.store
+        )
 
-        self.relationships = RelationshipEngine()
+        self.relationships = RelationshipEngine(
+            self.store
+        )
 
-        self.query = GraphQuery()
-
+        self.query = GraphQuery(
+            self.store
+        )
 
 
     def add_entity(
         self,
         entity_type,
-        name
+        name,
+        attributes=None
     ):
+
+        if attributes is None:
+            attributes = {}
+
 
         entity = self.entities.create_entity(
             entity_type,
-            name
+            name,
+            attributes
         )
 
-        self.store.add_node(
-            entity["id"],
+
+        self.store.add_entity(
             entity
         )
 
+
         return entity
+
+
+
+    def add_relationship(
+        self,
+        source,
+        relation,
+        target
+    ):
+
+        relationship = self.relationships.create_relationship(
+            source,
+            relation,
+            target
+        )
+
+
+        self.store.add_relationship(
+            relationship
+        )
+
+
+        return relationship
 
 
 
@@ -46,7 +81,7 @@ class KnowledgeGraphEngine:
         target
     ):
 
-        return self.store.add_relationship(
+        return self.add_relationship(
             source,
             relation,
             target
@@ -54,24 +89,30 @@ class KnowledgeGraphEngine:
 
 
 
-    def analyze(self,event):
+    def analyze(
+        self,
+        event
+    ):
 
-        ransomware = self.add_entity(
-            "Threat",
-            event
+        threat = self.add_entity(
+            "indicator",
+            event,
+            {
+                "source": "event_analysis"
+            }
         )
 
 
-        powershell = self.add_entity(
-            "Technique",
+        technique = self.add_entity(
+            "technique",
             "PowerShell"
         )
 
 
-        self.connect(
-            ransomware["id"],
+        self.add_relationship(
+            threat["name"],
             "uses",
-            powershell["id"]
+            technique["name"]
         )
 
 
@@ -79,13 +120,23 @@ class KnowledgeGraphEngine:
 
             "event": event,
 
-            "nodes":
-            self.store.get_nodes(),
+            "entities":
+                self.store.get_entities(),
 
             "relationships":
-            self.store.get_relationships(),
+                self.store.get_relationships(),
 
             "status":
-            "knowledge_graph_processed"
-
+                "knowledge_graph_processed"
         }
+
+
+
+    def process(
+        self,
+        event
+    ):
+
+        return self.analyze(
+            event
+        )
