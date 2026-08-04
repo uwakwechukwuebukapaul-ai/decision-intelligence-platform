@@ -4,13 +4,45 @@ from .decision_model import DecisionModel
 class DecisionEngine:
     """
     Converts intelligence into autonomous decisions.
+
+    Supports:
+    - evaluate()
+    - decide() compatibility interface
+
+    Used by:
+    - Sentinel Core Pipeline
+    - Autonomous Orchestrator
+    - Response Engine
     """
+
+
+    def decide(
+        self,
+        intelligence
+    ):
+        """
+        Pipeline compatibility wrapper.
+        """
+
+        return self.evaluate(
+            intelligence
+        )
+
 
 
     def evaluate(
         self,
         intelligence
     ):
+
+        if hasattr(
+            intelligence,
+            "to_dict"
+        ):
+
+            intelligence = intelligence.to_dict()
+
+
 
         risk = intelligence.get(
             "risk",
@@ -28,6 +60,7 @@ class DecisionEngine:
             "risk_score",
             0
         )
+
 
 
         if risk_level == "critical" or risk_score >= 90:
@@ -54,7 +87,8 @@ class DecisionEngine:
 
                     "risk_score": risk_score,
 
-                    "trigger": "critical threat detected"
+                    "trigger":
+                        "critical threat detected"
 
                 }
 
