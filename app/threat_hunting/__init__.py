@@ -1,4 +1,4 @@
-from .hunting_engine import ThreatHuntingEngine
+from .hunter_engine import ThreatHuntingEngine
 
 __all__ = [
     "ThreatHuntingEngine"
