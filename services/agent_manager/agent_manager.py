@@ -1,51 +1,44 @@
-from .agent_registry import AgentRegistry
-from .task_router import TaskRouter
-
-
-
 class AgentManager:
     """
-    Autonomous SOC agent coordinator.
-
-    Responsible for:
-    - agent registration
-    - task routing
-    - execution delegation
+    Coordinates autonomous SOC agents.
     """
 
 
     def __init__(self):
 
-        self.registry = AgentRegistry()
-
-        self.router = TaskRouter()
+        self.agents = {}
 
 
 
-    def register_agent(
+    def register(
         self,
         name,
         agent
     ):
 
-        return self.registry.register(
-            name,
-            agent
-        )
+        self.agents[name] = agent
+
+
+        return {
+
+            "status":
+                "registered",
+
+            "agent":
+                name
+
+        }
 
 
 
-    def execute_task(
+    def execute(
         self,
-        task
+        agent_name,
+        event,
+        context=None
     ):
 
-        agent_name = self.router.route(
-            task
-        )
-
-
-        agent = self.registry.get(
+        agent = self.agents.get(
             agent_name
         )
 
@@ -54,41 +47,48 @@ class AgentManager:
 
             return {
 
-                "status":
-                    "agent_unavailable",
-
-                "agent":
-                    agent_name
+                "error":
+                    f"Agent {agent_name} unavailable"
 
             }
 
 
 
-        result = agent.execute(
-            task
+        return agent.execute(
+            event,
+            context or {}
         )
 
 
-        return {
 
-            "status":
-                "completed",
+    def execute_all(
+        self,
+        event,
+        context=None
+    ):
 
-            "agent":
-                agent_name,
-
-            "result":
-                result
-
-        }
+        results = {}
 
 
+        for name in self.agents:
 
-    def available_agents(self):
+            results[name] = self.execute(
 
-        return {
+                name,
 
-            "agents":
-                self.registry.list_agents()
+                event,
 
-        }
+                context
+
+            )
+
+
+        return results
+
+
+
+    def list_agents(self):
+
+        return list(
+            self.agents.keys()
+        )
