@@ -2,400 +2,186 @@ from flask import Flask, jsonify
 from datetime import datetime
 
 
-# ===============================
+# =====================================
 # Database
-# ===============================
+# =====================================
 
 from app.database.db import engine, Base
 
 
-# ===============================
+# =====================================
 # Models
-# ===============================
+# =====================================
 
 from app.models import *
 
 
+# =====================================
+# Intelligence Fabric Core
+# =====================================
 
-# ===============================
+from app.intelligence.intelligence_fabric import (
+    intelligence_fabric
+)
+
+
+
+# =====================================
 # Autonomous Intelligence Engines
-# ===============================
+# =====================================
 
+from app.routes.autonomous_adaptation_engine import autonomous_adaptation_engine
+from app.routes.autonomous_agent_workforce import autonomous_agent_workforce
+from app.routes.autonomous_decision_core import autonomous_decision_core
+from app.routes.autonomous_evolution_engine import autonomous_evolution_engine
+from app.routes.autonomous_executive_intelligence_engine import autonomous_executive_intelligence_engine
+from app.routes.autonomous_forecasting_engine import autonomous_forecasting_engine
+from app.routes.autonomous_governance_engine import autonomous_governance_engine
+from app.routes.autonomous_intelligence_fusion_engine import autonomous_intelligence_fusion_engine
+from app.routes.autonomous_intelligence_governance_engine import autonomous_intelligence_governance_engine
+from app.routes.autonomous_intelligence_orchestrator import autonomous_intelligence_orchestrator
+from app.routes.autonomous_intelligence_self_optimization_engine import autonomous_intelligence_self_optimization_engine
+from app.routes.autonomous_intelligence_evolution_engine import autonomous_intelligence_evolution_engine
+from app.routes.autonomous_cognitive_intelligence_engine import autonomous_cognitive_intelligence_engine
+from app.routes.autonomous_knowledge_fabric_engine import autonomous_knowledge_fabric_engine
+from app.routes.autonomous_learning_engine import autonomous_learning_engine
+from app.routes.autonomous_memory_engine import autonomous_memory_engine
+from app.routes.autonomous_meta_intelligence_engine import autonomous_meta_intelligence_engine
+from app.routes.autonomous_meta_intelligence_engine_v2 import autonomous_meta_intelligence_engine_v2
+from app.routes.autonomous_predictive_intelligence_engine import autonomous_predictive_intelligence_engine
+from app.routes.autonomous_reasoning_engine import autonomous_reasoning_engine
+from app.routes.autonomous_security_intelligence_engine import autonomous_security_intelligence_engine
+from app.routes.autonomous_self_healing_engine import autonomous_self_healing_engine
+from app.routes.autonomous_simulation_engine import autonomous_simulation_engine
+from app.routes.autonomous_strategic_decision_engine import autonomous_strategic_decision_engine
+from app.routes.autonomous_strategic_simulation_engine import autonomous_strategic_simulation_engine
+from app.routes.autonomous_trust_intelligence_engine import autonomous_trust_intelligence_engine
+from app.routes.autonomous_validation_engine import autonomous_validation_engine
 
-from app.routes.autonomous_adaptation_engine import (
-    autonomous_adaptation_engine
-)
 
+# =====================================
+# Platform Modules
+# =====================================
 
-from app.routes.autonomous_agent_workforce import (
-    autonomous_agent_workforce
-)
+from app.routes.autonomous_intelligence_dashboard import autonomous_intelligence_dashboard
+from app.routes.autonomous_intelligence_command_center import autonomous_intelligence_command_center
+from app.routes.autonomous_intelligence_memory import autonomous_intelligence_memory
+from app.routes.autonomous_intelligence_learning import autonomous_intelligence_learning
 
 
-from app.routes.autonomous_decision_core import (
-    autonomous_decision_core
-)
+# =====================================
+# Agent Infrastructure
+# =====================================
 
+from app.routes.autonomous_operating_system import autonomous_operating_system_bp
+from app.routes.agent_runtime import agent_runtime_bp
+from app.routes.agent_supervisor import agent_supervisor_bp
 
-from app.routes.autonomous_evolution_engine import (
-    autonomous_evolution_engine
-)
 
+# =====================================
+# Evolution Layer
+# =====================================
 
-from app.routes.autonomous_executive_intelligence_engine import (
-    autonomous_executive_intelligence_engine
-)
+from app.routes.intelligence_feedback import intelligence_feedback_bp
+from app.routes.intelligence_evaluation import intelligence_evaluation_bp
+from app.routes.intelligence_reflection import intelligence_reflection_bp
+from app.routes.intelligence_orchestration import intelligence_orchestration_bp
 
 
-from app.routes.autonomous_forecasting_engine import (
-    autonomous_forecasting_engine
-)
+# =====================================
+# Control Plane
+# =====================================
 
+from app.routes.intelligence_control_plane import intelligence_control_plane_bp
 
-from app.routes.autonomous_governance_engine import (
-    autonomous_governance_engine
-)
 
+# =====================================
+# Agent Management
+# =====================================
 
-from app.routes.autonomous_intelligence_fusion_engine import (
-    autonomous_intelligence_fusion_engine
-)
+from app.routes.agent_management import agent_management_bp
 
 
-from app.routes.autonomous_intelligence_governance_engine import (
-    autonomous_intelligence_governance_engine
-)
 
-
-from app.routes.autonomous_intelligence_orchestrator import (
-    autonomous_intelligence_orchestrator
-)
-
-
-from app.routes.autonomous_intelligence_self_optimization_engine import (
-    autonomous_intelligence_self_optimization_engine
-)
-
-
-from app.routes.autonomous_intelligence_evolution_engine import (
-    autonomous_intelligence_evolution_engine
-)
-
-
-from app.routes.autonomous_cognitive_intelligence_engine import (
-    autonomous_cognitive_intelligence_engine
-)
-
-
-from app.routes.autonomous_knowledge_fabric_engine import (
-    autonomous_knowledge_fabric_engine
-)
-
-
-from app.routes.autonomous_learning_engine import (
-    autonomous_learning_engine
-)
-
-
-from app.routes.autonomous_memory_engine import (
-    autonomous_memory_engine
-)
-
-
-from app.routes.autonomous_meta_intelligence_engine import (
-    autonomous_meta_intelligence_engine
-)
-
-
-from app.routes.autonomous_meta_intelligence_engine_v2 import (
-    autonomous_meta_intelligence_engine_v2
-)
-
-
-from app.routes.autonomous_predictive_intelligence_engine import (
-    autonomous_predictive_intelligence_engine
-)
-
-
-from app.routes.autonomous_reasoning_engine import (
-    autonomous_reasoning_engine
-)
-
-
-from app.routes.autonomous_security_intelligence_engine import (
-    autonomous_security_intelligence_engine
-)
-
-
-from app.routes.autonomous_self_healing_engine import (
-    autonomous_self_healing_engine
-)
-
-
-from app.routes.autonomous_simulation_engine import (
-    autonomous_simulation_engine
-)
-
-
-from app.routes.autonomous_strategic_decision_engine import (
-    autonomous_strategic_decision_engine
-)
-
-
-from app.routes.autonomous_strategic_simulation_engine import (
-    autonomous_strategic_simulation_engine
-)
-
-
-from app.routes.autonomous_trust_intelligence_engine import (
-    autonomous_trust_intelligence_engine
-)
-
-
-from app.routes.autonomous_validation_engine import (
-    autonomous_validation_engine
-)
-# ===============================
-# Intelligence Platform Modules
-# ===============================
-
-
-from app.routes.autonomous_intelligence_dashboard import (
-    autonomous_intelligence_dashboard
-)
-
-
-from app.routes.autonomous_intelligence_command_center import (
-    autonomous_intelligence_command_center
-)
-
-
-from app.routes.autonomous_intelligence_memory import (
-    autonomous_intelligence_memory
-)
-
-
-from app.routes.autonomous_intelligence_learning import (
-    autonomous_intelligence_learning
-)
-
-
-
-# ===============================
-# Agent Infrastructure Layer
-# ===============================
-
-
-from app.routes.autonomous_operating_system import (
-    autonomous_operating_system_bp
-)
-
-
-from app.routes.agent_runtime import (
-    agent_runtime_bp
-)
-
-
-from app.routes.agent_supervisor import (
-    agent_supervisor_bp
-)
-
-
-
-# ===============================
-# Intelligence Evolution Layers
-# ===============================
-
-
-from app.routes.intelligence_feedback import (
-    intelligence_feedback_bp
-)
-
-
-from app.routes.intelligence_evaluation import (
-    intelligence_evaluation_bp
-)
-
-
-from app.routes.intelligence_reflection import (
-    intelligence_reflection_bp
-)
-
-
-from app.routes.intelligence_orchestration import (
-    intelligence_orchestration_bp
-)
-
-
-
-# ===============================
-# Autonomous Intelligence Control Plane
-# ===============================
-
-
-from app.routes.intelligence_control_plane import (
-    intelligence_control_plane_bp
-)
-
-
-
-# ===============================
-# Agent Management Layer v48
-# ===============================
-
-
-from app.routes.agent_management import (
-    agent_management_bp
-)
-
-
-
-# ===============================
+# =====================================
 # Flask Application
-# ===============================
-
+# =====================================
 
 app = Flask(__name__)
 
 
+app.config["PLATFORM_NAME"] = (
+    "Decision Intelligence Platform"
+)
 
-# ===============================
+app.config["VERSION"] = "49.0"
+
+
+
+# =====================================
 # Database Initialization
-# ===============================
-
+# =====================================
 
 Base.metadata.create_all(
-
     bind=engine
-
 )
 
 
 
-# ===============================
+# =====================================
 # Blueprint Registry
-# ===============================
+# =====================================
 
 
 blueprints = [
 
-
-    # ===========================
-    # Autonomous Intelligence Core
-    # ===========================
-
-
     autonomous_adaptation_engine,
-
     autonomous_agent_workforce,
-
     autonomous_decision_core,
-
     autonomous_evolution_engine,
-
     autonomous_executive_intelligence_engine,
-
     autonomous_forecasting_engine,
-
     autonomous_governance_engine,
-
     autonomous_intelligence_fusion_engine,
-
     autonomous_intelligence_governance_engine,
-
     autonomous_intelligence_orchestrator,
-
     autonomous_intelligence_self_optimization_engine,
-
     autonomous_intelligence_evolution_engine,
-
     autonomous_cognitive_intelligence_engine,
-
     autonomous_knowledge_fabric_engine,
-
     autonomous_learning_engine,
-
     autonomous_memory_engine,
-
     autonomous_meta_intelligence_engine,
-
     autonomous_meta_intelligence_engine_v2,
-
     autonomous_predictive_intelligence_engine,
-
     autonomous_reasoning_engine,
-
     autonomous_security_intelligence_engine,
-
     autonomous_self_healing_engine,
-
     autonomous_simulation_engine,
-
     autonomous_strategic_decision_engine,
-
     autonomous_strategic_simulation_engine,
-
     autonomous_trust_intelligence_engine,
-
     autonomous_validation_engine,
 
 
-
-    # ===========================
-    # Intelligence Platform
-    # ===========================
-
-
     autonomous_intelligence_dashboard,
-
     autonomous_intelligence_command_center,
-
     autonomous_intelligence_memory,
-
     autonomous_intelligence_learning,
 
 
-
-    # ===========================
-    # Agent Infrastructure
-    # ===========================
-
-
     autonomous_operating_system_bp,
-
     agent_runtime_bp,
-
     agent_supervisor_bp,
 
 
-
-    # ===========================
-    # Intelligence Evolution
-    # ===========================
-
-
     intelligence_feedback_bp,
-
     intelligence_evaluation_bp,
-
     intelligence_reflection_bp,
-
     intelligence_orchestration_bp,
 
 
-
-    # ===========================
-    # Control Plane
-    # ===========================
-
-
     intelligence_control_plane_bp,
-
-
-
-    # ===========================
-    # Agent Management v48
-    # ===========================
 
 
     agent_management_bp
@@ -404,150 +190,110 @@ blueprints = [
 
 
 
-# ===============================
-# Register Blueprints
-# ===============================
-
-
 for blueprint in blueprints:
 
     app.register_blueprint(
         blueprint
     )
-    # ===============================
-# Health Endpoint
-# ===============================
+
+
+
+# =====================================
+# Intelligence Fabric Endpoint
+# =====================================
+
+
+@app.route(
+    "/intelligence-fabric/<user_id>",
+    methods=["GET"]
+)
+def intelligence_fabric_status(user_id):
+
+    context = intelligence_fabric.create_context(
+        user_id=user_id,
+        objective="intelligence platform analysis"
+    )
+
+
+    return jsonify({
+
+        "status": "active",
+
+        "layer":
+            "Autonomous Intelligence Fabric",
+
+        "context":
+            context.to_dict()
+
+    })
+
+
+
+# =====================================
+# Health Check
+# =====================================
 
 
 @app.route(
     "/health",
     methods=["GET"]
 )
-
 def health():
 
     return jsonify({
 
         "platform":
-            "Decision Intelligence Platform",
+            app.config["PLATFORM_NAME"],
+
+
+        "version":
+            app.config["VERSION"],
+
+
+        "architecture":
+            "Autonomous Intelligence Operating System",
 
 
         "status":
             "healthy",
 
 
-        "version":
-            "48.0",
-
-
-        "services": {
-
+        "layers": {
 
             "database":
-                "connected",
-
-
-            "autonomous_intelligence_stack":
                 "active",
 
-
-            "dashboard_engine":
+            "intelligence_fabric":
                 "active",
 
-
-            "command_center":
+            "autonomous_engines":
                 "active",
-
-
-            "memory_engine":
-                "active",
-
-
-            "learning_engine":
-                "active",
-
-
-            "predictive_engine":
-                "active",
-
-
-            "strategic_simulation_engine":
-                "active",
-
-
-            "validation_engine":
-                "active",
-
-
-            "meta_intelligence_layer":
-                "active",
-
-
-            "cognitive_layer":
-                "active",
-
-
-            "governance_layer":
-                "active",
-
-
-            "self_optimization_layer":
-                "active",
-
-
-            "evolution_layer":
-                "active",
-
-
-            "agent_operating_system":
-                "active",
-
 
             "agent_runtime":
                 "active",
 
-
-            "agent_supervisor":
-                "active",
-
-
-            "decision_feedback_engine":
-                "active",
-
-
-            "evaluation_engine":
-                "active",
-
-
-            "reflection_engine":
-                "active",
-
-
-            "orchestration_engine":
-                "active",
-
-
             "control_plane":
                 "active",
 
+            "learning_system":
+                "active",
 
-            "agent_management_engine":
+            "governance":
                 "active"
 
         },
 
 
         "timestamp":
-
             datetime.utcnow().isoformat()
 
     })
 
 
 
-# ===============================
-# Run Application
-# ===============================
+# =====================================
+# Application Start
+# =====================================
 
 
 if __name__ == "__main__":
