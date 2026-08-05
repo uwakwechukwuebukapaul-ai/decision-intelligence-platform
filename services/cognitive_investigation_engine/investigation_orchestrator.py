@@ -1,5 +1,5 @@
 from .investigation_engine import CognitiveInvestigationEngine
-from .investigation_memory import InvestigationMemory
+from services.cognitive_memory.investigation_memory import InvestigationMemory
 from .analyst_reasoning_engine import AnalystReasoningEngine
 
 
