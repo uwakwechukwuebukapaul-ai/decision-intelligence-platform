@@ -1,95 +1,32 @@
-from services.intelligence_fusion.context_builder import ContextBuilder
-from services.intelligence_fusion.intelligence_model import IntelligenceModel
+from .signal_processor import SignalProcessor
+from .intelligence_correlator import IntelligenceCorrelator
+from .context_builder import ContextBuilder
+from .confidence_engine import ConfidenceEngine
 
 
 class IntelligenceFusionEngine:
     """
-    Intelligence Fusion Layer.
+    Sentinel DNA Intelligence Fusion Engine
 
-    Combines:
+    Combines multiple intelligence sources:
+
     - Evidence intelligence
     - Detection intelligence
     - Threat intelligence
-    - Cognitive risk intelligence
+    - Cognitive intelligence
 
-    Produces a unified intelligence response.
+    Produces unified intelligence context.
     """
-
 
     def __init__(self):
 
+        self.signal_processor = SignalProcessor()
+
+        self.correlator = IntelligenceCorrelator()
+
         self.context_builder = ContextBuilder()
 
-
-
-    def classify(
-        self,
-        event,
-        threat=None
-    ):
-
-        threat = threat or {}
-
-        malware = threat.get(
-            "malware",
-            ""
-        )
-
-
-        if malware:
-
-            return "malware_activity"
-
-
-        if "ransomware" in event.lower():
-
-            return "ransomware_attack"
-
-
-        if "phishing" in event.lower():
-
-            return "phishing_attack"
-
-
-        return "unknown"
-
-
-
-    def calculate_confidence(
-        self,
-        context,
-        evidence,
-        detection
-    ):
-
-        score = 0
-
-
-        if context.entities:
-
-            score += 0.3
-
-
-        if context.relationships:
-
-            score += 0.2
-
-
-        if evidence:
-
-            score += 0.3
-
-
-        if detection:
-
-            score += 0.2
-
-
-        return min(
-            score,
-            1.0
-        )
-
+        self.confidence_engine = ConfidenceEngine()
 
 
     def fuse(
@@ -100,6 +37,9 @@ class IntelligenceFusionEngine:
         threat=None,
         cognitive=None
     ):
+        """
+        Multi-source intelligence fusion pipeline.
+        """
 
         evidence = evidence or {}
 
@@ -110,105 +50,86 @@ class IntelligenceFusionEngine:
         cognitive = cognitive or {}
 
 
+        signals = self.signal_processor.process(
+            event,
+            evidence=evidence,
+            detection=detection,
+            threat=threat,
+            cognitive=cognitive
+        )
+
+
+        correlations = self.correlator.correlate(
+            signals
+        )
+
 
         context = self.context_builder.build(
-            event
-        )
-
-
-
-        risk_score = evidence.get(
-            "risk_score",
-            0
-        )
-
-
-
-        classification = self.classify(
             event,
-            threat
+            signals,
+            correlations
         )
 
 
-
-        confidence = self.calculate_confidence(
-            context,
-            evidence,
-            detection
+        confidence = self.confidence_engine.calculate(
+            context
         )
-
-
-
-        intelligence = IntelligenceModel(
-
-            event=event,
-
-            entities=context.entities,
-
-            relationships=context.relationships,
-
-            threats=[
-
-                {
-                    "name": threat.get(
-                        "malware",
-                        "unknown"
-                    ),
-
-                    "severity": cognitive.get(
-                        "risk_level",
-                        "unknown"
-                    )
-                }
-
-            ],
-
-            confidence=confidence,
-
-            risk_score=risk_score,
-
-            classification=classification,
-
-            recommendations=[
-
-                "Investigate affected systems",
-
-                "Review detection telemetry",
-
-                "Correlate threat intelligence"
-
-            ]
-
-        )
-
 
 
         return {
 
             "status": "completed",
 
+            "event": event,
+
+            "signals": signals,
+
+            "correlations": correlations,
+
+            "context": context,
+
+            "confidence": confidence,
+
+
             "risk": {
 
-                "risk_level": cognitive.get(
-                    "risk_level",
-                    "unknown"
+                "risk_level": (
+
+                    cognitive.get(
+                        "risk_level",
+                        "unknown"
+                    )
+
                 ),
 
-                "risk_score": risk_score
+                "risk_score": (
+
+                    evidence.get(
+                        "risk_score",
+                        0
+                    )
+
+                )
 
             },
 
-            "intelligence": intelligence.to_dict()
+
+            "fusion": {
+
+                "engine": "IntelligenceFusionEngine",
+
+                "sources": [
+
+                    "evidence",
+
+                    "detection",
+
+                    "threat",
+
+                    "cognitive"
+
+                ]
+
+            }
 
         }
-
-
-
-    def analyze(
-        self,
-        event
-    ):
-
-        return self.fuse(
-            event
-        )
