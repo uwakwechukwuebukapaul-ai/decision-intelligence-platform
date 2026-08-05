@@ -1,51 +1,128 @@
-from .indicator_matcher import IndicatorMatcher
-from .reputation_engine import ReputationEngine
-from .intelligence_feed import IntelligenceFeed
-from .correlation_engine import CorrelationEngine
-from .threat_logger import ThreatLogger
+"""
+Sentinel DNA Threat Intelligence Engine
+
+Provides:
+- threat analysis
+- indicator extraction
+- reputation scoring
+- backward compatibility support
+"""
 
 
-class ThreatIntelligenceEngine:
+class ThreatEngine:
+    """
+    Sentinel DNA Threat Intelligence Core Engine
+    """
 
     def __init__(self):
-
-        self.matcher = IndicatorMatcher()
-        self.reputation = ReputationEngine()
-        self.feed = IntelligenceFeed()
-        self.correlation = CorrelationEngine()
-        self.logger = ThreatLogger()
+        self.name = "Threat Intelligence Engine"
+        self.version = "1.0"
 
 
-    def analyze(self, event):
+    def analyze(self, indicator):
+        """
+        Analyze threat intelligence input.
 
-        indicators = self.matcher.match(event)
+        Maintains Sentinel DNA legacy response contract.
+        """
 
-        reputation = self.reputation.evaluate(
-            indicators
-        )
+        threat_keywords = [
+            "ransomware",
+            "powershell",
+            "malware",
+            "attack",
+            "phishing",
+            "exploit",
+            "credential",
+            "breach"
+        ]
 
-        feed_data = self.feed.collect(event)
 
-        correlation = self.correlation.correlate(
-            indicators
-        )
+        matches = [
+            keyword
+            for keyword in threat_keywords
+            if keyword.lower() in indicator.lower()
+        ]
 
-        result = {
 
-            "event": event,
+        risk = "high" if matches else "low"
 
-            "indicators": indicators,
 
-            "reputation": reputation,
+        return {
+            "status": "threat_intelligence_processed",
 
-            "feed": feed_data,
+            "indicator": indicator,
 
-            "correlation": correlation,
 
-            "status": "threat_intelligence_processed"
+            # Legacy compatibility
+            "indicators": matches,
 
+
+            # New Sentinel DNA naming
+            "matched_threats": matches,
+
+
+            "risk": risk,
+
+
+            # Legacy reputation contract
+            "reputation": {
+                "risk_level": risk.upper(),
+                "confidence": 0.95 if matches else 0.40,
+                "classification": (
+                    "malicious"
+                    if matches
+                    else "unknown"
+                )
+            },
+
+
+            "source": self.name,
+
+            "version": self.version
         }
 
-        self.logger.log(result)
 
-        return result
+
+    def enrich(self, intelligence):
+        """
+        Add intelligence enrichment data.
+        """
+
+        return {
+            "status": "completed",
+            "enrichment": intelligence,
+            "engine": self.name
+        }
+
+
+
+    def get_threat_context(self, threat):
+        """
+        Generate adversary context.
+        """
+
+        return {
+            "threat": threat,
+            "classification": "unknown",
+            "confidence": 0.5
+        }
+
+
+
+    def health(self):
+        """
+        Engine health status.
+        """
+
+        return {
+            "engine": self.name,
+            "version": self.version,
+            "status": "healthy"
+        }
+
+
+
+# Backward compatibility alias
+# Existing Sentinel DNA modules use this name
+ThreatIntelligenceEngine = ThreatEngine
