@@ -1,99 +1,23 @@
-from services.intelligence_fusion.intelligence_model import IntelligenceModel
-
-
 class ContextBuilder:
     """
-    Builds investigation context from raw security events.
-
-    Future integrations:
-    - Knowledge Graph
-    - Threat Intelligence
-    - Memory Engine
-    - Investigation Runtime
+    Builds unified investigation context.
     """
-
-    def __init__(self):
-
-        self.entity_patterns = {
-
-            "powershell": "PowerShell",
-            "ransomware": "Ransomware",
-            "malware": "Malware",
-            "phishing": "Phishing",
-            "credential": "Credential Theft",
-            "database": "Database",
-            "server": "Server",
-            "linux": "Linux",
-            "windows": "Windows"
-
-        }
-
 
     def build(
         self,
-        event: str
-    ) -> IntelligenceModel:
-
-        intelligence = IntelligenceModel(
-            event=event
-        )
-
-        self.extract_entities(
-            event,
-            intelligence
-        )
-
-        self.detect_relationships(
-            intelligence
-        )
-
-        return intelligence
-
-
-    def extract_entities(
-        self,
-        event: str,
-        intelligence: IntelligenceModel
+        event,
+        signals,
+        correlations
     ):
 
-        normalized = event.lower()
+        return {
 
-        for keyword, entity in self.entity_patterns.items():
+            "event": event,
 
-            if keyword in normalized:
+            "signals": signals,
 
-                intelligence.add_entity(
-                    entity
-                )
+            "correlations": correlations,
 
-
-    def detect_relationships(
-        self,
-        intelligence: IntelligenceModel
-    ):
-
-        entities = intelligence.entities
-
-
-        if (
-            "Ransomware" in entities
-            and "PowerShell" in entities
-        ):
-
-            intelligence.add_relationship(
-                "Ransomware Actor",
-                "uses",
-                "PowerShell"
-            )
-
-
-        if (
-            "Ransomware" in entities
-            and "Database" in entities
-        ):
-
-            intelligence.add_relationship(
-                "Ransomware",
-                "targets",
-                "Database"
-            )
+            "context_status":
+                "constructed"
+        }
