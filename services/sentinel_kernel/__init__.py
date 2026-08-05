@@ -3,12 +3,16 @@ from .engine_registry import EngineRegistry
 from .pipeline_controller import PipelineController
 from .intelligence_router import IntelligenceRouter
 from .decision_orchestrator import DecisionOrchestrator
+from .engine_loader import EngineLoader
 
 
 __all__ = [
+
     "SentinelKernel",
     "EngineRegistry",
     "PipelineController",
     "IntelligenceRouter",
     "DecisionOrchestrator",
+    "EngineLoader"
+
 ]
