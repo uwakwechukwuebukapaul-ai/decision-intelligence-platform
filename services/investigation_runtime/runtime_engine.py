@@ -9,6 +9,24 @@ from .runtime_logger import RuntimeLogger
 
 
 class InvestigationRuntimeEngine:
+    """
+    Sentinel DNA Unified Investigation Runtime.
+
+    Main autonomous investigation execution boundary.
+
+    Responsibilities:
+    - Create investigation context
+    - Start investigation lifecycle
+    - Execute intelligence engines
+    - Aggregate results
+    - Store runtime memory
+    - Produce investigation logs
+
+    Compatibility:
+    - Keeps legacy "engines" response key
+    - Adds new "intelligence" response layer
+    """
+
 
     def __init__(self):
 
@@ -31,32 +49,52 @@ class InvestigationRuntimeEngine:
         event
     ):
 
+        # Create investigation context
+
         context = self.context_engine.create(
             event
         )
 
+
+        # Start investigation lifecycle
 
         investigation = self.manager.start(
             context
         )
 
 
-        engines = self.orchestrator.execute(
+        # Execute intelligence layers
+        #
+        # Includes:
+        # - Investigation Graph Runtime
+        # - Cognitive Investigation Engine
+        # - Evidence Intelligence
+        # - Threat Hunting
+        # - Knowledge Graph
+        # - SOAR
+
+        intelligence = self.orchestrator.execute(
             event
         )
 
 
+        # Aggregate final investigation result
+
         result = self.aggregator.aggregate(
             context,
             investigation,
-            engines
+            intelligence
         )
 
+
+        # Store memory
 
         memory = self.memory.store(
             result
         )
 
+
+        # Create audit log
 
         log = self.logger.log(
             event
@@ -65,29 +103,51 @@ class InvestigationRuntimeEngine:
 
         return {
 
+
             "status":
                 "completed",
+
 
             "event":
                 event,
 
+
             "context":
                 context,
+
 
             "investigation":
                 investigation,
 
+
+            #
+            # New enterprise intelligence output
+            #
+            "intelligence":
+                intelligence,
+
+
+            #
+            # Backward compatibility
+            #
+            # Existing Sentinel DNA services
+            # consume this key.
+            #
             "engines":
-                engines,
+                intelligence,
+
 
             "result":
                 result,
 
+
             "memory":
                 memory,
 
+
             "log":
                 log,
+
 
             "created_at":
                 datetime.datetime.now(
@@ -102,12 +162,11 @@ class InvestigationRuntimeEngine:
         self,
         event
     ):
-
         """
-        Compatibility interface for Sentinel Core.
+        Compatibility interface.
 
-        Sentinel Core expects every runtime engine
-        to expose execute().
+        Sentinel Core expects runtime
+        engines to expose execute().
         """
 
         return self.investigate(
