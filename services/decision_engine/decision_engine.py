@@ -1,3 +1,5 @@
+from datetime import datetime, timezone
+
 from .decision_model import DecisionModel
 
 
@@ -5,9 +7,13 @@ class DecisionEngine:
     """
     Converts intelligence into autonomous decisions.
 
-    Supports:
-    - evaluate()
-    - decide() compatibility interface
+    Central Sentinel DNA decision layer.
+
+    Responsibilities:
+    - evaluate threat intelligence
+    - determine response priority
+    - generate autonomous actions
+    - maintain pipeline compatibility
 
     Used by:
     - Sentinel Core Pipeline
@@ -21,7 +27,9 @@ class DecisionEngine:
         intelligence
     ):
         """
-        Pipeline compatibility wrapper.
+        Compatibility wrapper.
+
+        Existing pipelines call decide().
         """
 
         return self.evaluate(
@@ -34,6 +42,10 @@ class DecisionEngine:
         self,
         intelligence
     ):
+        """
+        Evaluate intelligence and produce decision.
+        """
+
 
         if hasattr(
             intelligence,
@@ -63,66 +75,123 @@ class DecisionEngine:
 
 
 
-        if risk_level == "critical" or risk_score >= 90:
+        if (
+            risk_level == "critical"
+            or risk_score >= 90
+        ):
 
-            return DecisionModel(
-
-                decision="contain_immediately",
-
-                priority="critical",
-
-                actions=[
-
-                    "isolate affected systems",
-
-                    "disable compromised accounts",
-
-                    "collect forensic evidence"
-
-                ],
-
-                reasoning={
-
-                    "risk_level": risk_level,
-
-                    "risk_score": risk_score,
-
-                    "trigger":
-                        "critical threat detected"
-
-                }
-
-            ).to_dict()
+            return self._critical_response(
+                risk_level,
+                risk_score
+            )
 
 
 
         if risk_score >= 50:
 
-            return DecisionModel(
-
-                decision="investigate",
-
-                priority="high",
-
-                actions=[
-
-                    "collect additional telemetry",
-
-                    "review affected assets"
-
-                ],
-
-                reasoning={
-
-                    "risk_score": risk_score
-
-                }
-
-            ).to_dict()
+            return self._investigation_response(
+                risk_score
+            )
 
 
 
-        return DecisionModel(
+        return self._monitor_response(
+            risk_score
+        )
+
+
+
+    def _critical_response(
+        self,
+        risk_level,
+        risk_score
+    ):
+
+        result = DecisionModel(
+
+            decision="contain_immediately",
+
+            priority="critical",
+
+            actions=[
+
+                "isolate affected systems",
+
+                "disable compromised accounts",
+
+                "collect forensic evidence"
+
+            ],
+
+            reasoning={
+
+                "risk_level":
+                    risk_level,
+
+                "risk_score":
+                    risk_score,
+
+                "trigger":
+                    "critical threat detected"
+
+            }
+
+        ).to_dict()
+
+
+        result["created_at"] = datetime.now(
+            timezone.utc
+        ).isoformat()
+
+
+        return result
+
+
+
+    def _investigation_response(
+        self,
+        risk_score
+    ):
+
+        result = DecisionModel(
+
+            decision="investigate",
+
+            priority="high",
+
+            actions=[
+
+                "collect additional telemetry",
+
+                "review affected assets"
+
+            ],
+
+            reasoning={
+
+                "risk_score":
+                    risk_score
+
+            }
+
+        ).to_dict()
+
+
+        result["created_at"] = datetime.now(
+            timezone.utc
+        ).isoformat()
+
+
+        return result
+
+
+
+    def _monitor_response(
+        self,
+        risk_score
+    ):
+
+        result = DecisionModel(
 
             decision="monitor",
 
@@ -136,8 +205,17 @@ class DecisionEngine:
 
             reasoning={
 
-                "risk_score": risk_score
+                "risk_score":
+                    risk_score
 
             }
 
         ).to_dict()
+
+
+        result["created_at"] = datetime.now(
+            timezone.utc
+        ).isoformat()
+
+
+        return result
