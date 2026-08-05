@@ -1,7 +1,7 @@
 import datetime
 
 from .engine_registry import IntelligenceEngineRegistry
-from .investigation_pipeline import InvestigationPipeline
+from services.investigation_runtime.runtime_engine import InvestigationRuntimeEngine
 from .intelligence_memory import IntelligenceMemory
 from .intelligence_logger import IntelligenceLogger
 
@@ -12,6 +12,15 @@ class AutonomousSecurityIntelligenceCore:
 
     Coordinates security intelligence engines
     into a unified investigation workflow.
+
+    Architecture:
+    Intelligence Layer
+            |
+            v
+    Investigation Runtime
+            |
+            v
+    Memory + Audit Logging
     """
 
 
@@ -19,7 +28,7 @@ class AutonomousSecurityIntelligenceCore:
 
         self.registry = IntelligenceEngineRegistry()
 
-        self.pipeline = InvestigationPipeline()
+        self.pipeline = InvestigationRuntimeEngine()
 
         self.memory = IntelligenceMemory()
 
@@ -27,7 +36,11 @@ class AutonomousSecurityIntelligenceCore:
 
 
 
-    def register_engine(self, name, engine):
+    def register_engine(
+        self,
+        name,
+        engine
+    ):
 
         self.registry.register(
             name,
@@ -36,7 +49,10 @@ class AutonomousSecurityIntelligenceCore:
 
 
 
-    def investigate(self, event):
+    def investigate(
+        self,
+        event
+    ):
 
 
         pipeline_result = self.pipeline.execute(
@@ -59,35 +75,48 @@ class AutonomousSecurityIntelligenceCore:
 
         return {
 
-            "status": "completed",
+            "status":
+                "completed",
 
-            "event": event,
+
+            "event":
+                event,
+
 
             "engine_status":
                 self.registry.status(),
 
+
             "investigation":
                 pipeline_result,
 
-            "decision": {
 
-                "risk_level":
-                    "critical"
-                    if "ransomware" in event.lower()
-                    else "unknown",
+            "decision":
+                {
 
-                "confidence":
-                    "96%"
-
-            },
+                    "risk_level":
+                        "critical"
+                        if "ransomware" in event.lower()
+                        else "unknown",
 
 
-            "memory": memory,
+                    "confidence":
+                        "96%"
 
-            "log": log,
+                },
+
+
+            "memory":
+                memory,
+
+
+            "log":
+                log,
 
 
             "created_at":
-                datetime.datetime.now(datetime.timezone.utc).isoformat()
+                datetime.datetime.now(
+                    datetime.timezone.utc
+                ).isoformat()
 
         }
