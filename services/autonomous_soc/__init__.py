@@ -7,7 +7,9 @@ investigation planning, and SOC orchestration.
 
 from .soc_orchestrator import SOCOrchestrator
 from .analyst_agent import AnalystAgent
-from .investigation_planner import InvestigationPlanner
+from services.investigation_graph_runtime.investigation_planner import (
+    InvestigationPlanner
+)
 from .soc_model import SOCWorkflowModel
 
 

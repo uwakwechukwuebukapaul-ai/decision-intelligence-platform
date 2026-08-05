@@ -1,6 +1,8 @@
 from .reasoning_engine import ReasoningEngine
 from .agent_coordinator import AgentCoordinator
-from .investigation_planner import InvestigationPlanner
+from services.investigation_graph_runtime.investigation_planner import (
+    InvestigationPlanner
+)
 from .risk_decision import RiskDecision
 from .memory_manager import MemoryManager
 
