@@ -1,11 +1,15 @@
 from .hunter import ThreatHunter
-from .query_builder import QueryBuilder
-from .hunt_strategy import HuntStrategy
-from .anomaly_detector import AnomalyDetector
+from .hypothesis_engine import HypothesisEngine
+from .behavior_analyzer import BehaviorAnalyzer
+from .ioc_hunter import IOCHunter
+from .attack_pattern_detector import AttackPatternDetector
+from .hunt_orchestrator import HuntOrchestrator
 
 __all__ = [
     "ThreatHunter",
-    "QueryBuilder",
-    "HuntStrategy",
-    "AnomalyDetector"
+    "HypothesisEngine",
+    "BehaviorAnalyzer",
+    "IOCHunter",
+    "AttackPatternDetector",
+    "HuntOrchestrator",
 ]

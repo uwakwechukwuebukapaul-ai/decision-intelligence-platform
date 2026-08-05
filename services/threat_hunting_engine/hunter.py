@@ -1,80 +1,22 @@
-from .hunt_strategy import HuntStrategy
-from .query_builder import QueryBuilder
-from .anomaly_detector import AnomalyDetector
+from .hunt_orchestrator import HuntOrchestrator
 
 
 class ThreatHunter:
     """
-    Autonomous Sentinel DNA threat hunting engine.
+    Autonomous threat hunting entry point.
+
+    Coordinates:
+    - hypothesis generation
+    - IOC hunting
+    - behavior analysis
+    - attack pattern detection
     """
 
     def __init__(self):
+        self.orchestrator = HuntOrchestrator()
 
-        self.strategy = HuntStrategy()
+    def execute_hunt(self, hunt_request):
+        return self.orchestrator.run(hunt_request)
 
-        self.query_builder = QueryBuilder()
-
-        self.anomaly_detector = AnomalyDetector()
-
-
-
-    def hunt(
-        self,
-        event
-    ):
-
-        strategies = self.strategy.generate(
-            event
-        )
-
-
-        queries = []
-
-
-        for strategy in strategies:
-
-            queries.append(
-                self.query_builder.build(strategy)
-            )
-
-
-        findings = self.anomaly_detector.analyze(
-            [
-                event
-            ]
-        )
-
-
-        risk = "low"
-
-
-        for finding in findings:
-
-            if finding["risk"] == "critical":
-                risk = "critical"
-
-            elif finding["risk"] == "high":
-                risk = "high"
-
-
-        return {
-
-            "status":
-            "hunt_completed",
-
-            "event":
-            event,
-
-            "strategies":
-            strategies,
-
-            "queries":
-            queries,
-
-            "findings":
-            findings,
-
-            "risk":
-            risk
-
-        }
+    def hunt(self, data):
+        return self.execute_hunt(data)
