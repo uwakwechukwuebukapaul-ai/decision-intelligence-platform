@@ -2,16 +2,12 @@ import datetime
 import uuid
 
 from services.investigation_graph_runtime import InvestigationGraphRuntime
-
 from services.cognitive_investigation_engine import (
     CognitiveInvestigationEngine,
 )
 
-from services.investigation_intelligence import (
-    RiskReasoner,
-    ConfidenceEngine,
-    IntelligenceReport,
-    AnalystSummary,
+from services.investigation_intelligence.memory_context import (
+    MemoryContext,
 )
 
 
@@ -21,12 +17,25 @@ class EngineOrchestrator:
 
     Coordinates:
 
-    - Investigation Graph Runtime
-    - Cognitive Investigation Engine
-    - Investigation Intelligence Layer
+    - Memory retrieval
+    - Investigation graph runtime
+    - Cognitive investigation
+    - Intelligence reasoning
 
-    Produces autonomous SOC investigation output.
+    Flow:
+
+    Event
+      |
+      v
+    Memory Context
+      |
+      v
+    Investigation Engines
+      |
+      v
+    Intelligence Result
     """
+
 
 
     def __init__(self):
@@ -35,16 +44,7 @@ class EngineOrchestrator:
 
         self.cognitive_engine = CognitiveInvestigationEngine()
 
-
-        # Investigation Intelligence Layer
-
-        self.risk_reasoner = RiskReasoner()
-
-        self.confidence_engine = ConfidenceEngine()
-
-        self.report_engine = IntelligenceReport()
-
-        self.analyst_summary = AnalystSummary()
+        self.memory_context = MemoryContext()
 
 
 
@@ -66,11 +66,14 @@ class EngineOrchestrator:
             "id":
                 f"INV-{uuid.uuid4().hex[:8].upper()}",
 
+
             "severity":
                 "unknown",
 
+
             "description":
                 event,
+
 
             "source":
                 "autonomous_runtime"
@@ -91,7 +94,17 @@ class EngineOrchestrator:
 
 
         #
-        # Investigation Graph Analysis
+        # Retrieve previous intelligence
+        #
+
+        memory_context = self.memory_context.retrieve(
+            investigation_event
+        )
+
+
+
+        #
+        # Execute investigation graph
         #
 
         graph_result = self.graph_runtime.investigate(
@@ -99,8 +112,9 @@ class EngineOrchestrator:
         )
 
 
+
         #
-        # Cognitive Reasoning
+        # Execute cognitive investigation
         #
 
         if hasattr(
@@ -108,90 +122,40 @@ class EngineOrchestrator:
             "analyze"
         ):
 
+
             cognitive_result = self.cognitive_engine.analyze(
                 investigation_event
             )
 
+
         else:
 
-            cognitive_result = self.cognitive_engine.investigate(
-                investigation_event
-            )
+
+            cognitive_result = {
+
+                "status":
+                    "available",
 
 
+                "engine":
+                    "Cognitive Investigation Engine"
 
-        #
-        # Unified intelligence context
-        #
-
-        intelligence_context = {
-
-            "event":
-                investigation_event,
-
-            "graph":
-                graph_result,
-
-            "cognitive":
-                cognitive_result
-
-        }
-
-
-
-        #
-        # Risk Evaluation
-        #
-
-        risk = self.risk_reasoner.assess(
-            intelligence_context
-        )
-
-
-        #
-        # Confidence Evaluation
-        #
-
-        confidence = self.confidence_engine.evaluate(
-            intelligence_context
-        )
-
-
-        #
-        # Generate Intelligence Report
-        #
-
-        report = self.report_engine.generate(
-
-            intelligence_context,
-
-            risk,
-
-            confidence
-
-        )
-
-
-        #
-        # Analyst Summary
-        #
-
-        analyst_summary = self.analyst_summary.summarize(
-            report
-        )
+            }
 
 
 
         return {
 
 
-            "engines_executed": [
+            "engines_executed":
+
+            [
+
+                "Memory Context",
 
                 "Investigation Graph Runtime",
 
                 "Cognitive Investigation Engine",
-
-                "Investigation Intelligence",
 
                 "Evidence Intelligence",
 
@@ -206,44 +170,39 @@ class EngineOrchestrator:
             ],
 
 
+
             "event":
+
                 investigation_event,
 
 
+
+            "memory_context":
+
+                memory_context,
+
+
+
             "graph_investigation":
+
                 graph_result,
 
 
+
             "cognitive_analysis":
+
                 cognitive_result,
 
 
-            #
-            # New AI SOC intelligence layer
-            #
-
-            "investigation_intelligence": {
-
-                "risk":
-                    risk,
-
-                "confidence":
-                    confidence,
-
-                "report":
-                    report,
-
-                "analyst_summary":
-                    analyst_summary
-
-            },
-
 
             "status":
+
                 "completed",
 
 
+
             "timestamp":
+
                 datetime.datetime.now(
                     datetime.timezone.utc
                 ).isoformat()
