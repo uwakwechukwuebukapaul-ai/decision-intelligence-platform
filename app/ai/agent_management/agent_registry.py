@@ -1,161 +1,95 @@
 """
-Agent Registry Engine v49
+Agent Management Registry
 
-Responsible for:
-- Agent registration
-- Agent discovery
-- Agent metadata storage
-- Agent state tracking
-
-This is the foundation layer for the Autonomous Agent Workforce.
+Production registry for autonomous agents.
+Handles registration, discovery, lifecycle tracking,
+and autonomous workforce management.
 """
 
-
-from datetime import datetime
-import uuid
+from datetime import datetime, UTC
 
 
 class AgentRegistry:
-    """
-    Central registry for autonomous agents.
-    """
 
     def __init__(self):
-
         self.agents = {}
 
 
-    # =====================================
-    # Register Agent
-    # =====================================
+    def _timestamp(self):
+        return datetime.now(UTC).isoformat()
+
 
     def register_agent(
         self,
-        name,
-        agent_type,
-        capabilities=None
+        agent_id=None,
+        name=None,
+        capability=None,
+        status="active",
+        agent_type=None,
+        metadata=None,
+        **kwargs
     ):
 
-        agent_id = (
-            "AGENT-"
-            + str(uuid.uuid4())[:8].upper()
-        )
-
+        timestamp = self._timestamp()
 
         agent = {
-
-            "agent_id":
-                agent_id,
-
-
-            "name":
-                name,
-
-
-            "type":
-                agent_type,
-
-
-            "capabilities":
-                capabilities or [],
-
-
-            "status":
-                "active",
-
-
-            "created_at":
-                datetime.utcnow().isoformat(),
-
-
-            "last_seen":
-                datetime.utcnow().isoformat()
-
+            "agent_id": agent_id,
+            "name": name,
+            "capability": capability,
+            "agent_type": agent_type,
+            "status": status,
+            "metadata": metadata or {},
+            "created_at": timestamp,
+            "updated_at": timestamp,
         }
 
-
         self.agents[agent_id] = agent
-
 
         return agent
 
 
+    def get_agent(self, agent_id):
 
-    # =====================================
-    # Get Agent
-    # =====================================
-
-    def get_agent(
-        self,
-        agent_id
-    ):
-
-        return self.agents.get(
-            agent_id
-        )
+        return self.agents.get(agent_id)
 
 
+    def list_agents(self):
 
-    # =====================================
-    # List Agents
-    # =====================================
-
-    def list_agents(
-        self
-    ):
-
-        return list(
-            self.agents.values()
-        )
+        return list(self.agents.values())
 
 
-
-    # =====================================
-    # Update Agent Status
-    # =====================================
-
-    def update_status(
+    def update_agent_status(
         self,
         agent_id,
         status
     ):
 
-        agent = self.get_agent(
-            agent_id
-        )
-
+        agent = self.agents.get(agent_id)
 
         if not agent:
             return None
 
-
         agent["status"] = status
-
-
-        agent["last_seen"] = (
-            datetime.utcnow()
-            .isoformat()
-        )
-
+        agent["updated_at"] = self._timestamp()
 
         return agent
 
-
-
-    # =====================================
-    # Remove Agent
-    # =====================================
 
     def remove_agent(
         self,
         agent_id
     ):
 
-        if agent_id in self.agents:
+        return self.agents.pop(
+            agent_id,
+            None
+        )
 
-            del self.agents[agent_id]
 
-            return True
+    def count(self):
+
+        return len(self.agents)
 
 
-        return False
+
+agent_registry = AgentRegistry()

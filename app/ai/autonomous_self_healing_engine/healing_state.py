@@ -1,36 +1,44 @@
-from datetime import datetime
+"""
+Self Healing State Model
+
+Tracks autonomous recovery actions.
+"""
+
+from datetime import datetime, UTC
+
 
 
 class HealingState:
 
 
-    def __init__(self):
+    def __init__(
+        self,
+        component=None,
+        status="healthy"
+    ):
 
-        self.status = "active"
+        self.component = component
 
-        self.version = "1.0"
+        self.status = status
 
-        self.created_at = datetime.utcnow().isoformat()
+        self.created_at = (
+            datetime.now(
+                UTC
+            ).isoformat()
+        )
 
 
-
-    def get_state(self):
+    def to_dict(self):
 
         return {
 
-            "healing_status":
+            "component":
+                self.component,
+
+            "status":
                 self.status,
 
-
-            "healing_version":
-                self.version,
-
-
             "created_at":
-                self.created_at,
-
-
-            "mode":
-                "continuous autonomous recovery"
+                self.created_at
 
         }

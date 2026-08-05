@@ -1,44 +1,45 @@
+"""
+Intelligence Control Plane API
+
+Management endpoints.
+"""
+
 from flask import Blueprint, jsonify
 
-
-from app.ai.control_plane.controller import (
-    control_plane
+from app.intelligence.control_plane import (
+    IntelligenceController,
+    HealthMonitor,
+    RuntimeMetrics,
+    AuditManager,
 )
-
-
 
 intelligence_control_plane_bp = Blueprint(
-
     "intelligence_control_plane",
-
-    __name__
-
+    __name__,
+    url_prefix="/control-plane",
 )
 
+controller = IntelligenceController()
+health = HealthMonitor()
+metrics = RuntimeMetrics()
+audit = AuditManager()
 
 
-@intelligence_control_plane_bp.route(
-
-    "/intelligence-control-plane/<int:user_id>",
-
-    methods=["GET"]
-
-)
-
-def intelligence_control_plane(user_id):
+@intelligence_control_plane_bp.route("/status", methods=["GET"])
+def status():
+    return jsonify(controller.get_status())
 
 
-    result = control_plane.execute_control_cycle(
-
-        user_id
-
-    )
+@intelligence_control_plane_bp.route("/health", methods=["GET"])
+def health_check():
+    return jsonify(health.check())
 
 
-    return jsonify({
+@intelligence_control_plane_bp.route("/metrics", methods=["GET"])
+def runtime_metrics():
+    return jsonify(metrics.get_metrics())
 
-        "control_plane":
 
-            result
-
-    })
+@intelligence_control_plane_bp.route("/audit", methods=["GET"])
+def audit_logs():
+    return jsonify(audit.get_events())
