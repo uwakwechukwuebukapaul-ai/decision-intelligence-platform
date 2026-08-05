@@ -1,15 +1,26 @@
 class RiskReasoner:
     """
-    Autonomous security risk evaluation engine.
+    Sentinel DNA Autonomous Security Risk Reasoner.
+
+    Uses:
+
+    - Current investigation evidence
+    - Historical memory context
+    - Threat patterns
+    - Security knowledge
+
+    to calculate risk.
     """
 
 
     def assess(
         self,
-        investigation
+        investigation,
+        memory_context=None
     ):
 
         score = 0
+
         factors = []
 
 
@@ -17,6 +28,11 @@ class RiskReasoner:
             investigation
         ).lower()
 
+
+
+        #
+        # Current investigation signals
+        #
 
         if "ransomware" in text:
 
@@ -43,6 +59,63 @@ class RiskReasoner:
             factors.append(
                 "Critical database targeting detected"
             )
+
+
+
+        #
+        # Memory intelligence signals
+        #
+
+        if memory_context:
+
+
+            incidents = memory_context.get(
+                "similar_incidents",
+                []
+            )
+
+
+            patterns = memory_context.get(
+                "known_patterns",
+                []
+            )
+
+
+            knowledge = memory_context.get(
+                "previous_memories",
+                []
+            )
+
+
+
+            if incidents:
+
+                score += 15
+
+                factors.append(
+                    "Historical incident match detected"
+                )
+
+
+
+            if patterns:
+
+                score += 15
+
+                factors.append(
+                    "Known attack pattern detected"
+                )
+
+
+
+            if knowledge:
+
+                score += 10
+
+                factors.append(
+                    "Security knowledge correlation found"
+                )
+
 
 
         if score >= 80:
