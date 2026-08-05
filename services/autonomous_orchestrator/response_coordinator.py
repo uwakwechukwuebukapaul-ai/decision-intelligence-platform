@@ -1,20 +1,21 @@
-import datetime
+"""
+Autonomous Orchestrator Response Coordinator Compatibility Layer
+
+This module exists to maintain backward compatibility with older
+autonomous orchestrator imports.
+
+The canonical ResponseCoordinator implementation lives in:
+
+services.response_engine.response_coordinator
+
+All orchestration components should eventually migrate directly
+to the central response engine.
+"""
 
 
-class ResponseCoordinator:
+from services.response_engine.response_coordinator import ResponseCoordinator
 
 
-    def execute(self, decision):
-
-        return {
-            "actions": [
-                "Validate incident",
-                "Contain affected assets",
-                "Block malicious indicators",
-                "Collect forensic evidence",
-                "Begin recovery workflow"
-            ],
-            "decision": decision["decision"],
-            "status": "ready",
-            "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat()
-        }
+__all__ = [
+    "ResponseCoordinator"
+]

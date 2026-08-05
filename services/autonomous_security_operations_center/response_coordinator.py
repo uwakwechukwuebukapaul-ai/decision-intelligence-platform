@@ -1,20 +1,13 @@
-class ResponseCoordinator:
-    """
-    Coordinates autonomous SOC response activities.
-    """
+"""
+Autonomous Security Operations Center Compatibility Layer
 
-    def __init__(self):
-        self.actions = []
+Uses the centralized response coordination engine.
+"""
 
-    def execute_response(self, incident):
-        action = {
-            "incident": incident,
-            "status": "response_planned"
-        }
 
-        self.actions.append(action)
+from services.response_engine.response_coordinator import ResponseCoordinator
 
-        return action
 
-    def get_actions(self):
-        return self.actions
+__all__ = [
+    "ResponseCoordinator"
+]

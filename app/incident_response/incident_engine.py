@@ -5,24 +5,45 @@ from .containment_planner import ContainmentPlanner
 from .eradication_planner import EradicationPlanner
 from .recovery_planner import RecoveryPlanner
 from .lessons_learned import LessonsLearned
-from .response_coordinator import ResponseCoordinator
 from .response_memory import ResponseMemory
 from .response_logger import ResponseLogger
 
+from services.response_engine import ResponseCoordinator
+
+
 
 class IncidentResponseEngine:
+    """
+    Central incident response orchestration engine.
+
+    Coordinates:
+    - classification
+    - containment
+    - eradication
+    - recovery
+    - response coordination
+    - lessons learned
+    - memory
+    - audit logging
+    """
 
 
     def __init__(self):
 
         self.classifier = IncidentClassifier()
+
         self.containment = ContainmentPlanner()
+
         self.eradication = EradicationPlanner()
+
         self.recovery = RecoveryPlanner()
+
         self.lessons = LessonsLearned()
 
         self.coordinator = ResponseCoordinator()
+
         self.memory = ResponseMemory()
+
         self.logger = ResponseLogger()
 
 
@@ -73,41 +94,23 @@ class IncidentResponseEngine:
 
             "status": "completed",
 
-            "incident":
-                incident,
+            "incident": incident,
 
+            "classification": classification,
 
-            "classification":
-                classification,
+            "containment": containment,
 
+            "eradication": eradication,
 
-            "containment":
-                containment,
+            "recovery": recovery,
 
+            "coordination": coordination,
 
-            "eradication":
-                eradication,
+            "lessons_learned": lessons,
 
+            "memory": memory,
 
-            "recovery":
-                recovery,
-
-
-            "coordination":
-                coordination,
-
-
-            "lessons_learned":
-                lessons,
-
-
-            "memory":
-                memory,
-
-
-            "log":
-                log,
-
+            "log": log,
 
             "severity":
                 "critical"

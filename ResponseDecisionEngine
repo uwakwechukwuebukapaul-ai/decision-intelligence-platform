@@ -1,0 +1,8 @@
+class ResponseDecisionEngine:
+
+    def decide(self, incident):
+
+        return {
+            "decision": "recommended_response",
+            "incident": incident
+        }

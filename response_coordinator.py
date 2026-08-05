@@ -1,38 +1,13 @@
-from datetime import datetime
+"""
+Legacy ResponseCoordinator Compatibility Wrapper
+
+Redirects old imports to the canonical response engine implementation.
+"""
 
 
-class ResponseCoordinator:
+from services.response_engine.response_coordinator import ResponseCoordinator
 
 
-    def prepare(self,decision):
-
-        return {
-
-
-            "actions":[
-
-                "Validate threat",
-
-                "Contain affected systems",
-
-                "Block malicious indicators",
-
-                "Collect forensic evidence",
-
-                "Start recovery workflow"
-
-            ],
-
-
-            "decision":
-                decision["decision"],
-
-
-            "status":
-                "ready",
-
-
-            "timestamp":
-                datetime.utcnow().isoformat()
-
-        }
+__all__ = [
+    "ResponseCoordinator"
+]
