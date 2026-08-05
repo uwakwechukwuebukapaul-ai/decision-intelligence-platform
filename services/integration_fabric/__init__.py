@@ -1,11 +1,41 @@
-from .integration_manager import IntegrationManager
-from .connector_health import ConnectorHealth
-from .credential_manager import CredentialManager
-from .connectors import ConnectorRegistry
+from .connector_manager import ConnectorManager
+from .siem_connector import SIEMConnector
+from .edr_connector import EDRConnector
+from .cloud_connector import CloudConnector
+from .identity_connector import IdentityConnector
+from .threat_feed_connector import ThreatFeedConnector
+from .integration_gateway import IntegrationGateway
 
-__all__ = [
-    "IntegrationManager",
-    "ConnectorHealth",
-    "CredentialManager",
-    "ConnectorRegistry"
-]
+
+class IntegrationFabric:
+    """
+    Enterprise Integration Fabric
+
+    Central communication layer between Sentinel DNA
+    and external security platforms.
+    """
+
+    def __init__(self):
+        self.connector_manager = ConnectorManager()
+        self.gateway = IntegrationGateway()
+
+        self.connectors = {
+            "siem": SIEMConnector(),
+            "edr": EDRConnector(),
+            "cloud": CloudConnector(),
+            "identity": IdentityConnector(),
+            "threat_feed": ThreatFeedConnector(),
+        }
+
+    def register_connector(self, name, connector):
+        self.connectors[name] = connector
+
+    def get_connector(self, name):
+        return self.connectors.get(name)
+
+    def status(self):
+        return {
+            "service": "Integration Fabric",
+            "connectors": list(self.connectors.keys()),
+            "status": "ready"
+        }
