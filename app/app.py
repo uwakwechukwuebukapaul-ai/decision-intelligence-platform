@@ -16,12 +16,13 @@ from app.database.db import engine, Base
 from app.models import *
 
 
+
 # =====================================
-# Intelligence Fabric Core
+# Intelligence Fabric
 # =====================================
 
-from app.intelligence.intelligence_fabric import (
-    intelligence_fabric
+from app.intelligence.production_engine_loader import (
+    load_production_engines
 )
 
 
@@ -59,6 +60,7 @@ from app.routes.autonomous_trust_intelligence_engine import autonomous_trust_int
 from app.routes.autonomous_validation_engine import autonomous_validation_engine
 
 
+
 # =====================================
 # Platform Modules
 # =====================================
@@ -67,6 +69,7 @@ from app.routes.autonomous_intelligence_dashboard import autonomous_intelligence
 from app.routes.autonomous_intelligence_command_center import autonomous_intelligence_command_center
 from app.routes.autonomous_intelligence_memory import autonomous_intelligence_memory
 from app.routes.autonomous_intelligence_learning import autonomous_intelligence_learning
+
 
 
 # =====================================
@@ -78,14 +81,16 @@ from app.routes.agent_runtime import agent_runtime_bp
 from app.routes.agent_supervisor import agent_supervisor_bp
 
 
+
 # =====================================
-# Evolution Layer
+# Intelligence Evolution
 # =====================================
 
 from app.routes.intelligence_feedback import intelligence_feedback_bp
 from app.routes.intelligence_evaluation import intelligence_evaluation_bp
 from app.routes.intelligence_reflection import intelligence_reflection_bp
 from app.routes.intelligence_orchestration import intelligence_orchestration_bp
+
 
 
 # =====================================
@@ -95,11 +100,13 @@ from app.routes.intelligence_orchestration import intelligence_orchestration_bp
 from app.routes.intelligence_control_plane import intelligence_control_plane_bp
 
 
+
 # =====================================
 # Agent Management
 # =====================================
 
 from app.routes.agent_management import agent_management_bp
+
 
 
 
@@ -129,9 +136,16 @@ Base.metadata.create_all(
 
 
 # =====================================
-# Blueprint Registry
+# Load Intelligence Capabilities
 # =====================================
 
+load_production_engines()
+
+
+
+# =====================================
+# Blueprint Registry
+# =====================================
 
 blueprints = [
 
@@ -163,29 +177,23 @@ blueprints = [
     autonomous_trust_intelligence_engine,
     autonomous_validation_engine,
 
-
     autonomous_intelligence_dashboard,
     autonomous_intelligence_command_center,
     autonomous_intelligence_memory,
     autonomous_intelligence_learning,
 
-
     autonomous_operating_system_bp,
     agent_runtime_bp,
     agent_supervisor_bp,
-
 
     intelligence_feedback_bp,
     intelligence_evaluation_bp,
     intelligence_reflection_bp,
     intelligence_orchestration_bp,
 
-
     intelligence_control_plane_bp,
 
-
     agent_management_bp
-
 ]
 
 
@@ -199,40 +207,40 @@ for blueprint in blueprints:
 
 
 # =====================================
-# Intelligence Fabric Endpoint
+# Intelligence Fabric Status
 # =====================================
 
-
 @app.route(
-    "/intelligence-fabric/<user_id>",
+    "/intelligence-status",
     methods=["GET"]
 )
-def intelligence_fabric_status(user_id):
+def intelligence_status():
 
-    context = intelligence_fabric.create_context(
-        user_id=user_id,
-        objective="intelligence platform analysis"
+    from app.intelligence.capability_registry import (
+        capability_registry
     )
-
 
     return jsonify({
 
-        "status": "active",
+        "platform":
+            app.config["PLATFORM_NAME"],
 
-        "layer":
-            "Autonomous Intelligence Fabric",
+        "version":
+            app.config["VERSION"],
 
-        "context":
-            context.to_dict()
+        "registered_capabilities":
+            capability_registry.list_capabilities(),
+
+        "timestamp":
+            datetime.utcnow().isoformat()
 
     })
 
 
 
 # =====================================
-# Health Check
+# Health Endpoint
 # =====================================
-
 
 @app.route(
     "/health",
@@ -245,20 +253,13 @@ def health():
         "platform":
             app.config["PLATFORM_NAME"],
 
+        "status":
+            "healthy",
 
         "version":
             app.config["VERSION"],
 
-
-        "architecture":
-            "Autonomous Intelligence Operating System",
-
-
-        "status":
-            "healthy",
-
-
-        "layers": {
+        "services": {
 
             "database":
                 "active",
@@ -266,23 +267,19 @@ def health():
             "intelligence_fabric":
                 "active",
 
-            "autonomous_engines":
+            "capability_registry":
+                "active",
+
+            "autonomous_stack":
                 "active",
 
             "agent_runtime":
                 "active",
 
             "control_plane":
-                "active",
-
-            "learning_system":
-                "active",
-
-            "governance":
                 "active"
 
         },
-
 
         "timestamp":
             datetime.utcnow().isoformat()
@@ -292,16 +289,12 @@ def health():
 
 
 # =====================================
-# Application Start
+# Run Application
 # =====================================
-
 
 if __name__ == "__main__":
 
     app.run(
-
         host="127.0.0.1",
-
         port=5000
-
     )
