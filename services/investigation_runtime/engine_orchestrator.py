@@ -2,8 +2,16 @@ import datetime
 import uuid
 
 from services.investigation_graph_runtime import InvestigationGraphRuntime
+
 from services.cognitive_investigation_engine import (
     CognitiveInvestigationEngine,
+)
+
+from services.investigation_intelligence import (
+    RiskReasoner,
+    ConfidenceEngine,
+    IntelligenceReport,
+    AnalystSummary,
 )
 
 
@@ -11,9 +19,15 @@ class EngineOrchestrator:
     """
     Sentinel DNA Investigation Engine Orchestrator.
 
-    Converts raw events into investigation objects
-    and coordinates intelligence layers.
+    Coordinates:
+
+    - Investigation Graph Runtime
+    - Cognitive Investigation Engine
+    - Investigation Intelligence Layer
+
+    Produces autonomous SOC investigation output.
     """
+
 
     def __init__(self):
 
@@ -22,10 +36,27 @@ class EngineOrchestrator:
         self.cognitive_engine = CognitiveInvestigationEngine()
 
 
+        # Investigation Intelligence Layer
 
-    def normalize_event(self, event):
+        self.risk_reasoner = RiskReasoner()
 
-        if isinstance(event, dict):
+        self.confidence_engine = ConfidenceEngine()
+
+        self.report_engine = IntelligenceReport()
+
+        self.analyst_summary = AnalystSummary()
+
+
+
+    def normalize_event(
+        self,
+        event
+    ):
+
+        if isinstance(
+            event,
+            dict
+        ):
 
             return event
 
@@ -48,7 +79,10 @@ class EngineOrchestrator:
 
 
 
-    def execute(self, event):
+    def execute(
+        self,
+        event
+    ):
 
 
         investigation_event = self.normalize_event(
@@ -56,10 +90,18 @@ class EngineOrchestrator:
         )
 
 
+        #
+        # Investigation Graph Analysis
+        #
+
         graph_result = self.graph_runtime.investigate(
             investigation_event
         )
 
+
+        #
+        # Cognitive Reasoning
+        #
 
         if hasattr(
             self.cognitive_engine,
@@ -72,15 +114,71 @@ class EngineOrchestrator:
 
         else:
 
-            cognitive_result = {
+            cognitive_result = self.cognitive_engine.investigate(
+                investigation_event
+            )
 
-                "status":
-                    "available",
 
-                "engine":
-                    "Cognitive Investigation Engine"
 
-            }
+        #
+        # Unified intelligence context
+        #
+
+        intelligence_context = {
+
+            "event":
+                investigation_event,
+
+            "graph":
+                graph_result,
+
+            "cognitive":
+                cognitive_result
+
+        }
+
+
+
+        #
+        # Risk Evaluation
+        #
+
+        risk = self.risk_reasoner.assess(
+            intelligence_context
+        )
+
+
+        #
+        # Confidence Evaluation
+        #
+
+        confidence = self.confidence_engine.evaluate(
+            intelligence_context
+        )
+
+
+        #
+        # Generate Intelligence Report
+        #
+
+        report = self.report_engine.generate(
+
+            intelligence_context,
+
+            risk,
+
+            confidence
+
+        )
+
+
+        #
+        # Analyst Summary
+        #
+
+        analyst_summary = self.analyst_summary.summarize(
+            report
+        )
 
 
 
@@ -92,6 +190,8 @@ class EngineOrchestrator:
                 "Investigation Graph Runtime",
 
                 "Cognitive Investigation Engine",
+
+                "Investigation Intelligence",
 
                 "Evidence Intelligence",
 
@@ -116,6 +216,27 @@ class EngineOrchestrator:
 
             "cognitive_analysis":
                 cognitive_result,
+
+
+            #
+            # New AI SOC intelligence layer
+            #
+
+            "investigation_intelligence": {
+
+                "risk":
+                    risk,
+
+                "confidence":
+                    confidence,
+
+                "report":
+                    report,
+
+                "analyst_summary":
+                    analyst_summary
+
+            },
 
 
             "status":
