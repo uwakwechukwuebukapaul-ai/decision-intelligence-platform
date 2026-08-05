@@ -1,22 +1,23 @@
-from datetime import datetime
-import uuid
-
-
 class InvestigationController:
 
+    """
+    Controls autonomous investigation workflow.
+    """
 
-    def start(self,event):
+
+    def start(self, alert):
 
         return {
 
-            "investigation_id":
-                "INV-" + uuid.uuid4().hex[:8].upper(),
+            "status": "investigation_started",
 
-            "event":event,
+            "alert": alert,
 
-            "status":"investigation_started",
-
-            "timestamp":
-                datetime.utcnow().isoformat()
-
+            "workflow":
+            [
+                "collect_evidence",
+                "analyze_threat",
+                "map_attack_path",
+                "generate_hypothesis"
+            ]
         }
