@@ -1,50 +1,127 @@
+"""
+Sentinel DNA Investigation Engine Orchestrator.
+
+Enterprise investigation coordination layer.
+
+Responsibilities:
+
+- Normalize incoming events
+- Retrieve historical investigation memory
+- Execute investigation graph analysis
+- Execute cognitive investigation reasoning
+- Combine intelligence outputs
+
+Architecture:
+
+Event
+ |
+ v
+Memory Intelligence Gateway
+ |
+ v
+Investigation Graph Runtime
+ |
+ v
+Cognitive Investigation Engine
+ |
+ v
+Unified Investigation Intelligence
+"""
+
 import datetime
 import uuid
 
-from services.investigation_graph_runtime import InvestigationGraphRuntime
-from services.cognitive_investigation_engine import (
-    CognitiveInvestigationEngine,
+
+from services.investigation_graph_runtime import (
+    InvestigationGraphRuntime
 )
 
-from services.investigation_intelligence.memory_context import (
-    MemoryContext,
+
+from services.cognitive_investigation_engine import (
+    CognitiveInvestigationEngine
 )
+
+
+from services.memory_engine.memory_intelligence_gateway import (
+    MemoryIntelligenceGateway
+)
+
+
+
+from services.memory_engine.incident_memory import (
+    IncidentMemory
+)
+
+
+from services.memory_engine.pattern_memory import (
+    PatternMemory
+)
+
+
+from services.memory_engine.knowledge_memory import (
+    KnowledgeMemory
+)
+
+
+from services.memory_engine.memory_store import (
+    MemoryStore
+)
+
 
 
 class EngineOrchestrator:
     """
-    Sentinel DNA Investigation Engine Orchestrator.
+    Sentinel DNA Unified Intelligence Orchestrator.
 
     Coordinates:
 
-    - Memory retrieval
-    - Investigation graph runtime
-    - Cognitive investigation
-    - Intelligence reasoning
-
-    Flow:
-
-    Event
-      |
-      v
-    Memory Context
-      |
-      v
-    Investigation Engines
-      |
-      v
-    Intelligence Result
+    - Investigation Runtime
+    - Memory Intelligence
+    - Cognitive Reasoning
+    - Threat Analysis
     """
 
 
 
     def __init__(self):
 
-        self.graph_runtime = InvestigationGraphRuntime()
 
-        self.cognitive_engine = CognitiveInvestigationEngine()
+        self.graph_runtime = (
+            InvestigationGraphRuntime()
+        )
 
-        self.memory_context = MemoryContext()
+
+        self.cognitive_engine = (
+            CognitiveInvestigationEngine()
+        )
+
+
+        #
+        # Memory infrastructure
+        #
+
+        self.memory_store = (
+            MemoryStore()
+        )
+
+
+        self.memory_gateway = (
+            MemoryIntelligenceGateway(
+
+                incident_memory=IncidentMemory(
+                    self.memory_store
+                ),
+
+                pattern_memory=PatternMemory(
+                    self.memory_store
+                ),
+
+                knowledge_memory=KnowledgeMemory(
+                    self.memory_store
+                )
+
+            )
+        )
 
 
 
@@ -52,6 +129,10 @@ class EngineOrchestrator:
         self,
         event
     ):
+        """
+        Convert raw input into investigation object.
+        """
+
 
         if isinstance(
             event,
@@ -59,6 +140,7 @@ class EngineOrchestrator:
         ):
 
             return event
+
 
 
         return {
@@ -87,34 +169,39 @@ class EngineOrchestrator:
         event
     ):
 
-
-        investigation_event = self.normalize_event(
-            event
+        investigation_event = (
+            self.normalize_event(
+                event
+            )
         )
 
 
         #
-        # Retrieve previous intelligence
+        # Retrieve historical intelligence
         #
 
-        memory_context = self.memory_context.retrieve(
-            investigation_event
-        )
-
-
-
-        #
-        # Execute investigation graph
-        #
-
-        graph_result = self.graph_runtime.investigate(
-            investigation_event
+        memory_context = (
+            self.memory_gateway.investigation_context(
+                investigation_event
+            )
         )
 
 
 
         #
-        # Execute cognitive investigation
+        # Graph investigation
+        #
+
+        graph_result = (
+            self.graph_runtime.investigate(
+                investigation_event
+            )
+        )
+
+
+
+        #
+        # Cognitive reasoning
         #
 
         if hasattr(
@@ -123,8 +210,10 @@ class EngineOrchestrator:
         ):
 
 
-            cognitive_result = self.cognitive_engine.analyze(
-                investigation_event
+            cognitive_result = (
+                self.cognitive_engine.analyze(
+                    investigation_event
+                )
             )
 
 
@@ -144,30 +233,35 @@ class EngineOrchestrator:
 
 
 
+
+        #
+        # Final intelligence package
+        #
+
         return {
 
 
             "engines_executed":
 
-            [
+                [
 
-                "Memory Context",
+                    "Memory Intelligence Gateway",
 
-                "Investigation Graph Runtime",
+                    "Investigation Graph Runtime",
 
-                "Cognitive Investigation Engine",
+                    "Cognitive Investigation Engine",
 
-                "Evidence Intelligence",
+                    "Evidence Intelligence",
 
-                "Threat Hunting",
+                    "Threat Hunting",
 
-                "Knowledge Graph",
+                    "Knowledge Graph",
 
-                "Intelligence Fusion",
+                    "Intelligence Fusion",
 
-                "SOAR"
+                    "SOAR"
 
-            ],
+                ],
 
 
 
