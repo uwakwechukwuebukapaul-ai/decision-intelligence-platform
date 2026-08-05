@@ -1,9 +1,15 @@
+from datetime import datetime, timezone
+
+
 class AgentRuntime:
     """
     Executes autonomous agent tasks.
 
-    Responsible for task lifecycle,
-    execution tracking and results.
+    Responsibilities:
+    - agent task execution
+    - execution tracking
+    - runtime history
+    - audit timestamps
     """
 
 
@@ -30,7 +36,12 @@ class AgentRuntime:
                 "completed",
 
             "result":
-                f"{agent} completed {task}"
+                f"{agent} completed {task}",
+
+            "executed_at":
+                datetime.now(
+                    timezone.utc
+                ).isoformat()
 
         }
 
@@ -41,6 +52,7 @@ class AgentRuntime:
 
 
         return execution
+
 
 
     def history(

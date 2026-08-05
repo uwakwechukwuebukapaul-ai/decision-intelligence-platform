@@ -1,7 +1,10 @@
-from app.ai.runtime.agent_runtime import AgentRuntime
+from services.agent_os.agent_runtime import AgentRuntime
 
 
 class TaskExecutor:
+    """
+    Executes AI agent tasks through the centralized Agent Runtime.
+    """
 
 
     def __init__(self):
@@ -10,14 +13,21 @@ class TaskExecutor:
 
 
 
-    def execute_task(
+    def execute(
         self,
         agent,
         task
     ):
 
-
         return self.runtime.execute(
             agent,
             task
         )
+
+
+
+    def history(
+        self
+    ):
+
+        return self.runtime.history()
