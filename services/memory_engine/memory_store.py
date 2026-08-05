@@ -1,15 +1,31 @@
+from datetime import datetime, timezone
+
+
 class MemoryStore:
     """
     Sentinel DNA Long-Term Memory Storage Core.
 
-    Provides persistent in-memory abstraction
-    for future database/vector integration.
+    Supports:
+
+    - In-memory operation (legacy mode)
+    - Persistent repository storage
+    - Future database/vector integrations
+
+    Backward compatible with existing
+    MemoryEngine components.
     """
 
 
-    def __init__(self):
+    def __init__(
+        self,
+        repository=None
+    ):
 
+        self.repository = repository
+
+        # Legacy runtime cache
         self.records = []
+
 
 
     def store(
@@ -20,14 +36,35 @@ class MemoryStore:
 
         record = {
 
-            "type": memory_type,
+            "type":
+                memory_type,
 
-            "data": data
+            "data":
+                data,
+
+            "created_at":
+                datetime.now(
+                    timezone.utc
+                ).isoformat()
 
         }
 
 
-        self.records.append(record)
+        # Persistent storage mode
+
+        if self.repository:
+
+            return self.repository.store(
+                memory_type,
+                data
+            )
+
+
+        # Legacy memory mode
+
+        self.records.append(
+            record
+        )
 
 
         return record
@@ -38,6 +75,12 @@ class MemoryStore:
         self
     ):
 
+
+        if self.repository:
+
+            return self.repository.get_all()
+
+
         return self.records
 
 
@@ -47,6 +90,14 @@ class MemoryStore:
         keyword
     ):
 
+
+        if self.repository:
+
+            return self.repository.search(
+                keyword
+            )
+
+
         results = []
 
 
@@ -54,6 +105,7 @@ class MemoryStore:
 
 
         for record in self.records:
+
 
             content = str(
                 record
@@ -68,3 +120,15 @@ class MemoryStore:
 
 
         return results
+
+
+
+    def count(
+        self
+    ):
+
+        memories = self.get_all()
+
+        return len(
+            memories
+        )
