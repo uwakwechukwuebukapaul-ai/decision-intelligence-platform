@@ -1,4 +1,4 @@
-from .soc_runtime import SOCRuntime
+from services.autonomous_security_operations_center.soc_runtime import SOCRuntime
 from .event_processor import EventProcessor
 from .investigation_pipeline import InvestigationPipeline
 from .decision_pipeline import DecisionPipeline
