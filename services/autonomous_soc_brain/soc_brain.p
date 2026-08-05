@@ -3,9 +3,12 @@ from services.investigation_graph_runtime.investigation_planner import (
 )
 
 
-class SOCOrchestrator:
+class SOCBrain:
     """
-    Autonomous SOC workflow orchestrator.
+    Autonomous SOC reasoning brain.
+
+    Creates investigation strategies
+    from security hypotheses.
     """
 
 
@@ -15,19 +18,10 @@ class SOCOrchestrator:
 
 
 
-    def investigate(
+    def reason(
         self,
-        alert
+        hypothesis
     ):
-
-        hypothesis = {
-
-            "hypotheses": [
-                alert
-            ]
-
-        }
-
 
         plan = self.planner.build(
             hypothesis
@@ -36,10 +30,8 @@ class SOCOrchestrator:
 
         return {
 
-            "alert": alert,
+            "reasoning": "investigation_strategy_generated",
 
-            "plan": plan,
-
-            "status": "ready"
+            "plan": plan
 
         }
