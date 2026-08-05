@@ -1,21 +1,17 @@
-from datetime import datetime, timezone
-
-
 class KnowledgeMemory:
     """
     Sentinel DNA Security Knowledge Memory.
 
-    Long-term intelligence storage layer.
+    Stores reusable security intelligence:
 
-    Stores:
+    - MITRE ATT&CK techniques
+    - threat intelligence
+    - security concepts
+    - detection knowledge
+    - investigation knowledge
 
-    - MITRE ATT&CK knowledge
-    - Threat intelligence
-    - Security concepts
-    - Investigation learnings
-    - Attack patterns
+    Supports persistent MemoryStore integration.
     """
-
 
     def __init__(
         self,
@@ -24,8 +20,6 @@ class KnowledgeMemory:
 
         self.store = store
 
-        self.local_memory = []
-
 
 
     def add(
@@ -33,80 +27,14 @@ class KnowledgeMemory:
         knowledge
     ):
 
-        record = {
-
-            "type":
-                "knowledge",
-
-            "data":
-                knowledge,
-
-            "created_at":
-                datetime.now(
-                    timezone.utc
-                ).isoformat()
-
-        }
-
-
-        self.local_memory.append(
-            record
-        )
-
-
         if self.store:
 
             return self.store.store(
                 "knowledge",
-                record
+                knowledge
             )
 
-
-        return record
-
-
-
-    def add_investigation_learning(
-        self,
-        investigation
-    ):
-        """
-        Store completed investigation intelligence.
-
-        Used for future SOC reasoning.
-        """
-
-
-        record = {
-
-            "type":
-                "investigation_learning",
-
-            "investigation":
-                investigation,
-
-            "created_at":
-                datetime.now(
-                    timezone.utc
-                ).isoformat()
-
-        }
-
-
-        self.local_memory.append(
-            record
-        )
-
-
-        if self.store:
-
-            return self.store.store(
-                "investigation_learning",
-                record
-            )
-
-
-        return record
+        return knowledge
 
 
 
@@ -121,62 +49,52 @@ class KnowledgeMemory:
                 keyword
             )
 
-
-        results = []
-
-
-        for item in self.local_memory:
-
-            if keyword.lower() in str(
-                item
-            ).lower():
-
-                results.append(
-                    item
-                )
-
-
-        return results
+        return []
 
 
 
-    def retrieve_similar_investigations(
-        self,
-        threat_pattern
-    ):
-        """
-        Retrieve previous investigations
-        matching threat behaviour.
-        """
-
-
-        matches = []
-
-
-        for item in self.local_memory:
-
-            if item.get(
-                "type"
-            ) != "investigation_learning":
-
-                continue
-
-
-            if threat_pattern.lower() in str(
-                item
-            ).lower():
-
-                matches.append(
-                    item
-                )
-
-
-        return matches
-
-
-
-    def all_memory(
+    def get_techniques(
         self
     ):
 
-        return self.local_memory
+        if self.store:
+
+            records = self.store.get_all()
+
+            return [
+
+                item
+
+                for item in records
+
+                if item.get("type") == "knowledge"
+
+                and "technique" in str(
+                    item.get("data")
+                ).lower()
+
+            ]
+
+        return []
+
+
+
+    def all_knowledge(
+        self
+    ):
+
+        if self.store:
+
+            records = self.store.get_all()
+
+            return [
+
+                item
+
+                for item in records
+
+                if item.get("type") == "knowledge"
+
+            ]
+
+        return []
