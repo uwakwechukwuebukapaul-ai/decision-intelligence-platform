@@ -85,10 +85,11 @@ Base = declarative_base()
 
 class Database:
     """
-    Backward-compatible database helper.
+    Backward compatible database helper.
 
-    Existing services can continue using:
+    Supports existing services:
         Database().execute()
+        Database().execute_one()
     """
 
 
@@ -111,7 +112,15 @@ class Database:
 
             )
 
-            return result.fetchall()
+
+            if result.returns_rows:
+
+                return result.fetchall()
+
+
+            return []
+
+
 
 
 
@@ -121,13 +130,39 @@ class Database:
         params=None,
     ):
 
-        result = self.execute(
-            query,
-            params,
-        )
+        params = params or {}
 
-        if result:
+        with engine.begin() as connection:
 
-            return result[0]
+            result = connection.execute(
 
-        return None
+                text(query),
+
+                params,
+
+            )
+
+
+            if not result.returns_rows:
+
+                return None
+
+
+            row = result.fetchone()
+
+
+            return row._mapping if row else None
+
+
+
+
+
+class DatabaseSession:
+
+    """
+    SQLAlchemy session provider.
+    """
+
+    def get_session(self):
+
+        return SessionLocal()
