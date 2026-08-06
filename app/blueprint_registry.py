@@ -2,6 +2,12 @@
 Sentinel DNA - Blueprint Registry
 
 Centralized Flask blueprint registration layer.
+
+Responsible for:
+- Registering application blueprints
+- Preventing duplicate registration
+- Keeping factory clean
+- Supporting future plugin discovery
 """
 
 from __future__ import annotations
@@ -15,13 +21,15 @@ from flask.blueprints import Blueprint
 logger = logging.getLogger(__name__)
 
 
-
 def register_blueprint(
     app: Flask,
     blueprint: Blueprint,
     *,
     url_prefix: str | None = None,
 ) -> None:
+    """
+    Safely register a Flask blueprint.
+    """
 
     if blueprint.name in app.blueprints:
 
@@ -54,10 +62,12 @@ def register_blueprint(
 
 
 
-
 def register_blueprints(
     app: Flask,
 ) -> None:
+    """
+    Register all application blueprints.
+    """
 
 
     modules = [
@@ -89,6 +99,12 @@ def register_blueprints(
         (
             "app.routes.api.v1.graph",
             "graph_api_bp",
+        ),
+
+
+        (
+            "app.routes.api.v1.investigation",
+            "investigation_api_bp",
         ),
 
     ]
@@ -127,5 +143,6 @@ def register_blueprints(
 
 
 
+# Backward compatibility
 
 register_all_blueprints = register_blueprints
