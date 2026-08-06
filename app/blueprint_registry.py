@@ -13,9 +13,7 @@ Responsible for:
 - Supporting intelligence service expansion
 """
 
-
 from __future__ import annotations
-
 
 import logging
 
@@ -25,13 +23,7 @@ from flask import Flask
 from flask.blueprints import Blueprint
 
 
-
-
 logger = logging.getLogger(__name__)
-
-
-
-
 
 
 def register_blueprint(
@@ -44,7 +36,6 @@ def register_blueprint(
     Safely register a Flask blueprint.
     """
 
-
     if blueprint.name in app.blueprints:
 
         logger.warning(
@@ -55,14 +46,12 @@ def register_blueprint(
         return
 
 
-
     if url_prefix:
 
         app.register_blueprint(
             blueprint,
             url_prefix=url_prefix,
         )
-
 
     else:
 
@@ -71,18 +60,10 @@ def register_blueprint(
         )
 
 
-
-
     logger.info(
         "Registered blueprint: %s",
         blueprint.name,
     )
-
-
-
-
-
-
 
 
 
@@ -105,19 +86,20 @@ def register_blueprints(
     - Correlation intelligence
     - Campaign intelligence
     - Threat actor intelligence
-    - Future plugins
+    - Sentinel DNA SOC APIs
     """
-
 
 
     modules = [
 
+        # =====================================
+        # Control Plane
+        # =====================================
 
         (
             "app.routes.intelligence_control_plane",
             "intelligence_control_plane_bp",
         ),
-
 
 
         (
@@ -127,11 +109,14 @@ def register_blueprints(
 
 
 
+        # =====================================
+        # Intelligence APIs
+        # =====================================
+
         (
             "app.routes.api.v1.intelligence",
             "intelligence_api_bp",
         ),
-
 
 
         (
@@ -140,12 +125,10 @@ def register_blueprints(
         ),
 
 
-
         (
             "app.routes.api.v1.graph",
             "graph_api_bp",
         ),
-
 
 
         (
@@ -155,12 +138,43 @@ def register_blueprints(
 
 
 
+        # =====================================
+        # Investigation Platform
+        # =====================================
+
         (
             "app.routes.api.v1.investigation",
             "investigation_api_bp",
         ),
 
 
+
+        # =====================================
+        # Sentinel DNA AI SOC Gateway
+        # =====================================
+
+        (
+            "app.api.agent_api",
+            "agent_bp",
+        ),
+
+
+        (
+            "app.api.investigation_api",
+            "investigation_bp",
+        ),
+
+
+        (
+            "app.api.report_api",
+            "report_bp",
+        ),
+
+
+
+        # =====================================
+        # Analyst Workspace
+        # =====================================
 
         (
             "app.routes.api.v1.workspace",
@@ -169,11 +183,14 @@ def register_blueprints(
 
 
 
+        # =====================================
+        # Reporting / Copilot
+        # =====================================
+
         (
             "app.routes.api.v1.report",
             "report_api_bp",
         ),
-
 
 
         (
@@ -183,11 +200,14 @@ def register_blueprints(
 
 
 
+        # =====================================
+        # Autonomous Intelligence
+        # =====================================
+
         (
             "app.routes.api.v1.autonomous",
             "autonomous_api_bp",
         ),
-
 
 
         (
@@ -196,12 +216,10 @@ def register_blueprints(
         ),
 
 
-
         (
             "app.routes.api.v1.correlation",
             "correlation_api_bp",
         ),
-
 
 
         (
@@ -210,26 +228,22 @@ def register_blueprints(
         ),
 
 
-
         (
             "app.routes.api.v1.threat_actor",
             "threat_actor_api_bp",
         ),
 
-
     ]
 
 
 
-
+    loaded = []
 
 
 
     for module_name, attribute_name in modules:
 
-
         try:
-
 
             module = import_module(
                 module_name
@@ -248,9 +262,12 @@ def register_blueprints(
             )
 
 
+            loaded.append(
+                blueprint.name
+            )
+
 
         except ModuleNotFoundError:
-
 
             logger.warning(
                 "Optional blueprint not found: %s",
@@ -258,9 +275,7 @@ def register_blueprints(
             )
 
 
-
         except AttributeError:
-
 
             logger.error(
                 "Blueprint attribute missing: %s.%s",
@@ -269,9 +284,7 @@ def register_blueprints(
             )
 
 
-
         except Exception as exc:
-
 
             logger.exception(
                 "Failed loading blueprint %s: %s",
@@ -281,19 +294,10 @@ def register_blueprints(
 
 
 
-
-
-
-
     logger.info(
         "Blueprint registration completed. Loaded: %s",
-        list(app.blueprints.keys()),
+        loaded,
     )
-
-
-
-
-
 
 
 
