@@ -1,26 +1,27 @@
 """
-Sentinel DNA Case Intelligence Layer
+Sentinel DNA - Case Intelligence Layer
 
-Provides persistent incident intelligence,
-investigation history, evidence tracking,
-and AI memory capabilities.
+Provides SOC analyst decision support.
 """
 
-from .case_repository import CaseRepository
-from .evidence_repository import EvidenceRepository
-from .investigation_store import InvestigationStore
-from .incident_history import IncidentHistory
-from .case_search import CaseSearch
-from .case_analytics import CaseAnalytics
-from .case_memory import CaseMemory
+
+from .decision_engine import DecisionEngine
+from .priority_engine import PriorityEngine
+from .analyst_recommendation import AnalystRecommendationEngine
+from .escalation_engine import EscalationEngine
+from .case_lifecycle import CaseLifecycle
 
 
 __all__ = [
-    "CaseRepository",
-    "EvidenceRepository",
-    "InvestigationStore",
-    "IncidentHistory",
-    "CaseSearch",
-    "CaseAnalytics",
-    "CaseMemory",
+
+    "DecisionEngine",
+
+    "PriorityEngine",
+
+    "AnalystRecommendationEngine",
+
+    "EscalationEngine",
+
+    "CaseLifecycle",
+
 ]
