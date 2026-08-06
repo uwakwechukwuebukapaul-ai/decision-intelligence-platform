@@ -1,7 +1,7 @@
 """
 Sentinel DNA Investigation Orchestrator
 
-Central AI SOC investigation controller.
+Controls complete AI SOC investigations.
 """
 
 
@@ -22,18 +22,26 @@ class InvestigationOrchestrator:
         )
 
 
-
     def investigate(
         self,
         investigation
     ):
 
-
         investigation.start()
 
 
         agents = [
-            "EvidenceAgent"
+
+            "EvidenceAgent",
+
+            "ThreatIntelligenceAgent",
+
+            "MitreAgent",
+
+            "RiskAgent",
+
+            "ResponseAgent"
+
         ]
 
 
@@ -53,6 +61,9 @@ class InvestigationOrchestrator:
 
             "status":
                 investigation.state.status.value,
+
+            "agents_executed":
+                agents,
 
             "results":
                 results,
