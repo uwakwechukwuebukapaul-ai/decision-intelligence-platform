@@ -13,6 +13,8 @@ Autonomous Investigation
  |
 Case Creation
  |
+Incident Creation
+ |
 Copilot
 """
 
@@ -27,6 +29,7 @@ from .pipeline_state import PipelineState
 from app.intelligence.fusion import SentinelIntelligenceEngine
 from app.intelligence.autonomous import AutonomousEngine
 from app.cases.case_manager import CaseManager
+from app.incidents import IncidentManager
 from app.ai.copilot import CopilotEngine
 
 
@@ -34,6 +37,10 @@ from app.ai.copilot import CopilotEngine
 
 
 class InvestigationPipeline:
+    """
+    Enterprise SOC investigation orchestration layer.
+    """
+
 
 
     def __init__(self):
@@ -48,6 +55,10 @@ class InvestigationPipeline:
 
         self.case_manager = (
             CaseManager()
+        )
+
+        self.incident_manager = (
+            IncidentManager()
         )
 
         self.copilot = (
@@ -117,6 +128,55 @@ class InvestigationPipeline:
 
 
 
+        incident = (
+            self.incident_manager
+            .create_incident(
+
+                {
+
+                    "incident_id":
+                        case["case_id"],
+
+
+                    "case_id":
+                        case["case_id"],
+
+
+                    "indicator":
+                        indicator,
+
+
+                    "severity":
+                        case.get(
+                            "severity",
+                            "medium"
+                        ),
+
+
+                    "confidence":
+                        autonomous_result.get(
+                            "confidence",
+                            0
+                        ),
+
+
+                    "evidence":
+                        intelligence_result,
+
+                }
+
+            )
+        )
+
+
+
+        state.add(
+            "incident",
+            "SOC incident created"
+        )
+
+
+
         copilot = (
             self.copilot
             .assist(
@@ -155,12 +215,18 @@ class InvestigationPipeline:
         )
 
 
+
         output = result.to_dict()
+
+
+
+        output["incident"] = incident
 
 
         output["timeline"] = (
             state.history()
         )
+
 
 
         return output
