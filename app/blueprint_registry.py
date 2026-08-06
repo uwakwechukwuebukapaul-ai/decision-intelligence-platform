@@ -6,20 +6,26 @@ Centralized Flask blueprint registration layer.
 Responsible for:
 - Registering application blueprints
 - Preventing duplicate registration
-- Keeping factory clean
+- Keeping application factory clean
+- Supporting optional modules
 - Supporting future plugin discovery
 """
 
 from __future__ import annotations
 
+
 import logging
+
 from importlib import import_module
 
 from flask import Flask
 from flask.blueprints import Blueprint
 
 
+
 logger = logging.getLogger(__name__)
+
+
 
 
 def register_blueprint(
@@ -32,6 +38,7 @@ def register_blueprint(
     Safely register a Flask blueprint.
     """
 
+
     if blueprint.name in app.blueprints:
 
         logger.warning(
@@ -40,6 +47,7 @@ def register_blueprint(
         )
 
         return
+
 
 
     if url_prefix:
@@ -56,10 +64,14 @@ def register_blueprint(
         )
 
 
+
     logger.info(
         "Registered blueprint: %s",
         blueprint.name,
     )
+
+
+
 
 
 
@@ -69,8 +81,14 @@ def register_blueprints(
     """
     Register all application blueprints.
 
-    Central registry for API modules,
-    intelligence services, and future plugins.
+    Central registry for:
+
+    - Intelligence services
+    - API gateways
+    - Analyst workspace
+    - Copilot services
+    - Reporting services
+    - Future plugins
     """
 
 
@@ -119,6 +137,12 @@ def register_blueprints(
 
 
         (
+            "app.routes.api.v1.report",
+            "report_api_bp",
+        ),
+
+
+        (
             "app.routes.api.v1.copilot",
             "copilot_api_bp",
         ),
@@ -127,7 +151,10 @@ def register_blueprints(
 
 
 
+
+
     for module_name, attribute_name in modules:
+
 
         try:
 
@@ -148,7 +175,9 @@ def register_blueprints(
             )
 
 
+
         except ModuleNotFoundError:
+
 
             logger.warning(
                 "Optional blueprint not found: %s",
@@ -156,7 +185,9 @@ def register_blueprints(
             )
 
 
+
         except AttributeError:
+
 
             logger.error(
                 "Blueprint attribute missing: %s.%s",
@@ -165,13 +196,18 @@ def register_blueprints(
             )
 
 
+
         except Exception as exc:
+
 
             logger.exception(
                 "Failed loading blueprint %s: %s",
                 module_name,
                 exc,
             )
+
+
+
 
 
 
