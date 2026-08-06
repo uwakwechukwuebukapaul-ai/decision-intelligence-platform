@@ -3,21 +3,47 @@ Sentinel DNA Database Layer
 """
 
 
-from .db import Database
+from .db import (
+    Database,
+    engine,
+    Base,
+)
+
 from .repository import Repository
 
-from .models import (
-    Incident,
-    Case,
-    Evidence,
-)
+from .migrations import DatabaseMigration
+
+
+
+def initialize_database():
+
+    from .models import (
+        Incident,
+        Case,
+        Evidence,
+        TimelineEvent,
+    )
+
+
+    Base.metadata.create_all(
+        bind=engine
+    )
+
+
+    DatabaseMigration().migrate()
 
 
 
 __all__ = [
+
     "Database",
+
     "Repository",
-    "Incident",
-    "Case",
-    "Evidence",
+
+    "engine",
+
+    "Base",
+
+    "initialize_database",
+
 ]

@@ -1,9 +1,7 @@
 """
-Sentinel DNA Database Models
+Sentinel DNA ORM Models
 
-SQLAlchemy ORM models.
-
-Enterprise investigation persistence layer.
+Investigation persistence models.
 """
 
 
@@ -24,6 +22,61 @@ from .db import Base
 
 
 
+class Incident(Base):
+
+    __tablename__ = "incidents"
+
+
+    incident_id = Column(
+        String,
+        primary_key=True
+    )
+
+
+    indicator = Column(
+        String,
+        nullable=False
+    )
+
+
+    severity = Column(
+        String,
+        default="medium"
+    )
+
+
+    status = Column(
+        String,
+        default="open"
+    )
+
+
+    assigned_to = Column(
+        String,
+        nullable=True
+    )
+
+
+    created_at = Column(
+        DateTime,
+        default=datetime.utcnow
+    )
+
+
+    updated_at = Column(
+        DateTime,
+        default=datetime.utcnow
+    )
+
+
+    timeline = relationship(
+        "TimelineEvent",
+        back_populates="incident"
+    )
+
+
+
+
 
 class Case(Base):
 
@@ -32,115 +85,31 @@ class Case(Base):
 
     case_id = Column(
         String,
-        primary_key=True,
+        primary_key=True
     )
 
 
     indicator = Column(
         String,
-        nullable=False,
+        nullable=False
     )
 
 
     severity = Column(
         String,
-        default="medium",
+        default="medium"
     )
 
 
     status = Column(
         String,
-        default="open",
+        default="open"
     )
 
 
     created_at = Column(
         DateTime,
-        default=datetime.utcnow,
-    )
-
-
-    incidents = relationship(
-        "Incident",
-        back_populates="case",
-    )
-
-
-    evidence = relationship(
-        "Evidence",
-        back_populates="case",
-    )
-
-
-    timeline = relationship(
-        "TimelineEvent",
-        back_populates="case",
-    )
-
-
-
-
-
-class Incident(Base):
-
-    __tablename__ = "incidents"
-
-
-    incident_id = Column(
-        String,
-        primary_key=True,
-    )
-
-
-    case_id = Column(
-        String,
-        ForeignKey(
-            "cases.case_id"
-        ),
-        nullable=False,
-    )
-
-
-    indicator = Column(
-        String,
-        nullable=False,
-    )
-
-
-    severity = Column(
-        String,
-        default="medium",
-    )
-
-
-    status = Column(
-        String,
-        default="open",
-    )
-
-
-    assigned_to = Column(
-        String,
-        nullable=True,
-    )
-
-
-    created_at = Column(
-        DateTime,
-        default=datetime.utcnow,
-    )
-
-
-    updated_at = Column(
-        DateTime,
-        default=datetime.utcnow,
-        onupdate=datetime.utcnow,
-    )
-
-
-    case = relationship(
-        "Case",
-        back_populates="incidents",
+        default=datetime.utcnow
     )
 
 
@@ -152,9 +121,9 @@ class Evidence(Base):
     __tablename__ = "evidence"
 
 
-    evidence_id = Column(
+    id = Column(
         String,
-        primary_key=True,
+        primary_key=True
     )
 
 
@@ -162,31 +131,23 @@ class Evidence(Base):
         String,
         ForeignKey(
             "cases.case_id"
-        ),
-        nullable=False,
+        )
     )
 
 
     evidence_type = Column(
-        String,
-        nullable=False,
+        String
     )
 
 
     data = Column(
-        Text,
+        Text
     )
 
 
     created_at = Column(
         DateTime,
-        default=datetime.utcnow,
-    )
-
-
-    case = relationship(
-        "Case",
-        back_populates="evidence",
+        default=datetime.utcnow
     )
 
 
@@ -198,40 +159,37 @@ class TimelineEvent(Base):
     __tablename__ = "timeline_events"
 
 
-    id = Column(
+    event_id = Column(
         String,
-        primary_key=True,
+        primary_key=True
     )
 
 
-    case_id = Column(
+    incident_id = Column(
         String,
         ForeignKey(
-            "cases.case_id"
-        ),
-        nullable=False,
+            "incidents.incident_id"
+        )
     )
 
 
     stage = Column(
-        String,
-        nullable=False,
+        String
     )
 
 
     message = Column(
-        Text,
-        nullable=False,
+        String
     )
 
 
     created_at = Column(
         DateTime,
-        default=datetime.utcnow,
+        default=datetime.utcnow
     )
 
 
-    case = relationship(
-        "Case",
-        back_populates="timeline",
+    incident = relationship(
+        "Incident",
+        back_populates="timeline"
     )

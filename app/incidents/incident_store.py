@@ -1,32 +1,25 @@
 """
 Sentinel DNA - Incident Store
 
-Storage abstraction layer.
+Persistent incident storage adapter.
 """
-
 
 from __future__ import annotations
 
+from datetime import datetime
 
-
+from app.database import Repository
 
 
 class IncidentStore:
     """
-    Temporary incident repository.
+    Persistent incident repository.
 
-    Designed for future:
-    - SQLite
-    - PostgreSQL
-    - distributed storage
+    Uses Sentinel DNA database layer.
     """
 
-
-
     def __init__(self):
-
-        self.incidents = {}
-
+        self.repository = Repository()
 
 
     def save(
@@ -34,10 +27,13 @@ class IncidentStore:
         incident: dict,
     ) -> dict:
 
-        self.incidents[
-            incident["incident_id"]
-        ] = incident
+        incident["updated_at"] = (
+            datetime.utcnow().isoformat()
+        )
 
+        self.repository.save_incident(
+            incident
+        )
 
         return incident
 
@@ -48,7 +44,7 @@ class IncidentStore:
         incident_id: str,
     ) -> dict | None:
 
-        return self.incidents.get(
+        return self.repository.get_incident(
             incident_id
         )
 
@@ -58,6 +54,4 @@ class IncidentStore:
         self,
     ) -> list:
 
-        return list(
-            self.incidents.values()
-        )
+        return self.repository.list_incidents()

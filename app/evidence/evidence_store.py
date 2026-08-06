@@ -1,17 +1,11 @@
 """
 Sentinel DNA Evidence Store
 
-Storage abstraction layer.
-
-Future support:
-
-- SQLite
-- PostgreSQL
-- distributed storage
+Evidence persistence abstraction.
 """
 
 
-from __future__ import annotations
+from .evidence_repository import EvidenceRepository
 
 
 
@@ -22,7 +16,9 @@ class EvidenceStore:
 
     def __init__(self):
 
-        self.evidence = {}
+        self.repository = (
+            EvidenceRepository()
+        )
 
 
 
@@ -32,54 +28,30 @@ class EvidenceStore:
     ) -> dict:
 
 
-        self.evidence[
-            evidence["evidence_id"]
-        ] = evidence
-
-
-        return evidence
-
+        return self.repository.save(
+            evidence
+        )
 
 
 
     def get(
         self,
         evidence_id: str,
-    ) -> dict | None:
+    ):
 
 
-        return self.evidence.get(
+        return self.repository.get(
             evidence_id
         )
 
 
 
-
-
     def all(
         self,
-        case_id: str | None = None,
-    ) -> list:
+        case_id=None,
+    ):
 
 
-        records = list(
-            self.evidence.values()
+        return self.repository.list(
+            case_id
         )
-
-
-        if case_id:
-
-            records = [
-
-                item
-
-                for item in records
-
-                if item.get(
-                    "case_id"
-                ) == case_id
-
-            ]
-
-
-        return records
