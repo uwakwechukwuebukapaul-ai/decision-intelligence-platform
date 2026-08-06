@@ -1,13 +1,17 @@
-from datetime import datetime
-
-
 class HypothesisEngine:
 
-    def create(self, event):
+
+    def generate(
+        self,
+        indicator
+    ):
 
         return {
-            "hypothesis": "Possible ransomware intrusion campaign",
-            "investigation_goal": "Identify attacker behavior before impact",
-            "event": event,
-            "timestamp": datetime.now().isoformat()
+
+            "hypothesis":
+                "Malicious infrastructure communication detected",
+
+            "mitre_mapping":
+                "T1583.001 - Acquire Infrastructure: Domains"
+
         }

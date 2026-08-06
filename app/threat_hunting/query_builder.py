@@ -1,26 +1,19 @@
-from datetime import datetime
-
-
 class QueryBuilder:
 
 
-    def generate(self, event):
+    def build_queries(
+        self,
+        indicator
+    ):
 
-        return {
+        return [
 
-            "queries": [
+            f"Search network connections for {indicator}",
 
-                "Search suspicious PowerShell execution",
+            f"Search endpoint telemetry for {indicator}",
 
-                "Find abnormal process activity",
+            f"Search authentication logs related to {indicator}",
 
-                "Identify lateral movement",
+            f"Search DNS activity for {indicator}"
 
-                "Detect encryption behavior"
-
-            ],
-
-            "generated_at":
-                datetime.utcnow().isoformat()
-
-        }
+        ]
