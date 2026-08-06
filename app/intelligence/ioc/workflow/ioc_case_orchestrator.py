@@ -3,14 +3,10 @@ Sentinel DNA
 
 IOC Case Orchestrator
 
-Connects IOC intelligence decisions
-with investigation workflow.
-
-Responsibilities:
-- Consume fused IOC intelligence
-- Execute threat decision
-- Evaluate case trigger
-- Prepare case creation payload
+Coordinates:
+- Threat decision
+- Case triggering
+- Persistent case creation
 """
 
 from __future__ import annotations
@@ -22,12 +18,16 @@ from app.intelligence.ioc.decision import (
 )
 
 
+from app.intelligence.ioc.workflow.services import (
+    CaseCreationService,
+)
+
+
 
 class IOCCaseOrchestrator:
     """
-    IOC investigation workflow coordinator.
+    End-to-end IOC investigation workflow.
     """
-
 
 
     def __init__(
@@ -38,6 +38,8 @@ class IOCCaseOrchestrator:
 
         self.case_trigger = CaseTrigger()
 
+        self.case_creator = CaseCreationService()
+
 
 
     def process(
@@ -45,8 +47,7 @@ class IOCCaseOrchestrator:
         intelligence: dict,
     ) -> dict:
         """
-        Process IOC intelligence
-        and prepare investigation workflow.
+        Execute IOC investigation workflow.
         """
 
 
@@ -60,7 +61,7 @@ class IOCCaseOrchestrator:
         )
 
 
-        workflow = {
+        result = {
 
             "workflow": "ioc-investigation",
 
@@ -71,76 +72,23 @@ class IOCCaseOrchestrator:
         }
 
 
+
         if trigger.get(
             "case_required"
         ):
 
-            workflow["case"] = self._build_case_payload(
-                intelligence,
-                decision,
+            case = self.case_creator.create_case(
+                intelligence
             )
 
 
-        return workflow
+            result["case"] = case
+
+
+        else:
+
+            result["case"] = None
 
 
 
-    def _build_case_payload(
-        self,
-        intelligence: dict,
-        decision: dict,
-    ) -> dict:
-        """
-        Prepare case creation payload.
-        """
-
-
-        return {
-
-            "title":
-                "Suspicious IOC detected",
-
-
-            "severity":
-                decision.get(
-                    "severity",
-                    "medium",
-                ),
-
-
-            "source":
-                "ioc-intelligence",
-
-
-            "indicator":
-                intelligence.get(
-                    "indicator",
-                    "unknown",
-                ),
-
-
-            "evidence": {
-
-                "risk":
-                    intelligence.get(
-                        "risk",
-                        {},
-                    ),
-
-
-                "reputation":
-                    intelligence.get(
-                        "reputation",
-                        {}, 
-                    ),
-
-
-                "mitre_mapping":
-                    intelligence.get(
-                        "mitre_mapping",
-                        [],
-                    ),
-
-            },
-
-        }
+        return result
