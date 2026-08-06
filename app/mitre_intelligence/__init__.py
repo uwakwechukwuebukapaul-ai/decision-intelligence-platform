@@ -1,5 +1,3 @@
-from .mitre_engine import MITREIntelligenceEngine
+from .mitre_engine import MitreEngine
 
-__all__ = [
-    "MITREIntelligenceEngine"
-]
+__all__ = ["MitreEngine"]

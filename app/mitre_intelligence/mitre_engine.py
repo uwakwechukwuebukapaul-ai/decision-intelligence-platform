@@ -1,124 +1,72 @@
-from datetime import datetime
+import uuid
 
 from .technique_mapper import TechniqueMapper
-from .tactic_mapper import TacticMapper
-from .attack_chain_builder import AttackChainBuilder
-from .coverage_analyzer import CoverageAnalyzer
-from .detection_mapper import DetectionMapper
-from .mitre_memory import MITREMemory
-from .mitre_logger import MITRELogger
+from .tactic_analyzer import TacticAnalyzer
+from .mitre_repository import MitreRepository
+from .mitre_schema import MitreRecord, timestamp
 
 
 
-class MITREIntelligenceEngine:
+class MitreEngine:
 
 
     def __init__(self):
 
-        self.techniques = TechniqueMapper()
+        self.mapper = TechniqueMapper()
 
-        self.tactics = TacticMapper()
+        self.tactics = TacticAnalyzer()
 
-        self.attack_chain = AttackChainBuilder()
-
-        self.coverage = CoverageAnalyzer()
-
-        self.detection = DetectionMapper()
-
-        self.memory = MITREMemory()
-
-        self.logger = MITRELogger()
+        self.repository = MitreRepository()
 
 
 
-    def analyze(self, event):
+    def analyze(self, context):
 
 
-        techniques = self.techniques.map(
-            event
+        techniques = self.mapper.map(
+            context
         )
 
 
-        tactics = self.tactics.map(
-            event
-        )
-
-
-        chain = self.attack_chain.build(
-            event
-        )
-
-
-        coverage = self.coverage.analyze(
+        tactics = self.tactics.analyze(
             techniques
         )
 
 
-        detections = self.detection.map(
-            techniques
+        risk_level = "critical" if (
+            context.get("severity") == "critical"
+        ) else "medium"
+
+
+
+        record = MitreRecord(
+
+            mitre_id=
+            f"MITRE-{uuid.uuid4().hex[:8].upper()}",
+
+            techniques=
+            techniques,
+
+            tactics=
+            tactics,
+
+            indicator=
+            context.get("indicator"),
+
+            risk_level=
+            risk_level,
+
+            confidence=
+            0.95,
+
+            created_at=
+            timestamp()
         )
 
 
-        memory = self.memory.store(
-            event
+        self.repository.save(
+            record.to_dict()
         )
 
 
-        log = self.logger.log(
-            event
-        )
-
-
-        return {
-
-
-            "status":
-
-                "completed",
-
-
-            "event":
-
-                event,
-
-
-            "techniques":
-
-                techniques,
-
-
-            "tactics":
-
-                tactics,
-
-
-            "attack_chain":
-
-                chain,
-
-
-            "coverage":
-
-                coverage,
-
-
-            "detections":
-
-                detections,
-
-
-            "memory":
-
-                memory,
-
-
-            "log":
-
-                log,
-
-
-            "created_at":
-
-                datetime.utcnow().isoformat()
-
-        }
+        return record.to_dict()

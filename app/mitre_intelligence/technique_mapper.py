@@ -1,41 +1,40 @@
-from datetime import datetime
-
-
 class TechniqueMapper:
 
 
-    def map(self, event):
+    def map(self, context):
 
         techniques = []
 
 
-        if "powershell" in event.lower():
+        indicator = context.get("indicator")
+
+        identity = context.get("identity")
+
+
+        if indicator:
 
             techniques.append(
-                {
-                    "id": "T1059.001",
-                    "name": "PowerShell",
-                    "category": "Command and Scripting Interpreter"
-                }
+                "T1105 Ingress Tool Transfer"
             )
 
 
-        if "ransomware" in event.lower():
-
             techniques.append(
-                {
-                    "id": "T1486",
-                    "name": "Data Encrypted for Impact",
-                    "category": "Impact"
-                }
+                "T1071 Application Layer Protocol"
             )
 
 
-        return {
+        if identity:
 
-            "techniques":
-                techniques,
+            techniques.append(
+                "T1078 Valid Accounts"
+            )
 
-            "timestamp":
-                datetime.utcnow().isoformat()
-        }
+
+        if context.get("asset"):
+
+            techniques.append(
+                "T1190 Exploit Public-Facing Application"
+            )
+
+
+        return techniques
