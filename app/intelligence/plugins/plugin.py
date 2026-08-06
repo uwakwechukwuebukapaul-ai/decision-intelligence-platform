@@ -1,63 +1,87 @@
 """
-Enterprise Plugin Base Class.
+Plugin Base Class
+
+Enterprise plugin abstraction for
+Decision Intelligence Platform.
 """
 
 from __future__ import annotations
 
-from abc import ABC
-from abc import abstractmethod
-
-from app.intelligence.plugins.plugin_metadata import PluginMetadata
+from .plugin_metadata import PluginMetadata
 
 
-class Plugin(ABC):
+class Plugin:
     """
-    Base class for all Intelligence Platform plugins.
+    Base plugin.
+
+    Supports both:
+
+    1.
+        Plugin(
+            metadata=PluginMetadata(...)
+        )
+
+    2.
+        class MyPlugin(Plugin):
+            ...
     """
 
     def __init__(
         self,
-        metadata: PluginMetadata,
-    ) -> None:
-        self._metadata = metadata
-        self._enabled = False
+        metadata: PluginMetadata | None = None,
+    ):
 
-    @property
-    def metadata(self) -> PluginMetadata:
-        return self._metadata
+        self.metadata = metadata
+
+        self.enabled = False
+
+    # ----------------------------
+    # Convenience Properties
+    # ----------------------------
 
     @property
     def name(self) -> str:
-        return self._metadata.name
+
+        if self.metadata:
+
+            return self.metadata.name
+
+        return self.__class__.__name__.lower()
 
     @property
     def version(self) -> str:
-        return self._metadata.version
+
+        if self.metadata:
+
+            return self.metadata.version
+
+        return "1.0.0"
 
     @property
-    def enabled(self) -> bool:
-        return self._enabled
+    def description(self) -> str:
 
-    def enable(self) -> None:
-        if not self._enabled:
-            self.initialize()
-            self._enabled = True
+        if self.metadata:
 
-    def disable(self) -> None:
-        if self._enabled:
-            self.shutdown()
-            self._enabled = False
+            return self.metadata.description
 
-    @abstractmethod
-    def initialize(self) -> None:
-        """
-        Initialize plugin resources.
-        """
-        raise NotImplementedError
+        return ""
 
-    @abstractmethod
-    def shutdown(self) -> None:
-        """
-        Release plugin resources.
-        """
-        raise NotImplementedError
+    # ----------------------------
+    # Lifecycle
+    # ----------------------------
+
+    def initialize(self):
+
+        pass
+
+    def shutdown(self):
+
+        pass
+
+    def enable(self):
+
+        self.enabled = True
+
+    def disable(self):
+
+        self.enabled = False
