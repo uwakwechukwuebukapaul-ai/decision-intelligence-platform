@@ -4,14 +4,18 @@ Sentinel DNA - Blueprint Registry
 Centralized Flask blueprint registration layer.
 
 Responsible for:
+
 - Registering application blueprints
 - Preventing duplicate registration
 - Keeping application factory clean
 - Supporting optional modules
 - Supporting future plugin discovery
+- Supporting intelligence service expansion
 """
 
+
 from __future__ import annotations
+
 
 import logging
 
@@ -21,7 +25,10 @@ from flask import Flask
 from flask.blueprints import Blueprint
 
 
+
 logger = logging.getLogger(__name__)
+
+
 
 
 
@@ -35,7 +42,9 @@ def register_blueprint(
     Safely register a Flask blueprint.
     """
 
+
     if blueprint.name in app.blueprints:
+
 
         logger.warning(
             "Blueprint already registered: %s",
@@ -45,24 +54,32 @@ def register_blueprint(
         return
 
 
+
     if url_prefix:
+
 
         app.register_blueprint(
             blueprint,
             url_prefix=url_prefix,
         )
 
+
     else:
+
 
         app.register_blueprint(
             blueprint
         )
 
 
+
     logger.info(
         "Registered blueprint: %s",
         blueprint.name,
     )
+
+
+
 
 
 
@@ -77,21 +94,29 @@ def register_blueprints(
 
     - Intelligence services
     - IOC analysis
+    - Graph intelligence
+    - Correlation intelligence
+    - Campaign intelligence
+    - Threat actor intelligence
     - Investigation workflows
-    - Analyst workspace
-    - Copilot
-    - Reporting
     - Autonomous investigation
+    - AI reasoning
+    - AI Copilot
+    - Analyst workspace
+    - Reporting
     - Future plugins
     """
 
 
+
     modules = [
+
 
         (
             "app.routes.intelligence_control_plane",
             "intelligence_control_plane_bp",
         ),
+
 
 
         (
@@ -100,10 +125,12 @@ def register_blueprints(
         ),
 
 
+
         (
             "app.routes.api.v1.intelligence",
             "intelligence_api_bp",
         ),
+
 
 
         (
@@ -112,10 +139,40 @@ def register_blueprints(
         ),
 
 
+
         (
             "app.routes.api.v1.graph",
             "graph_api_bp",
         ),
+
+
+
+        (
+            "app.routes.api.v1.graph_intelligence",
+            "graph_intelligence_api_bp",
+        ),
+
+
+
+        (
+            "app.routes.api.v1.correlation",
+            "correlation_api_bp",
+        ),
+
+
+
+        (
+            "app.routes.api.v1.campaign",
+            "campaign_api_bp",
+        ),
+
+
+
+        (
+            "app.routes.api.v1.threat_actor",
+            "threat_actor_api_bp",
+        ),
+
 
 
         (
@@ -124,10 +181,12 @@ def register_blueprints(
         ),
 
 
+
         (
             "app.routes.api.v1.workspace",
             "workspace_api_bp",
         ),
+
 
 
         (
@@ -136,10 +195,12 @@ def register_blueprints(
         ),
 
 
+
         (
             "app.routes.api.v1.copilot",
             "copilot_api_bp",
         ),
+
 
 
         (
@@ -148,18 +209,30 @@ def register_blueprints(
         ),
 
 
+
         (
             "app.routes.api.v1.orchestration",
             "orchestration_api_bp",
+        ),
+
+
+
+        (
+            "app.routes.api.v1.ai_investigation",
+            "ai_investigation_bp",
         ),
 
     ]
 
 
 
+
+
     for module_name, attribute_name in modules:
 
+
         try:
+
 
             module = import_module(
                 module_name
@@ -178,7 +251,9 @@ def register_blueprints(
             )
 
 
+
         except ModuleNotFoundError:
+
 
             logger.warning(
                 "Optional blueprint not found: %s",
@@ -186,7 +261,9 @@ def register_blueprints(
             )
 
 
+
         except AttributeError:
+
 
             logger.error(
                 "Blueprint attribute missing: %s.%s",
@@ -195,13 +272,27 @@ def register_blueprints(
             )
 
 
+
         except Exception as exc:
+
 
             logger.exception(
                 "Failed loading blueprint %s: %s",
                 module_name,
                 exc,
             )
+
+
+
+
+
+    logger.info(
+        "Blueprint registration completed. Loaded: %s",
+        list(app.blueprints.keys()),
+    )
+
+
+
 
 
 
