@@ -13,6 +13,7 @@ Responsible for:
 - Supporting intelligence service expansion
 """
 
+
 from __future__ import annotations
 
 
@@ -25,7 +26,9 @@ from flask.blueprints import Blueprint
 
 
 
+
 logger = logging.getLogger(__name__)
+
 
 
 
@@ -44,6 +47,7 @@ def register_blueprint(
 
     if blueprint.name in app.blueprints:
 
+
         logger.warning(
             "Blueprint already registered: %s",
             blueprint.name,
@@ -53,14 +57,18 @@ def register_blueprint(
 
 
 
+
     if url_prefix:
+
 
         app.register_blueprint(
             blueprint,
             url_prefix=url_prefix,
         )
 
+
     else:
+
 
         app.register_blueprint(
             blueprint
@@ -68,10 +76,13 @@ def register_blueprint(
 
 
 
+
     logger.info(
         "Registered blueprint: %s",
         blueprint.name,
     )
+
+
 
 
 
@@ -95,16 +106,20 @@ def register_blueprints(
     - Investigation orchestration
     - Knowledge graph intelligence
     - Correlation intelligence
+    - Campaign intelligence
     - Future plugins
     """
 
 
+
     modules = [
+
 
         (
             "app.routes.intelligence_control_plane",
             "intelligence_control_plane_bp",
         ),
+
 
 
         (
@@ -113,10 +128,12 @@ def register_blueprints(
         ),
 
 
+
         (
             "app.routes.api.v1.intelligence",
             "intelligence_api_bp",
         ),
+
 
 
         (
@@ -125,10 +142,12 @@ def register_blueprints(
         ),
 
 
+
         (
             "app.routes.api.v1.graph",
             "graph_api_bp",
         ),
+
 
 
         (
@@ -137,10 +156,12 @@ def register_blueprints(
         ),
 
 
+
         (
             "app.routes.api.v1.investigation",
             "investigation_api_bp",
         ),
+
 
 
         (
@@ -149,10 +170,12 @@ def register_blueprints(
         ),
 
 
+
         (
             "app.routes.api.v1.report",
             "report_api_bp",
         ),
+
 
 
         (
@@ -161,10 +184,12 @@ def register_blueprints(
         ),
 
 
+
         (
             "app.routes.api.v1.autonomous",
             "autonomous_api_bp",
         ),
+
 
 
         (
@@ -173,12 +198,22 @@ def register_blueprints(
         ),
 
 
+
         (
             "app.routes.api.v1.correlation",
             "correlation_api_bp",
         ),
 
+
+
+        (
+            "app.routes.api.v1.campaign",
+            "campaign_api_bp",
+        ),
+
+
     ]
+
 
 
 
@@ -237,6 +272,9 @@ def register_blueprints(
                 module_name,
                 exc,
             )
+
+
+
 
 
 
