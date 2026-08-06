@@ -3,53 +3,73 @@ Sentinel DNA
 
 IOC Entity Graph
 
-Core internal representation of security entities.
-
-Future expansion:
-- Graph database integration
-- Neo4j support
-- Threat actor relationship mapping
+Responsible for:
+- Creating IOC entities
+- Maintaining graph objects
+- Preparing relationship analysis
 """
-
 
 from __future__ import annotations
 
 
+
 class EntityGraph:
     """
-    In-memory intelligence graph.
+    IOC entity graph manager.
 
-    Stores relationships between
-    security entities.
+    Provides:
+    - Entity creation
+    - Entity storage
+    - Entity retrieval
     """
 
 
-    def __init__(self):
+    def __init__(
+        self,
+    ):
+        """
+        Initialize in-memory entity graph.
+        """
 
         self.entities = {}
 
-        self.relationships = []
 
 
-
-    def add_entity(
+    def create_entity(
         self,
-        entity_id: str,
-        entity_type: str,
-        metadata: dict | None = None,
+        indicator: dict,
     ) -> dict:
         """
-        Add entity to graph.
+        Create or update an IOC entity.
+
+        Compatible with:
+        - Intelligence Fusion Layer
+        - IOC Graph API
         """
+
+
+        entity_id = indicator.get(
+            "indicator",
+            "unknown",
+        )
 
 
         entity = {
 
             "id": entity_id,
 
-            "type": entity_type,
 
-            "metadata": metadata or {},
+            "type": indicator.get(
+                "type",
+                "unknown",
+            ),
+
+
+            "metadata": {
+
+                "source": "ioc-service",
+
+            },
 
         }
 
@@ -61,41 +81,14 @@ class EntityGraph:
 
 
 
-    def add_relationship(
-        self,
-        source: str,
-        target: str,
-        relationship_type: str,
-    ) -> dict:
-        """
-        Connect entities.
-        """
-
-
-        relationship = {
-
-            "source": source,
-
-            "target": target,
-
-            "type": relationship_type,
-
-        }
-
-
-        self.relationships.append(
-            relationship
-        )
-
-
-        return relationship
-
-
-
     def get_entity(
         self,
         entity_id: str,
     ) -> dict | None:
+        """
+        Retrieve an existing IOC entity.
+        """
+
 
         return self.entities.get(
             entity_id
@@ -103,8 +96,14 @@ class EntityGraph:
 
 
 
-    def get_relationships(
+    def list_entities(
         self,
     ) -> list:
+        """
+        Return all graph entities.
+        """
 
-        return self.relationships
+
+        return list(
+            self.entities.values()
+        )

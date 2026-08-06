@@ -3,10 +3,11 @@ Sentinel DNA
 
 IOC Relationship Engine
 
-Determines relationships between
-security entities.
+Responsible for:
+- Discovering IOC relationships
+- Preparing graph correlation data
+- Supporting intelligence fusion
 """
-
 
 from __future__ import annotations
 
@@ -14,70 +15,108 @@ from __future__ import annotations
 
 class RelationshipEngine:
     """
-    Creates intelligence relationships.
+    IOC relationship analysis engine.
     """
 
 
-
-    def analyze(
+    def __init__(
         self,
-        source: dict,
-        target: dict,
-    ) -> dict:
+    ):
         """
-        Determine relationship type.
+        Initialize relationship storage.
         """
 
+        self.relationships = []
 
-        source_type = source.get(
-            "type"
+
+
+    def find_relationships(
+        self,
+        entity: dict,
+    ) -> list:
+        """
+        Find relationships for an IOC entity.
+
+        Fusion compatible API.
+        """
+
+
+        relationships = []
+
+
+        entity_id = entity.get(
+            "id",
+            "unknown",
         )
 
-        target_type = target.get(
-            "type"
+
+        entity_type = entity.get(
+            "type",
+            "unknown",
         )
 
 
-        relationship = "associated_with"
+        # Foundation logic.
+        # Future expansion:
+        # - passive DNS
+        # - WHOIS
+        # - ASN relationships
+        # - malware infrastructure
+        # - threat actor links
 
 
-        if (
-            source_type == "domain"
-            and target_type == "ip"
-        ):
+        if entity_type == "domain":
 
-            relationship = "resolves_to"
+            relationships.append(
 
+                {
 
+                    "source": entity_id,
 
-        elif (
-            source_type == "hash"
-            and target_type == "malware"
-        ):
+                    "target": "unknown",
 
-            relationship = "sample_of"
+                    "relationship": "domain_indicator",
 
+                    "confidence": 50,
 
+                }
 
-        elif (
-            source_type == "ip"
-            and target_type == "domain"
-        ):
-
-            relationship = "hosts"
+            )
 
 
+        elif entity_type == "ip":
 
-        return {
+            relationships.append(
 
-            "source": source.get(
-                "id"
-            ),
+                {
 
-            "target": target.get(
-                "id"
-            ),
+                    "source": entity_id,
 
-            "relationship": relationship,
+                    "target": "unknown",
 
-        }
+                    "relationship": "network_indicator",
+
+                    "confidence": 50,
+
+                }
+
+            )
+
+
+        self.relationships.extend(
+            relationships
+        )
+
+
+        return relationships
+
+
+
+    def get_relationships(
+        self,
+    ) -> list:
+        """
+        Return stored relationships.
+        """
+
+        return self.relationships
