@@ -11,6 +11,7 @@ Responsible for:
 - Policy attachment foundation
 - Lifecycle governance
 - Enterprise audit preparation
+- Governance decision tracking
 """
 
 from __future__ import annotations
@@ -18,6 +19,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from datetime import datetime, UTC
 from typing import Dict
+
 
 
 # =====================================
@@ -56,10 +58,6 @@ class GovernanceRecord:
     )
 
 
-    # =================================
-    # Policy Management
-    # =================================
-
     def add_policy(
         self,
         policy: str
@@ -75,10 +73,6 @@ class GovernanceRecord:
                 datetime.now(UTC).isoformat()
             )
 
-
-    # =================================
-    # Serialization
-    # =================================
 
     def to_dict(self):
 
@@ -109,9 +103,10 @@ class GovernanceRecord:
                 self.created_at,
 
             "updated_at":
-                self.updated_at,
+                self.updated_at
 
         }
+
 
 
 
@@ -128,6 +123,9 @@ class GovernanceRegistry:
             str,
             GovernanceRecord
         ] = {}
+
+
+        self.decisions = []
 
 
 
@@ -205,7 +203,7 @@ class GovernanceRegistry:
 
 
     # =================================
-    # Update Compliance
+    # Compliance Update
     # =================================
 
     def update_compliance(
@@ -225,6 +223,54 @@ class GovernanceRegistry:
         )
 
         return record
+
+
+
+    # =================================
+    # Record Governance Decision
+    # =================================
+
+    def record_decision(
+        self,
+        capability: str,
+        decision
+    ):
+
+        event = {
+
+            "capability":
+                capability,
+
+            "decision":
+                decision.to_dict()
+                if hasattr(
+                    decision,
+                    "to_dict"
+                )
+                else decision,
+
+            "timestamp":
+                datetime.now(UTC).isoformat()
+
+        }
+
+
+        self.decisions.append(
+            event
+        )
+
+
+        return decision
+
+
+
+    # =================================
+    # Get Decisions
+    # =================================
+
+    def list_decisions(self):
+
+        return self.decisions
 
 
 
@@ -260,6 +306,7 @@ class GovernanceRegistry:
             in self.records.values()
 
         ]
+
 
 
 

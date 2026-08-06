@@ -5,6 +5,13 @@ Intelligence Execution API
 
 Provides a unified execution gateway
 for registered intelligence capabilities.
+
+Enterprise responsibilities:
+- Request validation
+- Governance enforcement
+- Policy evaluation
+- Capability execution
+- Runtime health tracking
 """
 
 from flask import (
@@ -16,6 +23,16 @@ from flask import (
 
 from app.intelligence.capability_registry import (
     capability_registry
+)
+
+
+from app.intelligence.governance.governance_middleware import (
+    governance_middleware
+)
+
+
+from app.intelligence.governance.capability_health import (
+    capability_health_manager
 )
 
 
@@ -46,6 +63,10 @@ def execute_intelligence():
         "objective"
     )
 
+
+    # =====================================
+    # Validation
+    # =====================================
 
     if not capability:
 
@@ -80,22 +101,94 @@ def execute_intelligence():
 
 
 
-    result = capability_registry.execute(
+    # =====================================
+    # Governance Enforcement
+    # =====================================
 
-        capability,
-
-        {
-
-            "user_id":
-                user_id,
-
-            "objective":
-                objective
-
-        }
-
+    governance_result = (
+        governance_middleware.evaluate(
+            capability=capability,
+            user_id=user_id,
+            objective=objective
+        )
     )
 
+
+    if not governance_result.get(
+        "allowed",
+        False
+    ):
+
+        return jsonify({
+
+            "status":
+                "blocked",
+
+            "capability":
+                capability,
+
+            "governance":
+                governance_result
+
+        }), 403
+
+
+
+    # =====================================
+    # Execute Capability
+    # =====================================
+
+    try:
+
+        result = capability_registry.execute(
+
+            capability,
+
+            {
+
+                "user_id":
+                    user_id,
+
+                "objective":
+                    objective
+
+            }
+
+        )
+
+
+        capability_health_manager.record_success(
+            capability
+        )
+
+
+    except Exception as error:
+
+
+        capability_health_manager.record_failure(
+
+            capability,
+
+            str(error)
+
+        )
+
+
+        return jsonify({
+
+            "status":
+                "error",
+
+            "message":
+                str(error)
+
+        }), 500
+
+
+
+    # =====================================
+    # Response
+    # =====================================
 
     return jsonify({
 
@@ -110,6 +203,9 @@ def execute_intelligence():
 
         "objective":
             objective,
+
+        "governance":
+            governance_result,
 
         "result":
             result
