@@ -10,6 +10,7 @@ Responsible for:
 - Keeping application factory clean
 - Supporting optional modules
 - Supporting future plugin discovery
+- Supporting intelligence service expansion
 """
 
 from __future__ import annotations
@@ -25,6 +26,7 @@ from flask.blueprints import Blueprint
 
 
 logger = logging.getLogger(__name__)
+
 
 
 
@@ -91,6 +93,7 @@ def register_blueprints(
     - Reporting services
     - Autonomous investigation
     - Investigation orchestration
+    - Knowledge graph intelligence
     - Future plugins
     """
 
@@ -124,6 +127,12 @@ def register_blueprints(
         (
             "app.routes.api.v1.graph",
             "graph_api_bp",
+        ),
+
+
+        (
+            "app.routes.api.v1.graph_intelligence",
+            "graph_intelligence_api_bp",
         ),
 
 
@@ -173,6 +182,7 @@ def register_blueprints(
 
         try:
 
+
             module = import_module(
                 module_name
             )
@@ -220,6 +230,14 @@ def register_blueprints(
                 module_name,
                 exc,
             )
+
+
+
+    logger.info(
+        "Blueprint registration completed. Loaded: %s",
+        list(app.blueprints.keys()),
+    )
+
 
 
 
