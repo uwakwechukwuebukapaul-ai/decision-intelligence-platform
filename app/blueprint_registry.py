@@ -4,6 +4,7 @@ Sentinel DNA - Blueprint Registry
 Centralized Flask blueprint registration layer.
 
 Responsible for:
+
 - Registering application blueprints
 - Preventing duplicate registration
 - Keeping application factory clean
@@ -74,7 +75,6 @@ def register_blueprint(
 
 
 
-
 def register_blueprints(
     app: Flask,
 ) -> None:
@@ -88,6 +88,7 @@ def register_blueprints(
     - Analyst workspace
     - Copilot services
     - Reporting services
+    - Autonomous investigation
     - Future plugins
     """
 
@@ -145,6 +146,12 @@ def register_blueprints(
         (
             "app.routes.api.v1.copilot",
             "copilot_api_bp",
+        ),
+
+
+        (
+            "app.routes.api.v1.autonomous",
+            "autonomous_api_bp",
         ),
 
     ]
