@@ -3,20 +3,26 @@ class IdentityRepository:
 
     def __init__(self):
 
-        self.identities = {}
-
+        self.identities = []
 
 
     def save(self, identity):
 
-        self.identities[
-            identity["username"]
-        ] = identity
+        self.identities.append(identity)
 
         return identity
 
 
+    def get_all(self):
 
-    def get(self, username):
+        return self.identities
 
-        return self.identities.get(username)
+
+    def find(self, username):
+
+        for identity in self.identities:
+
+            if identity["username"] == username:
+                return identity
+
+        return None

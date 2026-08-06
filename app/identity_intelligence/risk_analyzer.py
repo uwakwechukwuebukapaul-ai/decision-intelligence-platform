@@ -3,14 +3,19 @@ class IdentityRiskAnalyzer:
 
     def analyze(self, identity):
 
-        score = 0
-        reasons = []
+        score = 20
+
+        findings = []
 
 
-        if identity["privilege_level"] == "admin":
+        if identity["privilege_level"] in [
+            "admin",
+            "administrator"
+        ]:
 
             score += 50
-            reasons.append(
+
+            findings.append(
                 "Privileged identity detected"
             )
 
@@ -20,18 +25,22 @@ class IdentityRiskAnalyzer:
             "security_admin"
         ]:
 
-            score += 30
-            reasons.append(
+            score += 20
+
+            findings.append(
                 "High impact role"
             )
 
 
         level = "low"
 
-        if score >= 70:
+
+        if score >= 80:
+
             level = "critical"
 
-        elif score >= 40:
+        elif score >= 50:
+
             level = "high"
 
 
@@ -41,5 +50,6 @@ class IdentityRiskAnalyzer:
 
             "risk_level": level,
 
-            "reasons": reasons
+            "findings": findings
+
         }

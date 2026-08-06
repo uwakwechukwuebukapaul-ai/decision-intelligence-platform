@@ -1,5 +1,7 @@
+from datetime import datetime
+import uuid
+
 from .identity_repository import IdentityRepository
-from .identity_schema import IdentitySchema
 from .risk_analyzer import IdentityRiskAnalyzer
 
 
@@ -11,37 +13,52 @@ class IdentityEngine:
 
         self.repository = IdentityRepository()
 
-        self.analyzer = IdentityRiskAnalyzer()
+        self.risk = IdentityRiskAnalyzer()
 
 
 
-    def register_identity(
+    def analyze_identity(
         self,
         username,
         role,
-        department,
-        privilege_level
+        department="unknown",
+        privilege_level="user"
     ):
 
 
-        identity = IdentitySchema.create(
+        identity = {
+
+
+            "identity_id":
+            "ID-" + uuid.uuid4().hex[:8].upper(),
+
+
+            "username":
             username,
+
+
+            "role":
             role,
+
+
+            "department":
             department,
-            privilege_level
-        )
+
+
+            "privilege_level":
+            privilege_level,
+
+
+            "created_at":
+            datetime.utcnow().isoformat()
+
+        }
+
+
+        identity["risk"] = self.risk.analyze(identity)
 
 
         self.repository.save(identity)
 
 
-        risk = self.analyzer.analyze(identity)
-
-
-        return {
-
-            "identity": identity,
-
-            "risk": risk
-
-        }
+        return identity
