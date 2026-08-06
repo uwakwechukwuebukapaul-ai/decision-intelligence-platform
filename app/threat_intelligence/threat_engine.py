@@ -1,70 +1,39 @@
-from datetime import datetime
+import uuid
 
 from .ioc_manager import IOCManager
-from .ioc_enricher import IOCEnricher
-from .reputation_engine import ReputationEngine
-from .campaign_tracker import CampaignTracker
-from .threat_actor_tracker import ThreatActorTracker
-from .malware_tracker import MalwareTracker
-from .intel_memory import IntelMemory
-from .intel_logger import IntelLogger
+from .feed_connector import FeedConnector
+from .intel_repository import IntelRepository
 
 
-class ThreatIntelligenceEngine:
+class ThreatEngine:
 
     def __init__(self):
 
         self.ioc_manager = IOCManager()
-        self.enricher = IOCEnricher()
-        self.reputation = ReputationEngine()
-        self.campaign = CampaignTracker()
-        self.actor = ThreatActorTracker()
-        self.malware = MalwareTracker()
-        self.memory = IntelMemory()
-        self.logger = IntelLogger()
+        self.feed_connector = FeedConnector()
+        self.repository = IntelRepository()
 
 
-    def analyze(self, threat):
+    def analyze(self, indicator):
 
-        iocs = self.ioc_manager.extract(threat)
+        enrichment = self.ioc_manager.enrich(indicator)
 
-        enrichment = self.enricher.enrich(iocs)
+        severity = "critical" if enrichment["reputation"] == "malicious" else "low"
 
-        reputation = self.reputation.check(
-            enrichment
+        record = self.ioc_manager.create_ioc(
+            indicator=indicator,
+            severity=severity
         )
 
-        campaign = self.campaign.track(
-            threat
-        )
-
-        actor = self.actor.identify(
-            threat
-        )
-
-        malware = self.malware.identify(
-            threat
-        )
-
-        memory = self.memory.store(
-            threat
-        )
-
-        log = self.logger.log(
-            threat
-        )
-
+        self.repository.save(record)
 
         return {
-            "status": "completed",
-            "threat": threat,
-            "iocs": iocs,
-            "enrichment": enrichment,
-            "reputation": reputation,
-            "campaign": campaign,
-            "threat_actor": actor,
-            "malware": malware,
-            "memory": memory,
-            "log": log,
-            "created_at": datetime.utcnow().isoformat()
+            "threat_id": f"THREAT-{uuid.uuid4().hex[:8].upper()}",
+            "indicator": indicator,
+            "reputation": enrichment["reputation"],
+            "severity": severity,
+            "confidence": enrichment["confidence"],
+            "categories": enrichment["categories"],
+            "intel_record": record,
+            "created_at": record["created_at"]
         }

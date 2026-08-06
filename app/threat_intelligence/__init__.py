@@ -1,11 +1,3 @@
-from .intelligence_engine import IntelligenceEngine
+from .threat_engine import ThreatEngine
 
-
-# Backward compatibility layer
-IntelligenceManager = IntelligenceEngine
-
-
-__all__ = [
-    "IntelligenceEngine",
-    "IntelligenceManager",
-]
+__all__ = ["ThreatEngine"]

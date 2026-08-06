@@ -1,50 +1,39 @@
-from datetime import datetime
-import re
 import uuid
+from .intel_schema import ThreatIntelRecord, create_timestamp
 
 
 class IOCManager:
 
+    def create_ioc(
+        self,
+        indicator,
+        indicator_type="domain",
+        threat_type="malware",
+        confidence=0.9,
+        severity="high",
+        source="internal_analysis"
+    ):
 
-    def extract(self, event):
-
-        indicators = []
-
-
-        urls = re.findall(
-            r"https?://\S+",
-            event
-        )
-
-
-        for url in urls:
-
-            indicators.append(
-                {
-                    "type": "URL",
-                    "value": url,
-                    "risk": "high"
-                }
-            )
+        return ThreatIntelRecord(
+            intel_id=f"IOC-{uuid.uuid4().hex[:8].upper()}",
+            indicator=indicator,
+            indicator_type=indicator_type,
+            threat_type=threat_type,
+            confidence=confidence,
+            severity=severity,
+            source=source,
+            created_at=create_timestamp()
+        ).to_dict()
 
 
-        if "PowerShell" in event:
-
-            indicators.append(
-                {
-                    "type": "Technique Indicator",
-                    "value": "PowerShell",
-                    "risk": "medium"
-                }
-            )
-
+    def enrich(self, indicator):
 
         return {
-
-            "ioc_id": "IOC-" + str(uuid.uuid4())[:8],
-
-            "indicators": indicators,
-
-            "timestamp": datetime.utcnow().isoformat()
-
+            "indicator": indicator,
+            "reputation": "malicious",
+            "categories": [
+                "malware",
+                "command_and_control"
+            ],
+            "confidence": 0.9
         }

@@ -1,31 +1,25 @@
-from datetime import datetime
-
-
 class FeedConnector:
 
+    def get_feeds(self):
 
-    def enrich(self, event):
+        return [
+            {
+                "source": "internal_feed",
+                "status": "active",
+                "indicators": []
+            },
+            {
+                "source": "open_threat_feed",
+                "status": "ready",
+                "indicators": []
+            }
+        ]
+
+
+    def ingest(self, indicators):
 
         return {
-
-            "sources": [
-
-                "Threat Intelligence Feeds",
-
-                "Malware Intelligence",
-
-                "IOC Databases"
-
-            ],
-
-            "matches": [
-
-                "Ransomware activity",
-
-                "Known attacker behavior"
-
-            ],
-
-            "timestamp": datetime.utcnow().isoformat()
-
+            "status": "completed",
+            "ingested": len(indicators),
+            "indicators": indicators
         }
