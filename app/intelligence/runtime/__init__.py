@@ -1,21 +1,24 @@
 """
-Sentinel DNA Intelligence Runtime
+Intelligence Runtime Package
 
-Runtime execution layer exports.
+Provides runtime execution,
+job management,
+and orchestration components.
 """
 
 from .job import IntelligenceJob
-from .scheduler_state import SchedulerState
-from .job_registry import JobRegistry
-from .job_queue import JobQueue
-from .intelligence_scheduler import IntelligenceScheduler
 from .runtime_orchestrator import RuntimeOrchestrator
+from .job_queue import JobQueue
+from .job_registry import JobRegistry
+from .scheduler_state import SchedulerState
+from .intelligence_scheduler import IntelligenceScheduler
+
 
 __all__ = [
     "IntelligenceJob",
-    "SchedulerState",
-    "JobRegistry",
-    "JobQueue",
-    "IntelligenceScheduler",
     "RuntimeOrchestrator",
+    "JobQueue",
+    "JobRegistry",
+    "SchedulerState",
+    "IntelligenceScheduler",
 ]
