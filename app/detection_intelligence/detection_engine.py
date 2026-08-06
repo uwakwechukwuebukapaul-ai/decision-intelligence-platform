@@ -1,5 +1,10 @@
+import uuid
+
+from .rule_engine import RuleEngine
+from .correlation_engine import CorrelationEngine
 from .detection_repository import DetectionRepository
-from .detection_schema import create_detection
+from .detection_schema import Detection, timestamp
+
 
 
 class DetectionEngine:
@@ -7,128 +12,65 @@ class DetectionEngine:
 
     def __init__(self):
 
+        self.rules = RuleEngine()
+        self.correlation = CorrelationEngine()
         self.repository = DetectionRepository()
 
-        self.rules = [
-
-            {
-                "name": "Suspicious Domain Detection",
-
-                "pattern": [
-                    ".xyz",
-                    ".top",
-                    ".click"
-                ],
-
-                "severity": "high",
-
-                "mitre": [
-                    "T1583.001 - Acquire Infrastructure: Domains"
-                ]
-            }
-
-        ]
 
 
+    def detect(self, event):
 
-    def calculate_severity(
-        self,
-        indicator
-    ):
+        rules = self.rules.evaluate(event)
 
-        suspicious_extensions = [
-
-            ".xyz",
-            ".top",
-            ".click",
-            ".ru"
-
-        ]
+        signals = self.correlation.correlate(event)
 
 
-        for ext in suspicious_extensions:
-
-            if ext in indicator:
-
-                return "critical"
-
-
-        return "medium"
-
-
-
-    def evaluate_rule(
-        self,
-        indicator
-    ):
-
-        for rule in self.rules:
-
-            for pattern in rule["pattern"]:
-
-                if pattern in indicator:
-
-                    return rule
-
-
-        return None
-
-
-
-    def map_attack(self):
-
-        return [
-
-            "T1583.001 - Acquire Infrastructure: Domains"
-
-        ]
-
-
-
-    def detect(
-        self,
-        indicator
-    ):
-
-        matched_rule = self.evaluate_rule(
-            indicator
+        severity = (
+            "critical"
+            if event.get("severity") == "critical"
+            else "high"
         )
 
 
-        severity = self.calculate_severity(
-            indicator
-        )
+        detection = Detection(
 
+            detection_id=f"DET-{uuid.uuid4().hex[:8].upper()}",
 
-        if matched_rule:
+            indicator=event.get("indicator"),
 
-            techniques = matched_rule["mitre"]
+            rule=", ".join(rules),
 
-            rule_name = matched_rule["name"]
+            severity=severity,
 
-        else:
+            confidence=0.95,
 
-            techniques = self.map_attack()
+            status="triggered",
 
-            rule_name = "Generic IOC Detection"
-
-
-
-        detection = create_detection(
-
-            indicator,
-
-            rule_name,
-
-            severity,
-
-            0.90,
-
-            techniques
+            created_at=timestamp()
 
         )
 
 
-        return self.repository.save(
-            detection
+        self.repository.save(
+            detection.to_dict()
         )
+
+
+        return {
+
+            "detection_id": detection.detection_id,
+
+            "indicator": detection.indicator,
+
+            "severity": detection.severity,
+
+            "rules": rules,
+
+            "correlated_signals": signals,
+
+            "confidence": detection.confidence,
+
+            "status": detection.status,
+
+            "created_at": detection.created_at
+        }

@@ -3,33 +3,16 @@ class DetectionRepository:
 
     def __init__(self):
 
-        self.detections = []
-
+        self.records = []
 
 
     def save(self, detection):
 
-        self.detections.append(
-            detection
-        )
+        self.records.append(detection)
 
         return detection
 
 
+    def all(self):
 
-    def get_all(self):
-
-        return self.detections
-
-
-
-    def get_by_indicator(
-        self,
-        indicator
-    ):
-
-        return [
-            item
-            for item in self.detections
-            if item["indicator"] == indicator
-        ]
+        return self.records

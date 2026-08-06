@@ -1,22 +1,22 @@
+from dataclasses import dataclass, asdict
 from datetime import datetime
-import uuid
 
 
-def create_detection(
-    indicator,
-    rule_name,
-    severity,
-    confidence,
-    mitre_techniques
-):
+@dataclass
+class Detection:
 
-    return {
-        "detection_id": f"DET-{uuid.uuid4().hex[:8].upper()}",
-        "indicator": indicator,
-        "rule_name": rule_name,
-        "severity": severity,
-        "confidence": confidence,
-        "mitre_techniques": mitre_techniques,
-        "status": "active",
-        "created_at": datetime.utcnow().isoformat()
-    }
+    detection_id: str
+    indicator: str
+    rule: str
+    severity: str
+    confidence: float
+    status: str
+    created_at: str
+
+
+    def to_dict(self):
+        return asdict(self)
+
+
+def timestamp():
+    return datetime.utcnow().isoformat()
