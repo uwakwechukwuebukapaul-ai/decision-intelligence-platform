@@ -1,38 +1,31 @@
-from datetime import datetime
-import uuid
-
-
 class CaseRepository:
-    """
-    Stores and manages security cases.
-    """
+
 
     def __init__(self):
-        self.cases = []
 
-    def create_case(self, title, severity="medium"):
-        case = {
-            "case_id": f"CASE-{uuid.uuid4().hex[:8].upper()}",
-            "title": title,
-            "severity": severity,
-            "status": "OPEN",
-            "created_at": datetime.utcnow().isoformat()
-        }
+        self.cases = {}
 
-        self.cases.append(case)
+
+
+    def save(self, case):
+
+        self.cases[case["case_id"]] = case
 
         return case
 
-    def get_cases(self):
-        return {
-            "total_cases": len(self.cases),
-            "cases": self.cases
-        }
 
-    def get_case(self, case_id):
 
-        for case in self.cases:
-            if case["case_id"] == case_id:
-                return case
+    def get(self, case_id):
 
-        return None
+        return self.cases.get(case_id)
+
+
+
+    def update(self, case_id, data):
+
+        if case_id not in self.cases:
+            return None
+
+        self.cases[case_id].update(data)
+
+        return self.cases[case_id]
