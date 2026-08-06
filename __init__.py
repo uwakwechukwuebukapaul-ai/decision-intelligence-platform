@@ -1,5 +1,5 @@
-"""
-Decision Intelligence Platform
+from .correlation_engine import CorrelationEngine
 
-Root application package.
-"""
+__all__ = [
+    "CorrelationEngine",
+]
