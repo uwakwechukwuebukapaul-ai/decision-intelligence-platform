@@ -1,12 +1,8 @@
-"""
-Sentinel DNA Asset Intelligence Engine
+from datetime import datetime
+import uuid
 
-Tracks enterprise assets and risk context.
-"""
-
-
-from .asset_schema import create_asset
 from .asset_repository import AssetRepository
+from .risk_calculator import AssetRiskCalculator
 
 
 
@@ -17,52 +13,42 @@ class AssetEngine:
 
         self.repository = AssetRepository()
 
+        self.risk = AssetRiskCalculator()
+
 
 
     def register_asset(
         self,
         hostname,
-        ip_address=None,
-        owner=None,
-        asset_type="endpoint",
-        criticality="medium"
+        asset_type,
+        owner,
+        criticality
     ):
 
 
-        asset = create_asset(
+        asset = {
 
-            hostname,
+            "asset_id":
+            "AST-" + uuid.uuid4().hex[:8].upper(),
 
-            ip_address,
+            "hostname": hostname,
 
-            owner,
+            "asset_type": asset_type,
 
-            asset_type,
+            "owner": owner,
 
-            criticality
+            "criticality": criticality,
 
-        )
+            "created_at":
+            datetime.utcnow().isoformat()
 
-
-        return self.repository.save(
-            asset
-        )
-
+        }
 
 
-    def get_asset(
-        self,
-        asset_id
-    ):
-
-        return self.repository.get(
-            asset_id
-        )
+        asset["risk"] = self.risk.calculate(asset)
 
 
+        self.repository.save(asset)
 
-    def inventory(
-        self
-    ):
 
-        return self.repository.list_assets()
+        return asset
