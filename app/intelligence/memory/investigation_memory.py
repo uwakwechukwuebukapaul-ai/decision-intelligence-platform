@@ -1,62 +1,87 @@
 """
-Investigation Memory
-
-Stores and retrieves previous
-investigation intelligence.
+Sentinel DNA Investigation Memory Engine
 """
 
-from dataclasses import dataclass, field
-from datetime import datetime, UTC
-from typing import Any
 
+from .memory_store import MemoryStore
+from .memory_query import MemoryQuery
+from .memory_schema import InvestigationMemoryRecord
 
-@dataclass
-class InvestigationRecord:
-    investigation_id: str
-    data: dict[str, Any]
-    created_at: str = field(
-        default_factory=lambda:
-       datetime.now(UTC).isoformat()
-    )
 
 
 class InvestigationMemory:
-    """
-    Memory storage for investigations.
-    """
+
 
     def __init__(self):
-        self.records: dict[str, InvestigationRecord] = {}
+
+        self.store = MemoryStore()
+
+        self.query = MemoryQuery(
+            self.store
+        )
+
 
 
     def remember(
         self,
-        investigation_id: str,
-        data: dict[str, Any],
-    ) -> InvestigationRecord:
+        intelligence: dict,
+        decision: dict,
+    ):
 
-        record = InvestigationRecord(
-            investigation_id,
-            data,
+        record = InvestigationMemoryRecord(
+
+            indicator=intelligence.get(
+                "indicator",
+                "unknown",
+            ),
+
+            risk_score=intelligence.get(
+                "risk",
+                {}
+            ).get(
+                "score",
+                0,
+            ),
+
+            severity=intelligence.get(
+                "risk",
+                {}
+            ).get(
+                "risk",
+                "unknown",
+            ),
+
+            decision=decision.get(
+                "decision",
+                "unknown",
+            ),
+
+            confidence=decision.get(
+                "confidence",
+                0,
+            ),
+
+            mitre_mapping=intelligence.get(
+                "mitre_mapping",
+                [],
+            ),
+
+            evidence=intelligence,
+
         )
 
-        self.records[investigation_id] = record
 
-        return record
+        return self.store.save(
+            record
+        ).to_dict()
+
 
 
     def recall(
         self,
-        investigation_id: str,
-    ) -> InvestigationRecord | None:
+        indicator,
+    ):
 
-        return self.records.get(
-            investigation_id
-        )
-
-
-    def count(self) -> int:
-
-        return len(
-            self.records
+        return self.query.search_indicator(
+            indicator
         )
