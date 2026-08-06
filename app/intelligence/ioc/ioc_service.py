@@ -7,6 +7,7 @@ Responsibilities:
 - Parse indicators
 - Classify IOC type
 - Perform risk analysis
+- Perform reputation enrichment
 - Provide backward-compatible lookup API
 """
 
@@ -20,6 +21,11 @@ from app.intelligence.ioc.indicator_parser import (
 
 from app.intelligence.ioc.risk_analyzer import (
     RiskAnalyzer,
+)
+
+
+from app.intelligence.ioc.enrichment.reputation_engine import (
+    ReputationEngine,
 )
 
 
@@ -38,6 +44,8 @@ class IOCService:
 
         self.risk_analyzer = RiskAnalyzer()
 
+        self.reputation_engine = ReputationEngine()
+
 
 
     def analyze(
@@ -47,7 +55,7 @@ class IOCService:
         """
         Analyze an IOC indicator.
 
-        Enterprise response format.
+        Enterprise intelligence response.
         """
 
 
@@ -56,7 +64,19 @@ class IOCService:
         )
 
 
+        # Risk analysis
+
         risk = self.risk_analyzer.analyze(
+            {
+                "type": parsed.get("type"),
+                "value": parsed.get("indicator"),
+            }
+        )
+
+
+        # Reputation enrichment
+
+        reputation = self.reputation_engine.analyze(
             parsed
         )
 
@@ -71,6 +91,8 @@ class IOCService:
 
             "risk": risk,
 
+            "reputation": reputation,
+
         }
 
 
@@ -82,8 +104,7 @@ class IOCService:
         """
         Legacy compatible IOC lookup.
 
-        Preserves old IOC scoring contract
-        while keeping the new intelligence model.
+        Preserves previous scoring contract.
         """
 
 
