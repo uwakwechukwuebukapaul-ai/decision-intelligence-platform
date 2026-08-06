@@ -1,27 +1,45 @@
+"""
+Agent Registry
+
+Manages available AI SOC agents.
+"""
+
+
 class AgentRegistry:
 
 
     def __init__(self):
 
-        self.agents = {
-            "SOC Agent": "Security investigation agent",
-            "Research Agent": "Threat intelligence research agent",
-            "Threat Hunting Agent": "Adversary hunting agent",
-            "Compliance Agent": "Security compliance agent",
-            "Executive Agent": "Business intelligence agent"
-        }
+        self.agents = {}
 
 
-    def list_agents(self):
 
-        return {
-            "available_agents": self.agents
-        }
+    def register(
+        self,
+        agent
+    ):
+
+        self.agents[
+            agent.name
+        ] = agent
 
 
-    def get_agent(self,name):
+
+    def get(
+        self,
+        name
+    ):
 
         return self.agents.get(
-            name,
-            "Agent unavailable"
+            name
+        )
+
+
+
+    def list_agents(
+        self
+    ):
+
+        return list(
+            self.agents.keys()
         )

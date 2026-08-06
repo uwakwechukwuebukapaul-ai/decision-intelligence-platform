@@ -1,9 +1,12 @@
 """
-Sentinel DNA Autonomous Agent Framework
+Sentinel DNA AI Agent Framework
 """
 
 from .agent_orchestrator import AgentOrchestrator
+from .agent_registry import AgentRegistry
+
 
 __all__ = [
-    "AgentOrchestrator"
+    "AgentOrchestrator",
+    "AgentRegistry",
 ]

@@ -1,11 +1,14 @@
-from datetime import datetime
+"""
+AI Agent Orchestrator
 
-from .soc_agent import SOCAgent
-from .research_agent import ResearchAgent
-from .threat_hunting_agent import ThreatHuntingAgent
-from .compliance_agent import ComplianceAgent
-from .executive_agent import ExecutiveAgent
-from .agent_memory import AgentMemory
+Coordinates SOC agents.
+"""
+
+
+from .agent_registry import AgentRegistry
+from .investigation_agent import InvestigationAgent
+from .hunting_agent import HuntingAgent
+
 
 
 class AgentOrchestrator:
@@ -13,73 +16,48 @@ class AgentOrchestrator:
 
     def __init__(self):
 
-        self.soc = SOCAgent()
-        self.research = ResearchAgent()
-        self.hunting = ThreatHuntingAgent()
-        self.compliance = ComplianceAgent()
-        self.executive = ExecutiveAgent()
+        self.registry = AgentRegistry()
 
-        self.memory = AgentMemory()
-
-
-
-    def execute(self, request):
-
-
-        soc_result = self.soc.investigate(request)
-
-        research_result = self.research.research(
-            request
+        self.registry.register(
+            InvestigationAgent()
         )
 
-        hunting_result = self.hunting.hunt(
-            "Enterprise Environment"
-        )
-
-        compliance_result = self.compliance.evaluate(
-            request
-        )
-
-        executive_result = self.executive.advise(
-            soc_result
+        self.registry.register(
+            HuntingAgent()
         )
 
 
-        final = {
 
-            "status":
-            "completed",
+    def run(
+        self,
+        context
+    ):
 
-            "agent_pipeline":
-            {
 
-                "soc":
-                soc_result,
+        results = []
 
-                "research":
-                research_result,
 
-                "threat_hunting":
-                hunting_result,
+        for agent_name in self.registry.list_agents():
 
-                "compliance":
-                compliance_result,
+            agent = self.registry.get(
+                agent_name
+            )
 
-                "executive":
-                executive_result
-            },
+            results.append(
 
-            "created_at":
-            datetime.now().isoformat()
+                agent.execute(
+                    context
+                )
+
+            )
+
+
+        return {
+
+            "agents_executed":
+                len(results),
+
+            "results":
+                results
 
         }
-
-
-        self.memory.store(
-            "Agent Orchestrator",
-            request,
-            final
-        )
-
-
-        return final
