@@ -8,7 +8,6 @@ Central service registry responsible for:
 - future multi-tenant isolation support
 """
 
-
 from app.intelligence.control_plane import (
     IntelligenceController,
     TaskManager,
@@ -18,9 +17,50 @@ from app.intelligence.control_plane import (
 )
 
 
-class ServiceContainer:
+class Container:
     """
-    Central dependency container.
+    Generic dependency registry.
+    """
+
+    def __init__(self):
+
+        self.services = {}
+
+
+    def register(
+        self,
+        name,
+        service,
+    ):
+
+        self.services[name] = service
+
+
+    def resolve(
+        self,
+        name,
+    ):
+
+        return self.services.get(name)
+
+
+    def has(
+        self,
+        name,
+    ):
+
+        return name in self.services
+
+
+    def clear(self):
+
+        self.services.clear()
+
+
+
+class ServiceContainer(Container):
+    """
+    Intelligence platform service container.
 
     Provides managed instances of core
     intelligence services.
@@ -29,27 +69,19 @@ class ServiceContainer:
 
     def __init__(self):
 
+        super().__init__()
+
         self._initialized = False
 
         self.task_manager = None
-
         self.policy_engine = None
-
         self.capability_manager = None
-
         self.audit_logger = None
-
         self.intelligence_controller = None
 
 
 
     def initialize(self):
-        """
-        Initialize core services.
-
-        Designed to be called once during
-        application startup.
-        """
 
         if self._initialized:
             return
@@ -72,14 +104,17 @@ class ServiceContainer:
         )
 
 
+        self.register(
+            "intelligence_controller",
+            self.intelligence_controller,
+        )
+
+
         self._initialized = True
 
 
 
     def get_intelligence_controller(self):
-        """
-        Retrieve Intelligence Controller instance.
-        """
 
         if not self._initialized:
             self.initialize()
@@ -89,14 +124,12 @@ class ServiceContainer:
 
 
     def health(self):
-        """
-        Container health status.
-        """
 
         return {
             "container": "healthy"
             if self._initialized
             else "not_initialized",
+
             "services": {
                 "task_manager": self.task_manager is not None,
                 "policy_engine": self.policy_engine is not None,
@@ -107,7 +140,5 @@ class ServiceContainer:
         }
 
 
-
-# Global application container instance
 
 container = ServiceContainer()
