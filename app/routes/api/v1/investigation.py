@@ -1,30 +1,63 @@
 """
 Sentinel DNA
 
-IOC Investigation API
+Investigation API
 
 Provides:
+
+- IOC investigation
+- AI agent investigation workflow
 - Investigation timeline
 - Investigation memory
 - Complete investigation report
 """
 
+from __future__ import annotations
+
+
+import uuid
+
+
 from flask import (
     Blueprint,
     jsonify,
+    request,
 )
+
 
 from app.intelligence.ioc.fusion import (
     IntelligenceFusion,
 )
+
 
 from app.intelligence.ioc.timeline import (
     TimelineEngine,
     InvestigationMemory,
 )
 
+
 from app.intelligence.ioc.workflow import (
     IOCCaseOrchestrator,
+)
+
+
+from app.investigations import (
+    Investigation,
+)
+
+
+from app.ai.agents import (
+    AgentRegistry,
+    EvidenceAgent,
+    ThreatIntelligenceAgent,
+    MitreAgent,
+    RiskAgent,
+    ResponseAgent,
+)
+
+
+from app.ai.investigation_orchestrator import (
+    InvestigationOrchestrator,
 )
 
 
@@ -34,6 +67,7 @@ investigation_api_bp = Blueprint(
     __name__,
     url_prefix="/api/v1/intelligence",
 )
+
 
 
 fusion = IntelligenceFusion()
@@ -46,13 +80,53 @@ workflow = IOCCaseOrchestrator()
 
 
 
+# =====================================
+# AI Investigation Runtime
+# =====================================
+
+
+registry = AgentRegistry()
+
+
+registry.register(
+    EvidenceAgent()
+)
+
+registry.register(
+    ThreatIntelligenceAgent()
+)
+
+registry.register(
+    MitreAgent()
+)
+
+registry.register(
+    RiskAgent()
+)
+
+registry.register(
+    ResponseAgent()
+)
+
+
+
+orchestrator = InvestigationOrchestrator(
+    registry
+)
+
+
+
+# =====================================
+# IOC Timeline
+# =====================================
+
+
 @investigation_api_bp.route(
     "/ioc/<indicator>/timeline",
     methods=["GET"],
 )
-def get_ioc_timeline(
-    indicator: str,
-):
+def get_ioc_timeline(indicator):
+
 
     intelligence = fusion.analyze(
         indicator
@@ -66,21 +140,30 @@ def get_ioc_timeline(
 
     return jsonify(
         {
-            "service": "ioc-investigation-timeline",
-            "indicator": indicator,
-            "timeline": timeline,
+            "service":
+            "ioc-investigation-timeline",
+
+            "indicator":
+            indicator,
+
+            "timeline":
+            timeline,
         }
     )
 
+
+
+# =====================================
+# IOC Memory
+# =====================================
 
 
 @investigation_api_bp.route(
     "/ioc/<indicator>/memory",
     methods=["GET"],
 )
-def get_ioc_memory(
-    indicator: str,
-):
+def get_ioc_memory(indicator):
+
 
     memory = memory_engine.get_memory(
         indicator
@@ -96,21 +179,30 @@ def get_ioc_memory(
 
     return jsonify(
         {
-            "service": "ioc-investigation-memory",
-            "indicator": indicator,
-            "memory": memory,
+            "service":
+            "ioc-investigation-memory",
+
+            "indicator":
+            indicator,
+
+            "memory":
+            memory,
         }
     )
 
+
+
+# =====================================
+# IOC Report
+# =====================================
 
 
 @investigation_api_bp.route(
     "/ioc/<indicator>/report",
     methods=["GET"],
 )
-def get_ioc_report(
-    indicator: str,
-):
+def get_ioc_report(indicator):
+
 
     intelligence = fusion.analyze(
         indicator
@@ -129,13 +221,66 @@ def get_ioc_report(
 
     return jsonify(
         {
-            "service": "ioc-investigation-report",
+            "service":
+            "ioc-investigation-report",
 
-            "indicator": indicator,
+            "indicator":
+            indicator,
 
-            "investigation": investigation,
+            "investigation":
+            investigation,
 
-            "timeline": timeline,
+            "timeline":
+            timeline,
 
         }
+    )
+
+
+
+# =====================================
+# AI SOC Investigation
+# =====================================
+
+
+@investigation_api_bp.route(
+    "/investigation",
+    methods=["POST"],
+)
+def create_ai_investigation():
+
+
+    data = request.get_json()
+
+
+    investigation_id = (
+        "INV-"
+        +
+        str(uuid.uuid4())[:8]
+    )
+
+
+    investigation = Investigation(
+
+        investigation_id,
+
+        data.get(
+            "case_id"
+        ),
+
+        data.get(
+            "evidence",
+            []
+        )
+
+    )
+
+
+    result = orchestrator.investigate(
+        investigation
+    )
+
+
+    return jsonify(
+        result
     )
