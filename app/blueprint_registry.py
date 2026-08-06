@@ -88,6 +88,11 @@ def register_blueprints(
             "intelligence_api_bp",
         ),
 
+        (
+            "app.routes.api.v1.ioc",
+            "ioc_api_bp",
+        ),
+
     ]
 
 
