@@ -3,22 +3,16 @@ class EvidenceRepository:
 
     def __init__(self):
 
-        self.evidence = []
+        self.records=[]
 
 
+    def save(self,data):
 
-    def save(self, evidence):
+        self.records.append(data)
 
-        self.evidence.append(evidence)
-
-        return evidence
-
+        return data
 
 
-    def get_by_case(self, case_id):
+    def all(self):
 
-        return [
-            item
-            for item in self.evidence
-            if item["case_id"] == case_id
-        ]
+        return self.records

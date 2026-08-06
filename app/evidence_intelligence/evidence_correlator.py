@@ -1,18 +1,29 @@
-from datetime import datetime
-
-
 class EvidenceCorrelator:
+
 
     def correlate(self, evidence):
 
-        return {
-            "correlations": [
-                "Threat Intelligence Match",
-                "MITRE ATT&CK Technique Match",
-                "Detection Rule Match",
-                "Threat Hunting Context Match"
-            ],
-            "confidence": "high",
-            "status": "correlated",
-            "timestamp": datetime.utcnow().isoformat()
-        }
+        findings=[]
+
+
+        for item in evidence:
+
+            if item["type"]=="IOC":
+                findings.append(
+                    "Malicious indicator evidence found"
+                )
+
+
+            if item["type"]=="IDENTITY":
+                findings.append(
+                    "Identity context evidence found"
+                )
+
+
+            if item["type"]=="ASSET":
+                findings.append(
+                    "Asset context evidence found"
+                )
+
+
+        return findings

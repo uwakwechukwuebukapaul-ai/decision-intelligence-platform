@@ -1,20 +1,30 @@
-from datetime import datetime
-import uuid
-
-
 class EvidenceCollector:
 
-    def collect(self, event):
 
-        return {
-            "evidence_id": f"EVID-{uuid.uuid4().hex[:8].upper()}",
-            "event": event,
-            "evidence_sources": [
-                "Security Logs",
-                "Endpoint Telemetry",
-                "Network Events",
-                "Threat Intelligence"
-            ],
-            "collection_status": "completed",
-            "timestamp": datetime.utcnow().isoformat()
-        }
+    def collect(self, incident):
+
+        evidence = []
+
+
+        if incident.get("indicator"):
+            evidence.append({
+                "type":"IOC",
+                "value":incident["indicator"]
+            })
+
+
+        if incident.get("asset"):
+            evidence.append({
+                "type":"ASSET",
+                "value":incident["asset"]
+            })
+
+
+        if incident.get("identity"):
+            evidence.append({
+                "type":"IDENTITY",
+                "value":incident["identity"]
+            })
+
+
+        return evidence

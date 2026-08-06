@@ -1,5 +1,10 @@
+import uuid
+
+from .evidence_collector import EvidenceCollector
+from .evidence_correlator import EvidenceCorrelator
 from .evidence_repository import EvidenceRepository
-from .evidence_schema import create_evidence
+from .evidence_schema import Evidence, timestamp
+
 
 
 class EvidenceEngine:
@@ -7,89 +12,61 @@ class EvidenceEngine:
 
     def __init__(self):
 
+        self.collector = EvidenceCollector()
+
+        self.correlator = EvidenceCorrelator()
+
         self.repository = EvidenceRepository()
 
 
 
-    def add_evidence(
-        self,
-        case_id,
-        value,
-        evidence_type,
-        source="AI_ENGINE"
-    ):
+    def analyze(self, incident):
 
-        evidence = create_evidence(
-            case_id,
-            value,
-            evidence_type,
-            source
-        )
 
-        return self.repository.save(
-            evidence
+        collected = self.collector.collect(
+            incident
         )
 
 
-
-    def link_to_case(
-        self,
-        evidence,
-        case_id
-    ):
-
-        evidence["case_id"] = case_id
-
-        return evidence
-
-
-
-    def get_case_evidence(
-        self,
-        case_id
-    ):
-
-        return self.repository.get_by_case(
-            case_id
+        findings = self.correlator.correlate(
+            collected
         )
 
 
+        evidence = Evidence(
 
-    def classify_evidence(
-        self,
-        evidence_type
-    ):
+            evidence_id=f"EVD-{uuid.uuid4().hex[:8].upper()}",
 
-        return create_evidence(
-            "TEMP",
-            "TEMP",
-            evidence_type
-        )["classification"]
+            incident_id=incident.get(
+                "incident_id"
+            ),
 
+            evidence_type="security_event",
 
+            source="Sentinel_DNA",
 
-    def generate_evidence_summary(
-        self,
-        case_id
-    ):
+            confidence=0.95,
 
-        evidence = self.get_case_evidence(
-            case_id
+            created_at=timestamp()
         )
+
+
+        self.repository.save(
+            evidence.to_dict()
+        )
+
 
         return {
 
-            "case_id": case_id,
+            "evidence_id": evidence.evidence_id,
 
-            "total_evidence": len(evidence),
+            "incident_id": evidence.incident_id,
 
-            "categories": list(
-                set(
-                    item["classification"]
-                    for item in evidence
-                )
-            ),
+            "collected_evidence": collected,
 
-            "evidence": evidence
+            "findings": findings,
 
+            "confidence": evidence.confidence,
+
+            "created_at": evidence.created_at
         }
