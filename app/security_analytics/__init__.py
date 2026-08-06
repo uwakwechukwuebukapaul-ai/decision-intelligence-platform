@@ -1,5 +1,5 @@
-from .analytics_engine import SecurityAnalyticsEngine
+from .analytics_engine import AnalyticsEngine
 
 __all__ = [
-    "SecurityAnalyticsEngine"
+    "AnalyticsEngine"
 ]

@@ -1,77 +1,61 @@
 from datetime import datetime
 
-from .risk_scorer import RiskScorer
-from .behavior_baseline import BehaviorBaseline
-from .entity_scoring import EntityScoring
-from .attack_prediction import AttackPrediction
-from .security_metrics import SecurityMetrics
-from .analytics_memory import AnalyticsMemory
-from .analytics_logger import AnalyticsLogger
+from .event_analyzer import EventAnalyzer
+from .metric_engine import MetricEngine
+from .analytics_repository import AnalyticsRepository
 
 
-class SecurityAnalyticsEngine:
+
+class AnalyticsEngine:
+
 
     def __init__(self):
 
-        self.risk = RiskScorer()
-        self.behavior = BehaviorBaseline()
-        self.entity = EntityScoring()
-        self.prediction = AttackPrediction()
-        self.metrics = SecurityMetrics()
-        self.memory = AnalyticsMemory()
-        self.logger = AnalyticsLogger()
+        self.event_analyzer = EventAnalyzer()
+
+        self.metric_engine = MetricEngine()
+
+        self.repository = AnalyticsRepository()
+
 
 
     def analyze(self, event):
 
-        risk = self.risk.score(event)
 
-        behavior = self.behavior.analyze(
-            event
-        )
-
-        entity = self.entity.evaluate(
-            event
-        )
-
-        prediction = self.prediction.predict(
-            event
-        )
-
-        metrics = self.metrics.calculate(
-            event
-        )
-
-        memory = self.memory.store(
-            event
-        )
-
-        log = self.logger.record(
+        analysis = self.event_analyzer.analyze(
             event
         )
 
 
-        return {
+        metric = self.metric_engine.calculate(
+            analysis
+        )
 
-            "status": "completed",
 
-            "event": event,
+        result = {
 
-            "risk_analysis": risk,
+            "metric_id":
+                self.repository.generate_id(),
 
-            "behavior_baseline": behavior,
+            "event_type":
+                event.get("type", "security_event"),
 
-            "entity_analysis": entity,
+            "category":
+                "threat_detection",
 
-            "attack_prediction": prediction,
+            "severity":
+                metric["severity"],
 
-            "security_metrics": metrics,
+            "score":
+                metric["score"],
 
-            "memory": memory,
-
-            "log": log,
+            "findings":
+                analysis["findings"],
 
             "created_at":
                 datetime.utcnow().isoformat()
 
         }
+
+
+        return self.repository.save(result)
