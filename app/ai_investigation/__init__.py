@@ -1,5 +1,11 @@
-from .investigation_engine import AIInvestigationEngine
+"""
+Sentinel DNA AI Investigation Engine
+"""
+
+
+from .investigator import AIInvestigator
+
 
 __all__ = [
-    "AIInvestigationEngine"
+    "AIInvestigator",
 ]

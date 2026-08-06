@@ -1,16 +1,52 @@
-from datetime import datetime
+"""
+Sentinel DNA Recommendation Engine
+
+Produces SOC response actions.
+"""
 
 
 class RecommendationEngine:
 
-    def generate(self, incident):
 
-        return {
-            "recommendations": [
-                "Isolate affected systems",
-                "Block malicious indicators",
-                "Collect forensic evidence",
-                "Execute containment workflow"
-            ],
-            "timestamp": datetime.utcnow().isoformat()
-        }
+    def generate(
+        self,
+        context: dict,
+    ):
+
+
+        recommendations = []
+
+
+        incident = context.get(
+            "incident",
+            {}
+        )
+
+
+        severity = incident.get(
+            "severity"
+        )
+
+
+        if severity in [
+            "critical",
+            "high"
+        ]:
+
+            recommendations.extend(
+                [
+                    "Block malicious indicator",
+                    "Perform threat hunting",
+                    "Collect additional telemetry"
+                ]
+            )
+
+
+        else:
+
+            recommendations.append(
+                "Continue monitoring"
+            )
+
+
+        return recommendations
