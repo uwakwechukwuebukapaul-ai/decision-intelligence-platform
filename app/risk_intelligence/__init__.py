@@ -1,5 +1,5 @@
-from .risk_engine import RiskIntelligenceEngine
+from .risk_engine import RiskEngine
 
 __all__ = [
-    "RiskIntelligenceEngine"
+    "RiskEngine"
 ]

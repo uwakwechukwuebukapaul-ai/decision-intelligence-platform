@@ -1,45 +1,53 @@
-from datetime import datetime
-
-
 class RiskCalculator:
 
-    def calculate(
-        self,
-        threat,
-        asset,
-        user,
-        business
-    ):
 
-        score = (
-            threat["score"]
-            +
-            asset["score"]
-            +
-            user["score"]
-            +
-            business["score"]
-        )
+    def calculate(self, data):
 
-        score = min(score, 100)
+        score = 0
 
-        if score >= 80:
-            level = "critical"
-        elif score >= 60:
-            level = "high"
-        elif score >= 30:
-            level = "medium"
-        else:
-            level = "low"
+        factors = []
+
+
+        if data.get("severity") == "critical":
+
+            score += 40
+
+            factors.append(
+                "Critical threat severity"
+            )
+
+
+        if data.get("indicator"):
+
+            score += 20
+
+            factors.append(
+                "Malicious indicator detected"
+            )
+
+
+        if data.get("asset_risk") == "critical":
+
+            score += 20
+
+            factors.append(
+                "Critical asset exposure"
+            )
+
+
+        if data.get("identity_risk") == "critical":
+
+            score += 20
+
+            factors.append(
+                "Critical identity exposure"
+            )
+
 
         return {
-            "risk_score": score,
-            "risk_level": level,
-            "calculation": [
-                "Threat severity",
-                "Asset importance",
-                "User behavior",
-                "Business impact"
-            ],
-            "timestamp": datetime.utcnow().isoformat()
+
+            "score": score,
+
+            "factors": factors
+
         }
