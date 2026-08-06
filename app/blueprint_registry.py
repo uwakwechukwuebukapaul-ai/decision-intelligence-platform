@@ -47,7 +47,6 @@ def register_blueprint(
 
     if blueprint.name in app.blueprints:
 
-
         logger.warning(
             "Blueprint already registered: %s",
             blueprint.name,
@@ -57,9 +56,7 @@ def register_blueprint(
 
 
 
-
     if url_prefix:
-
 
         app.register_blueprint(
             blueprint,
@@ -68,7 +65,6 @@ def register_blueprint(
 
 
     else:
-
 
         app.register_blueprint(
             blueprint
@@ -81,6 +77,7 @@ def register_blueprint(
         "Registered blueprint: %s",
         blueprint.name,
     )
+
 
 
 
@@ -107,6 +104,7 @@ def register_blueprints(
     - Knowledge graph intelligence
     - Correlation intelligence
     - Campaign intelligence
+    - Threat actor intelligence
     - Future plugins
     """
 
@@ -212,7 +210,15 @@ def register_blueprints(
         ),
 
 
+
+        (
+            "app.routes.api.v1.threat_actor",
+            "threat_actor_api_bp",
+        ),
+
+
     ]
+
 
 
 
@@ -278,10 +284,12 @@ def register_blueprints(
 
 
 
+
     logger.info(
         "Blueprint registration completed. Loaded: %s",
         list(app.blueprints.keys()),
     )
+
 
 
 
