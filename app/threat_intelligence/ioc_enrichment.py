@@ -1,24 +1,37 @@
-from datetime import datetime
-
-
 class IOCEnrichment:
 
+    def enrich(self, ioc):
 
-    def enrich(self, iocs):
+        tags = []
+        category = "unknown"
+        reputation = "unknown"
+
+        if "." in ioc:
+            category = "domain"
+
+        suspicious_terms = [
+            "malware",
+            "evil",
+            "phishing",
+            "c2",
+            "bot"
+        ]
+
+        for term in suspicious_terms:
+            if term in ioc.lower():
+                tags.append(term)
+
+        if tags:
+            reputation = "malicious"
+        else:
+            reputation = "clean"
 
         return {
-
-            "enriched_indicators":
-                iocs["indicators"],
-
-            "context":
-                [
-                    "Geolocation",
-                    "Threat category",
-                    "Historical activity"
-                ],
-
-            "timestamp":
-                datetime.utcnow().isoformat()
-
+            "ioc": ioc,
+            "category": category,
+            "tags": tags,
+            "reputation": reputation,
+            "details": {
+                "analysis": "IOC enrichment completed"
+            }
         }

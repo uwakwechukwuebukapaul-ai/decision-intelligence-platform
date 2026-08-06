@@ -1,73 +1,53 @@
-"""
-Sentinel DNA Threat Intelligence Schemas
-"""
-
-
+from dataclasses import dataclass, asdict
 from datetime import datetime
+import uuid
 
 
+@dataclass
+class ThreatIndicator:
+    ioc: str
+    ioc_type: str
+    threat_level: str
+    risk_score: int
+    confidence: float
+    source: str
+    created_at: str = None
 
-class IntelligenceRecord:
-
-
-    def __init__(
-        self,
-        ioc,
-        ioc_type="domain",
-        reputation_score=0,
-        threat_level="unknown",
-        source="offline",
-        details=None,
-    ):
-
-        self.ioc = ioc
-
-        self.ioc_type = ioc_type
-
-        self.reputation_score = (
-            reputation_score
-        )
-
-        self.threat_level = (
-            threat_level
-        )
-
-        self.source = source
-
-        self.details = (
-            details or {}
-        )
-
-        self.created_at = (
-            datetime.utcnow()
-            .isoformat()
-        )
-
-
+    def __post_init__(self):
+        if self.created_at is None:
+            self.created_at = datetime.utcnow().isoformat()
 
     def to_dict(self):
+        return asdict(self)
 
-        return {
 
-            "ioc":
-                self.ioc,
+@dataclass
+class EnrichmentResult:
+    ioc: str
+    category: str
+    tags: list
+    reputation: str
+    details: dict
+    created_at: str = None
 
-            "ioc_type":
-                self.ioc_type,
+    def __post_init__(self):
+        if self.created_at is None:
+            self.created_at = datetime.utcnow().isoformat()
 
-            "reputation_score":
-                self.reputation_score,
+    def to_dict(self):
+        return asdict(self)
 
-            "threat_level":
-                self.threat_level,
 
-            "source":
-                self.source,
+@dataclass
+class ThreatReport:
+    report_id: str
+    indicator: dict
+    enrichment: dict
+    created_at: str = None
 
-            "details":
-                self.details,
+    def __post_init__(self):
+        if self.created_at is None:
+            self.created_at = datetime.utcnow().isoformat()
 
-            "created_at":
-                self.created_at,
-
-        }
+    def to_dict(self):
+        return asdict(self)

@@ -1,13 +1,11 @@
-"""
-Sentinel DNA Threat Intelligence Package
-"""
-
-
-from .intelligence_manager import (
-    IntelligenceManager,
-)
-
+from .intelligence_engine import IntelligenceEngine
+from .ioc_enrichment import IOCEnrichment
+from .feed_manager import FeedManager
+from .source_connector import SourceConnector
 
 __all__ = [
-    "IntelligenceManager",
+    "IntelligenceEngine",
+    "IOCEnrichment",
+    "FeedManager",
+    "SourceConnector",
 ]

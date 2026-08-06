@@ -1,37 +1,16 @@
-"""
-Sentinel DNA Intelligence Repository
-"""
-
-
 class IntelligenceRepository:
 
-
-
     def __init__(self):
-
-        self.records = {}
-
+        self.records = []
 
 
-    def save(
-        self,
-        intelligence,
-    ):
+    def save(self, intelligence):
 
-        self.records[
-            intelligence["ioc"]
-        ] = intelligence
-
+        self.records.append(intelligence)
 
         return intelligence
 
 
+    def get_all(self):
 
-    def get(
-        self,
-        ioc,
-    ):
-
-        return self.records.get(
-            ioc
-        )
+        return self.records
