@@ -1,16 +1,18 @@
 """
-Sentinel DNA Repository Layer
+Sentinel DNA Database Repository
 
-Database access abstraction.
+Enterprise persistence abstraction layer.
+
+Handles:
+
+- Incident persistence
+- Timeline persistence
+- Evidence persistence
 """
-
 
 from datetime import datetime
 
-
 from .db import Database
-
-
 
 
 
@@ -23,11 +25,14 @@ class Repository:
 
 
 
+    # ==========================
+    # INCIDENTS
+    # ==========================
+
     def save_incident(
         self,
         incident: dict,
     ):
-
 
         now = datetime.utcnow().isoformat()
 
@@ -35,11 +40,9 @@ class Repository:
         self.db.execute(
 
             """
-
             INSERT OR REPLACE INTO incidents
 
             (
-
                 incident_id,
                 indicator,
                 severity,
@@ -47,43 +50,57 @@ class Repository:
                 assigned_to,
                 created_at,
                 updated_at
-
             )
 
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-
+            VALUES
+            (
+                :incident_id,
+                :indicator,
+                :severity,
+                :status,
+                :assigned_to,
+                :created_at,
+                :updated_at
+            )
             """,
 
-            (
+            {
 
-                incident["incident_id"],
+                "incident_id":
+                    incident["incident_id"],
 
-                incident.get(
-                    "indicator"
-                ),
+                "indicator":
+                    incident.get(
+                        "indicator"
+                    ),
 
-                incident.get(
-                    "severity",
-                    "medium"
-                ),
+                "severity":
+                    incident.get(
+                        "severity",
+                        "medium"
+                    ),
 
-                incident.get(
-                    "status",
-                    "open"
-                ),
+                "status":
+                    incident.get(
+                        "status",
+                        "open"
+                    ),
 
-                incident.get(
-                    "assigned_to"
-                ),
+                "assigned_to":
+                    incident.get(
+                        "assigned_to"
+                    ),
 
-                incident.get(
-                    "created_at",
-                    now
-                ),
+                "created_at":
+                    incident.get(
+                        "created_at",
+                        now
+                    ),
 
-                now,
+                "updated_at":
+                    now,
 
-            )
+            }
 
         )
 
@@ -92,59 +109,154 @@ class Repository:
 
 
 
-
     def get_incident(
         self,
-        incident_id,
+        incident_id: str,
     ):
 
 
-        result = self.db.execute_one(
+        return self.db.execute_one(
 
             """
-
             SELECT *
 
             FROM incidents
 
-            WHERE incident_id = ?
-
+            WHERE incident_id = :incident_id
             """,
 
-            (
-                incident_id,
-            )
+            {
+                "incident_id":
+                    incident_id
+            }
 
         )
-
-
-        return dict(result) if result else None
-
 
 
 
     def list_incidents(self):
 
 
-        rows = self.db.execute(
+        return self.db.execute(
 
             """
-
             SELECT *
 
             FROM incidents
 
-            ORDER BY id DESC
-
+            ORDER BY created_at DESC
             """
 
         )
 
 
-        return [
 
-            dict(row)
+    # ==========================
+    # TIMELINE
+    # ==========================
 
-            for row in rows
 
-        ]
+    def save_timeline_event(
+        self,
+        event: dict,
+    ):
+
+        self.db.execute(
+
+            """
+            INSERT INTO timeline_events
+
+            (
+                id,
+                event_id,
+                case_id,
+                incident_id,
+                stage,
+                message,
+                created_at
+            )
+
+            VALUES
+
+            (
+                :id,
+                :event_id,
+                :case_id,
+                :incident_id,
+                :stage,
+                :message,
+                :created_at
+            )
+            """,
+
+            {
+
+                "id":
+                    event["event_id"],
+
+
+                "event_id":
+                    event["event_id"],
+
+
+                "case_id":
+                    event.get(
+                        "case_id",
+                        event.get(
+                            "incident_id"
+                        )
+                    ),
+
+
+                "incident_id":
+                    event.get(
+                        "incident_id"
+                    ),
+
+
+                "stage":
+                    event["stage"],
+
+
+                "message":
+                    event["message"],
+
+
+                "created_at":
+                    event["created_at"],
+
+            }
+
+        )
+
+
+        return event
+
+
+
+    def get_timeline(
+        self,
+        incident_id: str,
+    ):
+
+
+        return self.db.execute(
+
+            """
+            SELECT *
+
+            FROM timeline_events
+
+            WHERE incident_id = :incident_id
+
+            ORDER BY created_at ASC
+            """,
+
+            {
+
+                "incident_id":
+                    incident_id
+
+            }
+
+        )
