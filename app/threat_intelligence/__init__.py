@@ -1,5 +1,13 @@
-from .threat_engine import ThreatIntelligenceEngine
+"""
+Sentinel DNA Threat Intelligence Package
+"""
+
+
+from .intelligence_manager import (
+    IntelligenceManager,
+)
+
 
 __all__ = [
-    "ThreatIntelligenceEngine"
+    "IntelligenceManager",
 ]
