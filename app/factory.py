@@ -9,15 +9,23 @@ from flask import Flask
 from app.database.db import engine, Base
 
 from app.intelligence.production_engine_loader import (
-    load_production_engines
+    load_production_engines,
 )
 
 from app.blueprint_registry import (
-    register_blueprints
+    register_blueprints,
 )
 
 from app.health_routes import (
-    health_bp
+    health_bp,
+)
+
+from app.core.application import (
+    runtime,
+)
+
+from app.core.lifecycle import (
+    lifecycle,
 )
 
 
@@ -35,12 +43,12 @@ def create_app():
     )
 
     app.config["VERSION"] = (
-        "49.0"
+        "50.0"
     )
 
 
     # =====================================
-    # Database Initialization
+    # Database
     # =====================================
 
     Base.metadata.create_all(
@@ -49,14 +57,28 @@ def create_app():
 
 
     # =====================================
-    # Intelligence Fabric Initialization
+    # Platform Lifecycle
+    # =====================================
+
+    lifecycle.startup()
+
+
+    # =====================================
+    # Runtime
+    # =====================================
+
+    runtime.start()
+
+
+    # =====================================
+    # Intelligence Engines
     # =====================================
 
     load_production_engines()
 
 
     # =====================================
-    # Register Application Routes
+    # Blueprints
     # =====================================
 
     register_blueprints(app)

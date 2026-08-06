@@ -5,34 +5,30 @@ Centralized Flask blueprint registration layer.
 
 Responsible for:
 - Registering application blueprints
-- Preventing duplicate registration per Flask app
-- Keeping the application factory clean
-- Preparing for future plugin/module discovery
+- Preventing duplicate registration
+- Keeping factory clean
+- Supporting future plugin discovery
 """
 
 from __future__ import annotations
 
 import logging
-from typing import TYPE_CHECKING
 
-if TYPE_CHECKING:
-    from flask import Flask
-    from flask.blueprints import Blueprint
+from flask import Flask
+from flask.blueprints import Blueprint
+
 
 logger = logging.getLogger(__name__)
 
 
 def register_blueprint(
-    app: "Flask",
-    blueprint: "Blueprint",
+    app: Flask,
+    blueprint: Blueprint,
     *,
     url_prefix: str | None = None,
 ) -> None:
     """
-    Register a Flask blueprint safely.
-
-    Duplicate detection is performed against the current
-    Flask application instance instead of using global state.
+    Safely register blueprint.
     """
 
     if blueprint.name in app.blueprints:
@@ -42,15 +38,20 @@ def register_blueprint(
         )
         return
 
-    if url_prefix is not None:
+
+    if url_prefix:
+
         app.register_blueprint(
             blueprint,
             url_prefix=url_prefix,
         )
+
     else:
+
         app.register_blueprint(
-            blueprint,
+            blueprint
         )
+
 
     logger.info(
         "Registered blueprint: %s",
@@ -58,67 +59,70 @@ def register_blueprint(
     )
 
 
-def register_blueprints(app: "Flask") -> None:
+
+def register_blueprints(app: Flask) -> None:
     """
     Register all application blueprints.
-
-    Called once from create_app().
     """
 
-    blueprints: list[tuple["Blueprint", str | None]] = []
+    loaded_blueprints = []
 
-    # ---------------------------------------------
-    # Intelligence Control Plane
-    # ---------------------------------------------
-    try:
-        from app.routes.intelligence_control_plane import (
-            intelligence_control_plane_bp,
-        )
 
-        blueprints.append(
-            (
-                intelligence_control_plane_bp,
-                None,
+    modules = [
+
+        (
+            "app.routes.intelligence_control_plane",
+            "intelligence_control_plane_bp",
+        ),
+
+        (
+            "app.routes.intelligence_execution",
+            "intelligence_execution_bp",
+        ),
+
+    ]
+
+
+    for module_name, attribute_name in modules:
+
+        try:
+
+            module = __import__(
+                module_name,
+                fromlist=[attribute_name],
             )
-        )
 
-    except Exception as exc:
-        logger.exception(
-            "Failed loading intelligence control plane: %s",
-            exc,
-        )
 
-    # ---------------------------------------------
-    # Intelligence Execution
-    # ---------------------------------------------
-    try:
-        from app.routes.intelligence_execution import (
-            intelligence_execution_bp,
-        )
-
-        blueprints.append(
-            (
-                intelligence_execution_bp,
-                None,
+            blueprint = getattr(
+                module,
+                attribute_name,
             )
-        )
 
-    except Exception as exc:
-        logger.exception(
-            "Failed loading intelligence execution routes: %s",
-            exc,
-        )
 
-    # ---------------------------------------------
-    # Register Loaded Blueprints
-    # ---------------------------------------------
-    for blueprint, prefix in blueprints:
+            loaded_blueprints.append(
+                blueprint
+            )
+
+
+        except Exception as exc:
+
+            logger.exception(
+                "Failed loading blueprint %s: %s",
+                module_name,
+                exc,
+            )
+
+
+
+    for blueprint in loaded_blueprints:
+
         register_blueprint(
             app,
             blueprint,
-            url_prefix=prefix,
         )
 
 
+
 # Backward compatibility
+
 register_all_blueprints = register_blueprints
