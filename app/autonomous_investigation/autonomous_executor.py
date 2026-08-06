@@ -1,73 +1,35 @@
-"""
-Sentinel DNA Autonomous Investigation Executor
-"""
-
-
-from .investigation_planner import (
-    InvestigationPlanner,
-)
-
-from .evidence_collector import (
-    EvidenceCollector,
-)
-
-from .investigation_agent import (
-    InvestigationAgent,
-)
-
+from .investigation_engine import InvestigationEngine
 
 
 class AutonomousExecutor:
 
 
-
     def __init__(self):
 
-        self.planner = InvestigationPlanner()
-
-        self.collector = EvidenceCollector()
-
-        self.agent = InvestigationAgent()
+        self.engine = InvestigationEngine()
 
 
 
-    def execute(
-        self,
-        intelligence: dict,
-    ):
+    def execute(self, incident):
 
-
-        plan = self.planner.create_plan(
-            intelligence
-        )
-
-
-        evidence = self.collector.collect(
-            intelligence
-        )
-
-
-        result = self.agent.investigate(
-
-            intelligence,
-
-            plan,
-
-            evidence,
-
+        investigation = self.engine.investigate(
+            incident
         )
 
 
         return {
 
+            "status": "completed",
 
-            "workflow":
+            "investigation":
+                investigation,
 
-                "autonomous-investigation",
+            "automation":
 
-
-            "result":
-
-                result,
+                {
+                    "analysis": "completed",
+                    "decision": investigation["decision"],
+                    "priority": investigation["priority"]
+                }
 
         }
