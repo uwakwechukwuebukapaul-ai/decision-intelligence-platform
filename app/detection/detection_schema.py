@@ -1,37 +1,31 @@
+"""
+Detection data schemas.
+"""
+
+
 from datetime import datetime
+from dataclasses import dataclass, field
 
 
-def create_detection_schema(data):
 
-    return {
-        "detection_id": data.get(
-            "detection_id"
-        ),
+@dataclass
+class DetectionResult:
 
-        "incident_id": data.get(
-            "incident_id"
-        ),
+    detection_id: str
 
-        "rule": data.get(
-            "rule"
-        ),
+    indicator: str
 
-        "severity": data.get(
-            "severity",
-            "medium"
-        ),
+    rule_name: str
 
-        "indicator": data.get(
-            "indicator"
-        ),
+    severity: str
 
-        "status": data.get(
-            "status",
-            "new"
-        ),
+    confidence: float
 
-        "created_at": data.get(
-            "created_at",
-            datetime.utcnow().isoformat()
-        )
-    }
+    mitre_techniques: list = field(
+        default_factory=list
+    )
+
+    created_at: str = field(
+        default_factory=lambda:
+        datetime.utcnow().isoformat()
+    )

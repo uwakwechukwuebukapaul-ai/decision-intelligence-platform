@@ -1,53 +1,75 @@
+"""
+Sentinel DNA Detection Engine
+"""
+
+
 import uuid
 
-from datetime import datetime
-
-from .rules import match_ioc
+from .detection_schema import DetectionResult
+from .mitre_mapper import MitreMapper
+from .detection_repository import DetectionRepository
 
 
 
 class DetectionEngine:
 
 
+    def __init__(self):
+
+        self.mapper = MitreMapper()
+
+        self.repository = DetectionRepository()
+
+
+
     def analyze(
         self,
-        indicator
+        indicator: str
     ):
 
 
-        matches = match_ioc(
-            indicator
+        severity = "low"
+
+        confidence = 0.5
+
+
+        if any(
+            x in indicator
+            for x in [
+                ".xyz",
+                ".top",
+                ".click",
+                ".ru"
+            ]
+        ):
+
+            severity = "high"
+
+            confidence = 0.90
+
+
+
+        result = DetectionResult(
+
+            detection_id=
+                f"DET-{uuid.uuid4().hex[:8]}",
+
+            indicator=indicator,
+
+            rule_name=
+                "Suspicious IOC Detection",
+
+            severity=severity,
+
+            confidence=confidence,
+
+            mitre_techniques=
+                self.mapper.map_indicator(
+                    indicator
+                )
         )
 
 
-        detections = []
-
-
-        for match in matches:
-
-            detections.append(
-
-                {
-                    "detection_id":
-                    "DET-" + uuid.uuid4().hex[:8],
-
-                    "indicator":
-                    indicator,
-
-                    "rule":
-                    match["rule"],
-
-                    "severity":
-                    match["severity"],
-
-                    "status":
-                    "new",
-
-                    "created_at":
-                    datetime.utcnow().isoformat()
-                }
-
-            )
-
-
-        return detections
+        return self.repository.save(
+            result.__dict__
+        )

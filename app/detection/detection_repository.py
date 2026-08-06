@@ -1,7 +1,6 @@
-from datetime import datetime
-
-from app.database import Database
-
+"""
+Detection persistence layer.
+"""
 
 
 class DetectionRepository:
@@ -9,48 +8,23 @@ class DetectionRepository:
 
     def __init__(self):
 
-        self.db = Database()
+        self.storage = []
 
 
 
     def save(
         self,
-        detection: dict
+        detection
     ):
 
-
-        self.db.execute(
-
-            """
-            INSERT INTO detections
-
-            (
-                detection_id,
-                incident_id,
-                rule,
-                severity,
-                indicator,
-                status,
-                created_at
-            )
-
-            VALUES
-
-            (
-                :detection_id,
-                :incident_id,
-                :rule,
-                :severity,
-                :indicator,
-                :status,
-                :created_at
-            )
-
-            """,
-
+        self.storage.append(
             detection
-
         )
 
-
         return detection
+
+
+
+    def list_all(self):
+
+        return self.storage
