@@ -1,21 +1,31 @@
 """
 Runtime Metrics
 
-Collects intelligence execution metrics.
+Control plane operational metrics.
 """
-
-from datetime import UTC, datetime
 
 
 class RuntimeMetrics:
+    """
+    Provides runtime statistics.
+    """
+
     def __init__(self):
-        self.executions = 0
+        self.metrics = {
+            "tasks_processed": 0,
+            "active_agents": 0,
+            "failed_tasks": 0,
+        }
 
-    def record_execution(self):
-        self.executions += 1
+    def increment(
+        self,
+        metric: str,
+    ):
+        if metric in self.metrics:
+            self.metrics[metric] += 1
 
-    def get_metrics(self):
+    def get_metrics(self) -> dict:
         return {
-            "executions": self.executions,
-            "timestamp": datetime.now(UTC).isoformat(),
+            "component": "intelligence_control_plane",
+            "metrics": self.metrics,
         }

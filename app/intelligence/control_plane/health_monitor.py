@@ -1,15 +1,17 @@
 """
-Health Monitoring Service
+Control Plane Health Monitor
 
-Tracks intelligence subsystem health.
+Monitors intelligence orchestration health.
 """
-
-from datetime import UTC, datetime
 
 
 class HealthMonitor:
-    def check(self):
+    """
+    Provides control plane health status.
+    """
+
+    def check(self) -> dict:
         return {
-            "health": "healthy",
-            "timestamp": datetime.now(UTC).isoformat(),
+            "status": "healthy",
+            "component": "intelligence_control_plane",
         }

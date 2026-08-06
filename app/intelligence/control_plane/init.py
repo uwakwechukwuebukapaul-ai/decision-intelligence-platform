@@ -1,19 +1,20 @@
 """
 Intelligence Control Plane
 
-Central governance and runtime
-management layer.
+Central governance layer for autonomous intelligence execution.
 """
 
 from .intelligence_controller import IntelligenceController
-from .health_monitor import HealthMonitor
-from .runtime_metrics import RuntimeMetrics
-from .audit_manager import AuditManager
+from .task_manager import TaskManager
+from .policy_engine import PolicyEngine
+from .capability_manager import CapabilityManager
+from .audit_logger import AuditLogger
 
 
 __all__ = [
     "IntelligenceController",
-    "HealthMonitor",
-    "RuntimeMetrics",
-    "AuditManager",
+    "TaskManager",
+    "PolicyEngine",
+    "CapabilityManager",
+    "AuditLogger",
 ]
