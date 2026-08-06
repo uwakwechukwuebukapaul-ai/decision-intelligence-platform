@@ -13,6 +13,7 @@ Responsible for:
 from __future__ import annotations
 
 import logging
+from importlib import import_module
 
 from flask import Flask
 from flask.blueprints import Blueprint
@@ -30,7 +31,6 @@ def register_blueprint(
     """
     Safely register a Flask blueprint.
     """
-
 
     if blueprint.name in app.blueprints:
 
@@ -68,6 +68,9 @@ def register_blueprints(
 ) -> None:
     """
     Register all application blueprints.
+
+    Central registry for API modules,
+    intelligence services, and future plugins.
     """
 
 
@@ -114,6 +117,12 @@ def register_blueprints(
             "workspace_api_bp",
         ),
 
+
+        (
+            "app.routes.api.v1.copilot",
+            "copilot_api_bp",
+        ),
+
     ]
 
 
@@ -122,9 +131,8 @@ def register_blueprints(
 
         try:
 
-            module = __import__(
-                module_name,
-                fromlist=[attribute_name],
+            module = import_module(
+                module_name
             )
 
 
@@ -137,6 +145,23 @@ def register_blueprints(
             register_blueprint(
                 app,
                 blueprint,
+            )
+
+
+        except ModuleNotFoundError:
+
+            logger.warning(
+                "Optional blueprint not found: %s",
+                module_name,
+            )
+
+
+        except AttributeError:
+
+            logger.error(
+                "Blueprint attribute missing: %s.%s",
+                module_name,
+                attribute_name,
             )
 
 
