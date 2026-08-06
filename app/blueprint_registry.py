@@ -94,6 +94,7 @@ def register_blueprints(
     - Autonomous investigation
     - Investigation orchestration
     - Knowledge graph intelligence
+    - Correlation intelligence
     - Future plugins
     """
 
@@ -169,6 +170,12 @@ def register_blueprints(
         (
             "app.routes.api.v1.orchestration",
             "orchestration_api_bp",
+        ),
+
+
+        (
+            "app.routes.api.v1.correlation",
+            "correlation_api_bp",
         ),
 
     ]
