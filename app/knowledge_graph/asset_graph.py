@@ -1,18 +1,10 @@
-from datetime import datetime
-
-
 class AssetGraph:
 
-    def analyze(self, event):
+
+    def create_asset_node(self, asset):
 
         return {
-            "assets": [
-                {
-                    "asset": "Finance Database Server",
-                    "criticality": "high",
-                    "status": "potentially affected"
-                }
-            ],
-            "event": event,
-            "timestamp": datetime.utcnow().isoformat()
+            "asset_id": asset["asset_id"],
+            "hostname": asset.get("hostname"),
+            "type": asset.get("type")
         }

@@ -1,36 +1,24 @@
-from datetime import datetime
-import uuid
-
-
 class EntityManager:
 
-    def extract(self, event):
 
-        entities = []
+    def __init__(self, graph):
 
-        keywords = {
-            "ransomware": "Malware",
-            "powershell": "Execution Technique",
-            "database": "Asset",
-            "finance": "Organization",
-            "server": "Infrastructure"
-        }
+        self.graph = graph
 
-        lower_event = event.lower()
 
-        for keyword, entity_type in keywords.items():
+    def register_incident(self, incident):
 
-            if keyword in lower_event:
+        return self.graph.add_entity(
+            "incident",
+            incident["incident_id"],
+            incident
+        )
 
-                entities.append(
-                    {
-                        "entity_id": f"ENTITY-{uuid.uuid4().hex[:6].upper()}",
-                        "name": keyword,
-                        "type": entity_type
-                    }
-                )
 
-        return {
-            "entities": entities,
-            "timestamp": datetime.utcnow().isoformat()
-        }
+    def register_ioc(self, ioc):
+
+        return self.graph.add_entity(
+            "ioc",
+            ioc["ioc"],
+            ioc
+        )

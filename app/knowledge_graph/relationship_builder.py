@@ -1,38 +1,15 @@
-from datetime import datetime
-
-
 class RelationshipBuilder:
 
-    def build(self, entities):
 
-        relationships = []
+    def __init__(self, graph):
 
-        names = [
-            entity["name"]
-            for entity in entities.get("entities", [])
-        ]
+        self.graph = graph
 
-        if "ransomware" in names and "powershell" in names:
 
-            relationships.append(
-                {
-                    "source": "Ransomware",
-                    "relationship": "uses",
-                    "target": "PowerShell"
-                }
-            )
+    def link(self, source, relation, target):
 
-        if "powershell" in names and "server" in names:
-
-            relationships.append(
-                {
-                    "source": "PowerShell",
-                    "relationship": "targets",
-                    "target": "Server"
-                }
-            )
-
-        return {
-            "relationships": relationships,
-            "timestamp": datetime.utcnow().isoformat()
-        }
+        return self.graph.add_relationship(
+            source,
+            relation,
+            target
+        )
