@@ -1,7 +1,7 @@
 """
 Sentinel DNA ORM Models
 
-Investigation persistence models.
+Enterprise Investigation Persistence Models.
 """
 
 
@@ -18,6 +18,7 @@ from sqlalchemy import (
 from sqlalchemy.orm import relationship
 
 from .db import Base
+
 
 
 
@@ -65,14 +66,25 @@ class Incident(Base):
 
     updated_at = Column(
         DateTime,
-        default=datetime.utcnow
+        default=datetime.utcnow,
+        onupdate=datetime.utcnow
+    )
+
+
+    case = relationship(
+        "Case",
+        back_populates="incident",
+        uselist=False
     )
 
 
     timeline = relationship(
         "TimelineEvent",
-        back_populates="incident"
+        back_populates="incident",
+        cascade="all, delete-orphan"
     )
+
+
 
 
 
@@ -86,6 +98,14 @@ class Case(Base):
     case_id = Column(
         String,
         primary_key=True
+    )
+
+
+    incident_id = Column(
+        String,
+        ForeignKey(
+            "incidents.incident_id"
+        )
     )
 
 
@@ -113,6 +133,21 @@ class Case(Base):
     )
 
 
+    incident = relationship(
+        "Incident",
+        back_populates="case"
+    )
+
+
+    evidence = relationship(
+        "Evidence",
+        back_populates="case",
+        cascade="all, delete-orphan"
+    )
+
+
+
+
 
 
 
@@ -136,7 +171,8 @@ class Evidence(Base):
 
 
     evidence_type = Column(
-        String
+        String,
+        nullable=False
     )
 
 
@@ -149,6 +185,14 @@ class Evidence(Base):
         DateTime,
         default=datetime.utcnow
     )
+
+
+    case = relationship(
+        "Case",
+        back_populates="evidence"
+    )
+
+
 
 
 
