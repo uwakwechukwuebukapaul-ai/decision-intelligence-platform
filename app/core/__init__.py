@@ -2,19 +2,28 @@
 Core Platform Infrastructure
 """
 
+
 from .container import (
     ServiceContainer,
     ServiceContainer as Container,
     container,
 )
 
+
 from .runtime import (
     IntelligenceRuntime,
 )
 
+
 from .application import (
     ApplicationRuntime,
     runtime,
+)
+
+
+from .lifecycle import (
+    PlatformLifecycle,
+    lifecycle,
 )
 
 
@@ -25,4 +34,6 @@ __all__ = [
     "IntelligenceRuntime",
     "ApplicationRuntime",
     "runtime",
+    "PlatformLifecycle",
+    "lifecycle",
 ]
