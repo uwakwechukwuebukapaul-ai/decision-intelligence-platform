@@ -26,6 +26,7 @@ from flask.blueprints import Blueprint
 logger = logging.getLogger(__name__)
 
 
+
 def register_blueprint(
     app: Flask,
     blueprint: Blueprint,
@@ -36,6 +37,7 @@ def register_blueprint(
     Safely register a Flask blueprint.
     """
 
+
     if blueprint.name in app.blueprints:
 
         logger.warning(
@@ -44,6 +46,7 @@ def register_blueprint(
         )
 
         return
+
 
 
     if url_prefix:
@@ -71,26 +74,25 @@ def register_blueprints(
     app: Flask,
 ) -> None:
     """
-    Register all application blueprints.
+    Register all Sentinel DNA application blueprints.
 
-    Central registry for:
+    Includes:
 
-    - Intelligence services
-    - API gateways
-    - Analyst workspace
-    - Copilot services
-    - Reporting services
-    - Autonomous investigation
-    - Investigation orchestration
-    - Knowledge graph intelligence
-    - Correlation intelligence
-    - Campaign intelligence
-    - Threat actor intelligence
-    - Sentinel DNA SOC APIs
+    - Control Plane
+    - Intelligence Fabric
+    - IOC Intelligence
+    - Knowledge Graph
+    - Investigation Platform
+    - Analyst Workspace
+    - Copilot
+    - Autonomous Operations
+    - AI SOC Agent Gateway
     """
 
 
+
     modules = [
+
 
         # =====================================
         # Control Plane
@@ -159,18 +161,6 @@ def register_blueprints(
         ),
 
 
-        (
-            "app.api.investigation_api",
-            "investigation_bp",
-        ),
-
-
-        (
-            "app.api.report_api",
-            "report_bp",
-        ),
-
-
 
         # =====================================
         # Analyst Workspace
@@ -184,7 +174,7 @@ def register_blueprints(
 
 
         # =====================================
-        # Reporting / Copilot
+        # Reporting
         # =====================================
 
         (
@@ -192,6 +182,11 @@ def register_blueprints(
             "report_api_bp",
         ),
 
+
+
+        # =====================================
+        # AI Copilot
+        # =====================================
 
         (
             "app.routes.api.v1.copilot",
@@ -237,11 +232,12 @@ def register_blueprints(
 
 
 
-    loaded = []
+    loaded_blueprints = []
 
 
 
     for module_name, attribute_name in modules:
+
 
         try:
 
@@ -262,9 +258,10 @@ def register_blueprints(
             )
 
 
-            loaded.append(
+            loaded_blueprints.append(
                 blueprint.name
             )
+
 
 
         except ModuleNotFoundError:
@@ -275,6 +272,7 @@ def register_blueprints(
             )
 
 
+
         except AttributeError:
 
             logger.error(
@@ -282,6 +280,7 @@ def register_blueprints(
                 module_name,
                 attribute_name,
             )
+
 
 
         except Exception as exc:
@@ -296,7 +295,7 @@ def register_blueprints(
 
     logger.info(
         "Blueprint registration completed. Loaded: %s",
-        loaded,
+        loaded_blueprints,
     )
 
 
