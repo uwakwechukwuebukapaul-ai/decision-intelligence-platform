@@ -1,10 +1,24 @@
 class AssetGraph:
 
 
-    def create_asset_node(self, asset):
+    def map_asset(
+        self,
+        asset,
+        dependencies
+    ):
+
 
         return {
-            "asset_id": asset["asset_id"],
-            "hostname": asset.get("hostname"),
-            "type": asset.get("type")
+
+            "asset":
+            asset,
+
+
+            "dependencies":
+            dependencies,
+
+
+            "risk":
+            "calculated"
+
         }

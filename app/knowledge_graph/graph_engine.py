@@ -1,52 +1,64 @@
-from datetime import datetime
+from .entity_manager import EntityManager
+from .relationship_builder import RelationshipBuilder
+from .graph_repository import GraphRepository
+from .attack_graph import AttackGraph
 
 
-class KnowledgeGraphEngine:
+class GraphEngine:
+
 
     def __init__(self):
-        self.entities = {}
-        self.relationships = []
 
-    def add_entity(self, entity_type, entity_id, data):
+        self.entity_manager = EntityManager()
 
-        entity = {
-            "id": entity_id,
-            "type": entity_type,
-            "data": data,
-            "created_at": datetime.utcnow().isoformat()
-        }
+        self.relationship_builder = RelationshipBuilder()
 
-        self.entities[entity_id] = entity
+        self.repository = GraphRepository()
+
+        self.attack_graph = AttackGraph()
+
+
+
+    def add_entity(
+        self,
+        name,
+        entity_type
+    ):
+
+        entity = self.entity_manager.create_entity(
+            name,
+            entity_type
+        )
+
+        self.repository.save_entity(entity)
 
         return entity
 
 
-    def add_relationship(
+
+    def create_relationship(
         self,
         source,
-        relation,
-        target
+        target,
+        relationship
     ):
 
-        relationship = {
-            "source": source,
-            "relation": relation,
-            "target": target,
-            "created_at": datetime.utcnow().isoformat()
-        }
-
-        self.relationships.append(
+        relation = self.relationship_builder.build(
+            source,
+            target,
             relationship
         )
 
-        return relationship
+        self.repository.save_relationship(
+            relation
+        )
+
+        return relation
 
 
-    def get_entity(self, entity_id):
 
-        return self.entities.get(entity_id)
+    def analyze_attack_paths(self):
 
-
-    def get_relationships(self):
-
-        return self.relationships
+        return self.attack_graph.analyze(
+            self.repository.get_relationships()
+        )

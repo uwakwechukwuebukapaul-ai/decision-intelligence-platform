@@ -1,24 +1,31 @@
+import uuid
+from datetime import datetime
+
+
 class EntityManager:
 
 
-    def __init__(self, graph):
-
-        self.graph = graph
+    def create_entity(self, name, entity_type):
 
 
-    def register_incident(self, incident):
+        return {
 
-        return self.graph.add_entity(
-            "incident",
-            incident["incident_id"],
-            incident
-        )
+            "entity_id":
+            "ENT-" + uuid.uuid4().hex[:8].upper(),
 
 
-    def register_ioc(self, ioc):
+            "name":
+            name,
 
-        return self.graph.add_entity(
-            "ioc",
-            ioc["ioc"],
-            ioc
-        )
+
+            "type":
+            entity_type,
+
+
+            "created_at":
+            datetime.utcnow().isoformat(),
+
+            "status":
+            "registered"
+
+        }

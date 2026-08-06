@@ -1,15 +1,36 @@
+from datetime import datetime
+
+
 class RelationshipBuilder:
 
 
-    def __init__(self, graph):
+    def build(
+        self,
+        source,
+        target,
+        relationship
+    ):
 
-        self.graph = graph
 
+        return {
 
-    def link(self, source, relation, target):
-
-        return self.graph.add_relationship(
+            "source":
             source,
-            relation,
-            target
-        )
+
+
+            "target":
+            target,
+
+
+            "relationship":
+            relationship,
+
+
+            "confidence":
+            0.9,
+
+
+            "created_at":
+            datetime.utcnow().isoformat()
+
+        }

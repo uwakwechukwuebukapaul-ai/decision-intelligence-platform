@@ -1,19 +1,26 @@
-from datetime import datetime
-
-
 class AttackGraph:
 
-    def analyze(self, event):
 
-        return {
-            "attack_path": [
-                "Initial Access",
-                "Execution",
-                "Privilege Escalation",
-                "Defense Evasion",
-                "Impact"
-            ],
-            "framework": "MITRE ATT&CK",
-            "event": event,
-            "timestamp": datetime.utcnow().isoformat()
-        }
+    def analyze(self, relationships):
+
+
+        paths = []
+
+
+        for relation in relationships:
+
+            paths.append(
+                {
+                    "from":
+                    relation["source"],
+
+                    "to":
+                    relation["target"],
+
+                    "risk":
+                    "potential_attack_path"
+                }
+            )
+
+
+        return paths
