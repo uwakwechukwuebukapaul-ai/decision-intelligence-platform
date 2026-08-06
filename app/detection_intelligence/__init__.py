@@ -1,5 +1,7 @@
-from .detection_ai_engine import AIDetectionEngine
+from .detection_engine import DetectionEngine
+from .rule_manager import RuleManager
 
 __all__ = [
-    "AIDetectionEngine"
+    "DetectionEngine",
+    "RuleManager"
 ]
