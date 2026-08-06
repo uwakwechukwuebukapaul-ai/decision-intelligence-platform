@@ -20,6 +20,10 @@ from app.health_routes import (
     health_bp,
 )
 
+from app.routes.api.v1.intelligence import (
+    intelligence_api_bp,
+)
+
 from app.core.application import (
     runtime,
 )
@@ -78,14 +82,27 @@ def create_app():
 
 
     # =====================================
-    # Blueprints
+    # Core Blueprints
     # =====================================
 
     register_blueprints(app)
 
 
+    # =====================================
+    # Health API
+    # =====================================
+
     app.register_blueprint(
         health_bp
+    )
+
+
+    # =====================================
+    # External API Gateway v1
+    # =====================================
+
+    app.register_blueprint(
+        intelligence_api_bp
     )
 
 

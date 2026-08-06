@@ -21,6 +21,7 @@ from flask.blueprints import Blueprint
 logger = logging.getLogger(__name__)
 
 
+
 def register_blueprint(
     app: Flask,
     blueprint: Blueprint,
@@ -28,14 +29,16 @@ def register_blueprint(
     url_prefix: str | None = None,
 ) -> None:
     """
-    Safely register blueprint.
+    Safely register a Flask blueprint.
     """
 
     if blueprint.name in app.blueprints:
+
         logger.warning(
             "Blueprint already registered: %s",
             blueprint.name,
         )
+
         return
 
 
@@ -60,12 +63,12 @@ def register_blueprint(
 
 
 
-def register_blueprints(app: Flask) -> None:
+def register_blueprints(
+    app: Flask,
+) -> None:
     """
     Register all application blueprints.
     """
-
-    loaded_blueprints = []
 
 
     modules = [
@@ -78,6 +81,11 @@ def register_blueprints(app: Flask) -> None:
         (
             "app.routes.intelligence_execution",
             "intelligence_execution_bp",
+        ),
+
+        (
+            "app.routes.api.v1.intelligence",
+            "intelligence_api_bp",
         ),
 
     ]
@@ -99,8 +107,9 @@ def register_blueprints(app: Flask) -> None:
             )
 
 
-            loaded_blueprints.append(
-                blueprint
+            register_blueprint(
+                app,
+                blueprint,
             )
 
 
@@ -111,15 +120,6 @@ def register_blueprints(app: Flask) -> None:
                 module_name,
                 exc,
             )
-
-
-
-    for blueprint in loaded_blueprints:
-
-        register_blueprint(
-            app,
-            blueprint,
-        )
 
 
 
