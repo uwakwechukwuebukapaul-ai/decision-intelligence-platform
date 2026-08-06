@@ -1,118 +1,95 @@
-from datetime import datetime
-
-from .evidence_collector import EvidenceCollector
-from .evidence_parser import EvidenceParser
-from .evidence_classifier import EvidenceClassifier
-from .evidence_analyzer import EvidenceAnalyzer
-from .evidence_correlator import EvidenceCorrelator
-from .evidence_memory import EvidenceMemory
-from .evidence_logger import EvidenceLogger
+from .evidence_repository import EvidenceRepository
+from .evidence_schema import create_evidence
 
 
-class EvidenceIntelligenceEngine:
-    """
-    Sentinel DNA Evidence Intelligence Engine
+class EvidenceEngine:
 
-    Responsible for:
-    - Evidence collection
-    - Evidence parsing
-    - Evidence classification
-    - Evidence analysis
-    - Evidence correlation
-    - Evidence memory
-    - Evidence auditing
-    """
 
     def __init__(self):
 
-        self.collector = EvidenceCollector()
-        self.parser = EvidenceParser()
-        self.classifier = EvidenceClassifier()
-        self.analyzer = EvidenceAnalyzer()
-        self.correlator = EvidenceCorrelator()
-        self.memory = EvidenceMemory()
-        self.logger = EvidenceLogger()
+        self.repository = EvidenceRepository()
 
 
-    def analyze(self, event):
 
-        # Collect evidence
-        evidence = self.collector.collect(
-            event
+    def add_evidence(
+        self,
+        case_id,
+        value,
+        evidence_type,
+        source="AI_ENGINE"
+    ):
+
+        evidence = create_evidence(
+            case_id,
+            value,
+            evidence_type,
+            source
         )
 
-
-        # Parse evidence artifacts
-        parsed = self.parser.parse(
+        return self.repository.save(
             evidence
         )
 
 
-        # Classify evidence severity
-        classification = self.classifier.classify(
-            parsed
+
+    def link_to_case(
+        self,
+        evidence,
+        case_id
+    ):
+
+        evidence["case_id"] = case_id
+
+        return evidence
+
+
+
+    def get_case_evidence(
+        self,
+        case_id
+    ):
+
+        return self.repository.get_by_case(
+            case_id
         )
 
 
-        # Analyze security findings
-        analysis = self.analyzer.analyze(
-            parsed
+
+    def classify_evidence(
+        self,
+        evidence_type
+    ):
+
+        return create_evidence(
+            "TEMP",
+            "TEMP",
+            evidence_type
+        )["classification"]
+
+
+
+    def generate_evidence_summary(
+        self,
+        case_id
+    ):
+
+        evidence = self.get_case_evidence(
+            case_id
         )
-
-
-        # Correlate with security intelligence
-        correlation = self.correlator.correlate(
-            analysis
-        )
-
-
-        # Store intelligence memory
-        memory = self.memory.store(
-            {
-                "event": event,
-                "evidence": evidence,
-                "classification": classification,
-                "analysis": analysis,
-                "correlation": correlation
-            }
-        )
-
-
-        # Generate audit log
-        log = self.logger.log(
-            event
-        )
-
 
         return {
 
-            "status": "completed",
+            "case_id": case_id,
 
-            "event": event,
+            "total_evidence": len(evidence),
 
+            "categories": list(
+                set(
+                    item["classification"]
+                    for item in evidence
+                )
+            ),
 
-            "evidence": evidence,
-
-
-            "parsed_evidence": parsed,
-
-
-            "classification": classification,
-
-
-            "analysis": analysis,
-
-
-            "correlation": correlation,
-
-
-            "memory": memory,
-
-
-            "log": log,
-
-
-            "created_at":
-                datetime.utcnow().isoformat()
+            "evidence": evidence
 
         }

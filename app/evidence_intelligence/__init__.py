@@ -1,13 +1,7 @@
-"""
-Sentinel DNA Evidence Intelligence Layer
-
-Responsible for collecting, processing,
-classifying, analyzing and correlating
-security evidence.
-"""
-
-from .evidence_engine import EvidenceIntelligenceEngine
+from .evidence_engine import EvidenceEngine
+from .timeline_engine import TimelineEngine
 
 __all__ = [
-    "EvidenceIntelligenceEngine"
+    "EvidenceEngine",
+    "TimelineEngine"
 ]
