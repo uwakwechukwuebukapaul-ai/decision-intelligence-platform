@@ -1,5 +1,21 @@
-from .workspace_engine import AnalystWorkspaceEngine
+"""
+Sentinel DNA
+
+Analyst Workspace Intelligence Layer
+
+Provides:
+- Investigation summaries
+- Evidence presentation
+- Analyst actions
+- Workspace aggregation
+"""
+
+
+from .workspace_service import (
+    AnalystWorkspaceService,
+)
+
 
 __all__ = [
-    "AnalystWorkspaceEngine"
+    "AnalystWorkspaceService",
 ]

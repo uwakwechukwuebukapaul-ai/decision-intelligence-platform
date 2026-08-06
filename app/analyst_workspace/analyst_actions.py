@@ -1,35 +1,50 @@
+"""
+Analyst Action Tracking
+"""
+
 from datetime import datetime
 
 
-class AnalystActions:
+class AnalystActionTracker:
 
 
-    def available(self, incident):
+    def __init__(self):
 
-        return {
+        self.actions = []
 
-            "actions":
 
-            [
 
-                "Investigate",
+    def record(
+        self,
+        indicator: str,
+        action: str,
+        analyst: str = "ai-agent",
+    ):
 
-                "Contain",
 
-                "Start Hunt",
+        event = {
 
-                "Create Report",
+            "indicator": indicator,
 
-                "Escalate"
+            "action": action,
 
-            ],
-
-            "approval":
-
-                "required",
+            "analyst": analyst,
 
             "timestamp":
-
-                datetime.utcnow().isoformat()
+                datetime.utcnow().isoformat(),
 
         }
+
+
+        self.actions.append(
+            event
+        )
+
+
+        return event
+
+
+
+    def history(self):
+
+        return self.actions

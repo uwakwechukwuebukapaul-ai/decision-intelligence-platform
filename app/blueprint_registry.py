@@ -31,6 +31,7 @@ def register_blueprint(
     Safely register a Flask blueprint.
     """
 
+
     if blueprint.name in app.blueprints:
 
         logger.warning(
@@ -105,6 +106,12 @@ def register_blueprints(
         (
             "app.routes.api.v1.investigation",
             "investigation_api_bp",
+        ),
+
+
+        (
+            "app.routes.api.v1.workspace",
+            "workspace_api_bp",
         ),
 
     ]
