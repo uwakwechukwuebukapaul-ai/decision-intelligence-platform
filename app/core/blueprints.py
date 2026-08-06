@@ -45,7 +45,6 @@ def register_blueprint(
 
     if blueprint.name in app.blueprints:
 
-
         logger.warning(
             "Blueprint already registered: %s",
             blueprint.name,
@@ -57,15 +56,12 @@ def register_blueprint(
 
     if url_prefix:
 
-
         app.register_blueprint(
             blueprint,
             url_prefix=url_prefix,
         )
 
-
     else:
-
 
         app.register_blueprint(
             blueprint
@@ -77,6 +73,7 @@ def register_blueprint(
         "Registered blueprint: %s",
         blueprint.name,
     )
+
 
 
 
@@ -111,12 +108,10 @@ def register_blueprints(
 
     modules = [
 
-
         (
             "app.routes.intelligence_control_plane",
             "intelligence_control_plane_bp",
         ),
-
 
 
         (
@@ -125,12 +120,10 @@ def register_blueprints(
         ),
 
 
-
         (
             "app.routes.api.v1.intelligence",
             "intelligence_api_bp",
         ),
-
 
 
         (
@@ -139,12 +132,10 @@ def register_blueprints(
         ),
 
 
-
         (
             "app.routes.api.v1.graph",
             "graph_api_bp",
         ),
-
 
 
         (
@@ -153,12 +144,10 @@ def register_blueprints(
         ),
 
 
-
         (
             "app.routes.api.v1.correlation",
             "correlation_api_bp",
         ),
-
 
 
         (
@@ -167,12 +156,10 @@ def register_blueprints(
         ),
 
 
-
         (
             "app.routes.api.v1.threat_actor",
             "threat_actor_api_bp",
         ),
-
 
 
         (
@@ -181,12 +168,10 @@ def register_blueprints(
         ),
 
 
-
         (
             "app.routes.api.v1.workspace",
             "workspace_api_bp",
         ),
-
 
 
         (
@@ -195,12 +180,10 @@ def register_blueprints(
         ),
 
 
-
         (
             "app.routes.api.v1.copilot",
             "copilot_api_bp",
         ),
-
 
 
         (
@@ -209,12 +192,10 @@ def register_blueprints(
         ),
 
 
-
         (
             "app.routes.api.v1.orchestration",
             "orchestration_api_bp",
         ),
-
 
 
         (
@@ -286,6 +267,7 @@ def register_blueprints(
 
 
 
+
     logger.info(
         "Blueprint registration completed. Loaded: %s",
         list(app.blueprints.keys()),
@@ -297,6 +279,6 @@ def register_blueprints(
 
 
 
-# Backward compatibility
+# Backward compatibility alias
 
 register_all_blueprints = register_blueprints
