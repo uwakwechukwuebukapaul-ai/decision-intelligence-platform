@@ -32,6 +32,7 @@ def register_blueprint(
     Safely register a Flask blueprint.
     """
 
+
     if blueprint.name in app.blueprints:
 
         logger.warning(
@@ -40,6 +41,7 @@ def register_blueprint(
         )
 
         return
+
 
 
     if url_prefix:
@@ -54,6 +56,7 @@ def register_blueprint(
         app.register_blueprint(
             blueprint
         )
+
 
 
     logger.info(
@@ -93,7 +96,13 @@ def register_blueprints(
             "ioc_api_bp",
         ),
 
+        (
+            "app.routes.api.v1.graph",
+            "graph_api_bp",
+        ),
+
     ]
+
 
 
     for module_name, attribute_name in modules:
