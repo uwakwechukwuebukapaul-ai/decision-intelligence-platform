@@ -13,6 +13,7 @@ Enterprise responsibilities:
 - Capability authorization
 - Audit foundation
 - Execution safety controls
+- Compliance event tracking
 """
 
 from __future__ import annotations
@@ -33,6 +34,11 @@ from app.intelligence.governance.governance_registry import (
 
 from app.intelligence.governance.capability_health import (
     capability_health_manager
+)
+
+
+from app.intelligence.governance.governance_audit import (
+    governance_audit
 )
 
 
@@ -86,10 +92,9 @@ class GovernanceMiddleware:
     """
     Controls intelligence execution flow.
 
-    Every capability execution should
-    pass through this layer.
+    Every capability execution passes
+    through governance validation.
     """
-
 
 
     def __init__(self):
@@ -99,25 +104,95 @@ class GovernanceMiddleware:
 
 
     # =================================
-    # Authorization Check
+    # Authorization
     # =================================
 
     def authorize(
+
         self,
+
         capability: str,
+
         context: dict | None = None
+
     ):
+
 
         context = context or {}
 
 
-        decision = policy_engine.evaluate(
+        policy_result = policy_engine.evaluate(
 
             capability,
 
             context
 
         )
+
+
+        if hasattr(
+            policy_result,
+            "allowed"
+        ):
+
+            allowed = policy_result.allowed
+
+            reason = getattr(
+
+                policy_result,
+
+                "reason",
+
+                "Policy evaluation completed"
+
+            )
+
+
+        elif isinstance(
+
+            policy_result,
+
+            dict
+
+        ):
+
+            allowed = policy_result.get(
+
+                "allowed",
+
+                False
+
+            )
+
+            reason = policy_result.get(
+
+                "reason",
+
+                "Policy evaluation completed"
+
+            )
+
+
+        else:
+
+            allowed = False
+
+            reason = (
+                "Invalid policy response"
+            )
+
+
+
+        decision = GovernanceDecision(
+
+            allowed=allowed,
+
+            capability=capability,
+
+            reason=reason
+
+        )
+
 
 
         governance_registry.record_decision(
@@ -129,6 +204,7 @@ class GovernanceMiddleware:
         )
 
 
+
         self.audit_log.append(
 
             decision
@@ -136,12 +212,109 @@ class GovernanceMiddleware:
         )
 
 
+
+        governance_audit.record(
+
+            capability=capability,
+
+            action="authorization",
+
+            decision=(
+
+                "allowed"
+
+                if allowed
+
+                else "blocked"
+
+            ),
+
+            user_id=context.get(
+
+                "user_id"
+
+            ),
+
+            objective=context.get(
+
+                "objective"
+
+            ),
+
+            reason=reason
+
+        )
+
+
+
         return decision
 
 
 
     # =================================
-    # Execute Wrapper
+    # Evaluation Interface
+    # =================================
+
+    def evaluate(
+
+        self,
+
+        capability: str,
+
+        context: dict | None = None,
+
+        **kwargs
+
+    ):
+
+
+        context = context or {}
+
+
+        context.update(
+
+            kwargs
+
+        )
+
+
+        decision = self.authorize(
+
+            capability,
+
+            context
+
+        )
+
+
+        # API compatibility layer.
+        # Existing execution routes
+        # expect dictionary responses.
+
+        return {
+
+            "allowed":
+
+                decision.allowed,
+
+            "capability":
+
+                decision.capability,
+
+            "reason":
+
+                decision.reason,
+
+            "timestamp":
+
+                decision.timestamp
+
+        }
+
+
+
+    # =================================
+    # Execution Wrapper
     # =================================
 
     def execute(
@@ -157,6 +330,9 @@ class GovernanceMiddleware:
     ):
 
 
+        context = context or {}
+
+
         decision = self.authorize(
 
             capability,
@@ -166,18 +342,22 @@ class GovernanceMiddleware:
         )
 
 
+
         if not decision.allowed:
 
 
             return {
 
                 "status":
+
                     "blocked",
 
                 "reason":
+
                     decision.reason,
 
                 "governance":
+
                     decision.to_dict()
 
             }
@@ -198,15 +378,43 @@ class GovernanceMiddleware:
             )
 
 
+
+            governance_audit.record(
+
+                capability=capability,
+
+                action="execution",
+
+                decision="success",
+
+                user_id=context.get(
+
+                    "user_id"
+
+                ),
+
+                objective=context.get(
+
+                    "objective"
+
+                )
+
+            )
+
+
+
             return {
 
                 "status":
+
                     "success",
 
                 "result":
+
                     result,
 
                 "governance":
+
                     decision.to_dict()
 
             }
@@ -225,15 +433,45 @@ class GovernanceMiddleware:
             )
 
 
+
+            governance_audit.record(
+
+                capability=capability,
+
+                action="execution",
+
+                decision="error",
+
+                user_id=context.get(
+
+                    "user_id"
+
+                ),
+
+                objective=context.get(
+
+                    "objective"
+
+                ),
+
+                reason=str(exc)
+
+            )
+
+
+
             return {
 
                 "status":
+
                     "error",
 
                 "message":
+
                     str(exc),
 
                 "governance":
+
                     decision.to_dict()
 
             }
@@ -245,14 +483,18 @@ class GovernanceMiddleware:
     # =================================
 
     def get_audit_events(
+
         self
+
     ):
+
 
         return [
 
             event.to_dict()
 
             for event
+
             in self.audit_log
 
         ]
@@ -264,5 +506,7 @@ class GovernanceMiddleware:
 # =====================================
 
 governance_middleware = (
+
     GovernanceMiddleware()
+
 )
