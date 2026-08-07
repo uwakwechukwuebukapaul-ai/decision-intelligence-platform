@@ -1,68 +1,186 @@
 """
-Coordinator
+Sentinel DNA
+Intelligence Coordinator
 
-Coordinates workflow execution
-through the intelligence runtime.
+Coordinates investigation workflow execution.
 """
-
-from app.intelligence.runtime.job import IntelligenceJob
-
-from .result_aggregator import ResultAggregator
 
 
 class Coordinator:
-    """
-    Executes intelligence workflows.
-    """
 
     def __init__(
         self,
-        executor,
+        executor=None,
+        pipeline=None,
+        memory=None,
     ):
+
         self.executor = executor
+        self.pipeline = pipeline
+        self.memory = memory
 
 
     def execute(
         self,
-        execution_plan,
+        plan,
     ):
+        """
+        Execute an investigation plan.
+        """
 
-        execution_plan.validate()
+        if plan is None:
 
-        aggregator = ResultAggregator()
+            return {
 
+                "status": "failed",
 
-        for step in execution_plan.ordered_steps():
-
-            job = IntelligenceJob(
-                capability=step.capability,
-                payload=step.payload,
-            )
-
-
-            execution_result = self.executor.execute(
-                job
-            )
-
-
-            workflow_result = {
-
-                "step": step.name,
-
-                "capability": step.capability,
-
-                "status": execution_result.get(
-                    "status"
-                ),
-
-                "execution": execution_result,
+                "error":
+                    "Invalid investigation plan"
 
             }
 
 
-            aggregator.add_result(
-                workflow_result
+        if hasattr(plan, "validate"):
+
+            plan.validate()
+
+
+        jobs = self._extract_jobs(
+            plan
+        )
+
+
+        results = []
+
+
+        for job in jobs:
+
+            if self.executor is None:
+
+                return {
+
+                    "status":
+                        "failed",
+
+                    "error":
+                        "Executor unavailable"
+
+                }
+
+
+            result = self.executor.execute(
+                job
             )
 
 
-        return aggregator.investigation_result()
+            results.append(
+                result
+            )
+
+
+        return {
+
+            "status":
+                "completed",
+
+            "results":
+                results,
+
+            "job_count":
+                len(results),
+
+        }
+
+
+
+    def execute_workflow(
+        self,
+        plan,
+    ):
+
+        return self.execute(
+            plan
+        )
+
+
+
+    def _extract_jobs(
+        self,
+        plan,
+    ):
+        """
+        Supports different investigation plan formats.
+        """
+
+        if hasattr(
+            plan,
+            "jobs"
+        ):
+
+            return plan.jobs
+
+
+        if hasattr(
+            plan,
+            "steps"
+        ):
+
+            return plan.steps
+
+
+        if isinstance(
+            plan,
+            list
+        ):
+
+            return plan
+
+
+        return []
+
+
+
+    def investigate(
+        self,
+        investigation,
+    ):
+
+        result = self.execute(
+            investigation
+        )
+
+
+        if self.memory:
+
+            self.memory.remember(
+                investigation,
+                result
+            )
+
+
+        return result
+
+
+
+    def health(
+        self,
+    ):
+
+        return {
+
+            "component":
+                "coordinator",
+
+            "status":
+                "ready",
+
+            "executor":
+                self.executor is not None,
+
+            "pipeline":
+                self.pipeline is not None,
+
+            "memory":
+                self.memory is not None,
+
+        }

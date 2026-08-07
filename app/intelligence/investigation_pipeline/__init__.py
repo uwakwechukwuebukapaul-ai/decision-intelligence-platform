@@ -1,16 +1,19 @@
 """
-Sentinel DNA - Investigation Pipeline
+Sentinel DNA
+Investigation Pipeline
+
+Coordinates autonomous investigation workflows.
 """
 
-
-from .investigation_pipeline import InvestigationPipeline
-from .pipeline_schema import InvestigationPipelineResult
+from .pipeline import InvestigationPipeline
+from .pipeline_result import PipelineResult
+from .task_planner import TaskPlanner
+from .investigation_runner import InvestigationRunner
 
 
 __all__ = [
-
     "InvestigationPipeline",
-
-    "InvestigationPipelineResult",
-
+    "PipelineResult",
+    "TaskPlanner",
+    "InvestigationRunner",
 ]

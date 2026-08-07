@@ -1,16 +1,13 @@
 """
-Intelligence Coordination Package
+Sentinel DNA
+Intelligence Coordination Layer
 
-Provides workflow definitions and
-execution planning for coordinated
-intelligence operations.
+Coordinates intelligence services.
 """
 
-from .workflow import Workflow, WorkflowStep
-from .execution_plan import ExecutionPlan
+from .coordinator import Coordinator
+
 
 __all__ = [
-    "Workflow",
-    "WorkflowStep",
-    "ExecutionPlan",
+    "Coordinator",
 ]

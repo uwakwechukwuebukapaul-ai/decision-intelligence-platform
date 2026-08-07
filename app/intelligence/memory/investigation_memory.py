@@ -1,87 +1,94 @@
 """
-Sentinel DNA Investigation Memory Engine
+Sentinel DNA
+Investigation Memory
+
+Stores investigation intelligence records.
 """
 
 
-from .memory_store import MemoryStore
-from .memory_query import MemoryQuery
-from .memory_schema import InvestigationMemoryRecord
+class InvestigationMemoryRecord:
+
+    def __init__(
+        self,
+        investigation_id,
+        data,
+    ):
+
+        self.investigation_id = investigation_id
+
+        self.data = data
 
 
 
 class InvestigationMemory:
 
-
     def __init__(self):
 
-        self.store = MemoryStore()
-
-        self.query = MemoryQuery(
-            self.store
-        )
+        self.memory = {}
 
 
 
     def remember(
         self,
-        intelligence: dict,
-        decision: dict,
+        investigation_id,
+        data,
     ):
+        """
+        Store investigation intelligence.
+        """
 
         record = InvestigationMemoryRecord(
-
-            indicator=intelligence.get(
-                "indicator",
-                "unknown",
-            ),
-
-            risk_score=intelligence.get(
-                "risk",
-                {}
-            ).get(
-                "score",
-                0,
-            ),
-
-            severity=intelligence.get(
-                "risk",
-                {}
-            ).get(
-                "risk",
-                "unknown",
-            ),
-
-            decision=decision.get(
-                "decision",
-                "unknown",
-            ),
-
-            confidence=decision.get(
-                "confidence",
-                0,
-            ),
-
-            mitre_mapping=intelligence.get(
-                "mitre_mapping",
-                [],
-            ),
-
-            evidence=intelligence,
-
+            investigation_id,
+            data,
         )
 
 
-        return self.store.save(
-            record
-        ).to_dict()
+        self.memory[investigation_id] = record
+
+
+        return record
 
 
 
     def recall(
         self,
-        indicator,
+        investigation_id,
+    ):
+        """
+        Retrieve investigation record.
+        """
+
+        return self.memory.get(
+            investigation_id
+        )
+
+
+
+    def clear(
+        self,
+        investigation_id=None,
+    ):
+        """
+        Clear stored investigations.
+        """
+
+        if investigation_id:
+
+            self.memory.pop(
+                investigation_id,
+                None
+            )
+
+        else:
+
+            self.memory.clear()
+
+
+
+    def list_investigations(
+        self,
     ):
 
-        return self.query.search_indicator(
-            indicator
+        return list(
+            self.memory.keys()
         )
