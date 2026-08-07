@@ -1,7 +1,3 @@
 """
-Decision Intelligence Platform
-
-Application Package
+Sentinel DNA Application Package
 """
-
-__all__ = []

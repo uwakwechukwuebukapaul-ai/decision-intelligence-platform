@@ -6,7 +6,7 @@ All investigation agents inherit from this class.
 
 
 from abc import ABC, abstractmethod
-from datetime import datetime
+from datetime import datetime, UTC
 
 
 
@@ -17,7 +17,7 @@ class BaseAgent(ABC):
 
         self.name = name
 
-        self.created_at = datetime.utcnow()
+       self.created_at = datetime.now(UTC)
 
 
 
