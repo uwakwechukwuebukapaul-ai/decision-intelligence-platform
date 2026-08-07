@@ -1,7 +1,5 @@
 """
 Intelligence Runtime Bootstrap
-
-Creates production intelligence runtime.
 """
 
 from .registry import CapabilityRegistry
@@ -10,32 +8,34 @@ from .executor import IntelligenceExecutor
 
 from .agent_registry import AgentRegistry
 
+from .default_engines import (
+    load_default_engines,
+)
+
 
 
 def create_intelligence_runtime(
     engines=None,
 ):
-    """
-    Creates configured intelligence executor.
-    """
 
     registry = CapabilityRegistry()
 
 
-    if engines:
+    if engines is None:
 
-        agent_registry = AgentRegistry(
-            registry
-        )
-
-        agent_registry.register_all(
-            engines
-        )
+        engines = load_default_engines()
 
 
-    executor = IntelligenceExecutor(
+    agent_registry = AgentRegistry(
         registry
     )
 
 
-    return executor
+    agent_registry.register_all(
+        engines
+    )
+
+
+    return IntelligenceExecutor(
+        registry
+    )
