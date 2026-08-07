@@ -27,6 +27,7 @@ from app.intelligence.ioc.timeline import (
     TimelineEngine,
     InvestigationMemory,
 )
+
 from app.intelligence.ioc.workflow import IOCCaseOrchestrator
 
 from app.investigations import Investigation
@@ -44,6 +45,7 @@ from app.ai.investigation_orchestrator import (
     InvestigationOrchestrator,
 )
 
+
 # ==========================================================
 # Blueprint
 # ==========================================================
@@ -51,8 +53,9 @@ from app.ai.investigation_orchestrator import (
 investigation_api_bp = Blueprint(
     "investigation_api",
     __name__,
-    url_prefix="/api/v1/intelligence",
+    url_prefix="/api/v1",
 )
+
 
 # ==========================================================
 # IOC Services
@@ -66,35 +69,51 @@ memory_engine = InvestigationMemory()
 
 workflow = IOCCaseOrchestrator()
 
+
 # ==========================================================
 # AI Agent Registry
 # ==========================================================
 
 agent_registry = AgentRegistry()
 
-agent_registry.register(EvidenceAgent())
+agent_registry.register(
+    EvidenceAgent()
+)
 
-agent_registry.register(ThreatIntelligenceAgent())
+agent_registry.register(
+    ThreatIntelligenceAgent()
+)
 
-agent_registry.register(MitreAgent())
+agent_registry.register(
+    MitreAgent()
+)
 
-agent_registry.register(RiskAgent())
+agent_registry.register(
+    RiskAgent()
+)
 
-agent_registry.register(ResponseAgent())
+agent_registry.register(
+    ResponseAgent()
+)
+
 
 investigation_orchestrator = InvestigationOrchestrator(
     agent_registry
 )
 
+
 # ==========================================================
 # IOC Timeline
 # ==========================================================
 
-
-@investigation_api_bp.get("/ioc/<string:indicator>/timeline")
+@investigation_api_bp.get(
+    "/ioc/<string:indicator>/timeline"
+)
 def get_ioc_timeline(indicator: str):
 
-    intelligence = fusion.analyze(indicator)
+    intelligence = fusion.analyze(
+        indicator
+    )
 
     timeline = timeline_engine.build_from_intelligence(
         intelligence
@@ -106,20 +125,24 @@ def get_ioc_timeline(indicator: str):
             "indicator": indicator,
             "timeline": timeline,
         }
-    )
+    ), 200
 
 
 # ==========================================================
 # IOC Memory
 # ==========================================================
 
-
-@investigation_api_bp.get("/ioc/<string:indicator>/memory")
+@investigation_api_bp.get(
+    "/ioc/<string:indicator>/memory"
+)
 def get_ioc_memory(indicator: str):
 
-    memory = memory_engine.get_memory(indicator)
+    memory = memory_engine.get_memory(
+        indicator
+    )
 
     if memory is None:
+
         memory = memory_engine.create_memory(
             indicator
         )
@@ -130,18 +153,21 @@ def get_ioc_memory(indicator: str):
             "indicator": indicator,
             "memory": memory,
         }
-    )
+    ), 200
 
 
 # ==========================================================
 # IOC Report
 # ==========================================================
 
-
-@investigation_api_bp.get("/ioc/<string:indicator>/report")
+@investigation_api_bp.get(
+    "/ioc/<string:indicator>/report"
+)
 def get_ioc_report(indicator: str):
 
-    intelligence = fusion.analyze(indicator)
+    intelligence = fusion.analyze(
+        indicator
+    )
 
     investigation = workflow.process(
         intelligence
@@ -158,27 +184,69 @@ def get_ioc_report(indicator: str):
             "investigation": investigation,
             "timeline": timeline,
         }
-    )
+    ), 200
 
 
 # ==========================================================
-# AI Investigation
+# AI Investigation Endpoint
 # ==========================================================
 
-
-@investigation_api_bp.post("/investigation")
+@investigation_api_bp.post(
+    "/investigation"
+)
 def create_ai_investigation():
 
-    data = request.get_json(force=True)
+    data = request.get_json(
+        force=True
+    )
+
+    if not data:
+
+        return jsonify(
+            {
+                "error": "Request body required"
+            }
+        ), 400
+
+
+    if "case_id" not in data:
+
+        return jsonify(
+            {
+                "error": "case_id required"
+            }
+        ), 400
+
 
     investigation = Investigation(
-        investigation_id="INV-" + str(uuid.uuid4())[:8],
+
+        investigation_id=(
+            "INV-"
+            + str(uuid.uuid4())[:8]
+        ),
+
         case_id=data["case_id"],
-        evidence=data.get("evidence", []),
+
+        evidence=data.get(
+            "evidence",
+            data.get(
+                "payload",
+                {}
+            )
+        ),
     )
+
 
     result = investigation_orchestrator.investigate(
         investigation
     )
 
-    return jsonify(result)
+
+    return jsonify(
+        {
+            "service": "ai-investigation",
+            "investigation_id": investigation.investigation_id,
+            "case_id": investigation.case_id,
+            "result": result,
+        }
+    ), 200

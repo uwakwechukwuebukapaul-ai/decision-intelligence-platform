@@ -1,11 +1,14 @@
 """
+Sentinel DNA
 Intelligence Runtime Executor
+
+Executes registered intelligence engines safely.
 """
 
+import inspect
 
 
 class IntelligenceExecutor:
-
 
     def __init__(
         self,
@@ -13,7 +16,6 @@ class IntelligenceExecutor:
     ):
 
         self.registry = registry
-
 
 
     def execute(
@@ -35,50 +37,57 @@ class IntelligenceExecutor:
 
         try:
 
-            result = handler.execute(
-                job.payload,
-                job.context,
-            )
+            execute_method = handler.execute
+
+
+            parameters = inspect.signature(
+                execute_method
+            ).parameters
+
+
+            # execute(payload)
+            if len(parameters) == 1:
+
+                result = execute_method(
+                    job.payload
+                )
+
+
+            # execute(payload, context)
+            else:
+
+                result = execute_method(
+                    job.payload,
+                    job.context
+                )
 
 
             return {
 
-                "status": "completed",
+                "status":
+                    "completed",
 
-                "capability": job.capability,
+                "capability":
+                    job.capability,
 
-                "result": result,
-
-            }
-
-
-        except TypeError:
-
-            # backward compatibility
-            result = handler.execute(
-                job.payload
-            )
-
-
-            return {
-
-                "status": "completed",
-
-                "capability": job.capability,
-
-                "result": result,
+                "result":
+                    result,
 
             }
 
 
         except Exception as error:
 
+
             return {
 
-                "status": "failed",
+                "status":
+                    "failed",
 
-                "capability": job.capability,
+                "capability":
+                    job.capability,
 
-                "error": str(error),
+                "error":
+                    str(error),
 
             }

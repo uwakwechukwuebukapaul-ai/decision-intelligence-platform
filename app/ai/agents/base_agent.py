@@ -4,21 +4,16 @@ Sentinel DNA Base AI Agent
 All investigation agents inherit from this class.
 """
 
-
 from abc import ABC, abstractmethod
 from datetime import datetime, UTC
 
 
-
 class BaseAgent(ABC):
-
 
     def __init__(self, name):
 
         self.name = name
-
-       self.created_at = datetime.now(UTC)
-
+        self.created_at = datetime.now(UTC)
 
 
     @abstractmethod
@@ -33,17 +28,10 @@ class BaseAgent(ABC):
         pass
 
 
-
     def status(self):
 
         return {
-
-            "agent":
-                self.name,
-
-            "status":
-                "READY",
-
-            "created_at":
-                self.created_at.isoformat()
+            "agent": self.name,
+            "status": "READY",
+            "created_at": self.created_at.isoformat()
         }

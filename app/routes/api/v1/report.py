@@ -7,8 +7,8 @@ Provides analyst access to generated IOC investigation reports.
 from flask import Blueprint, jsonify
 
 from app.intelligence.ioc.fusion import IntelligenceFusion
-from app.intelligence.reporting import ReportEngine
 
+from app.intelligence.reporting import ReportGenerator
 
 report_api_bp = Blueprint(
     "report_api",
@@ -18,7 +18,7 @@ report_api_bp = Blueprint(
 
 
 fusion_engine = IntelligenceFusion()
-report_engine = ReportEngine()
+report_engine = ReportGenerator()
 
 
 @report_api_bp.route(

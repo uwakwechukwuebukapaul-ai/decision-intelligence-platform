@@ -26,6 +26,9 @@ from flask.blueprints import Blueprint
 logger = logging.getLogger(__name__)
 
 
+# ==========================================================
+# Single Blueprint Registration
+# ==========================================================
 
 def register_blueprint(
     app: Flask,
@@ -37,7 +40,6 @@ def register_blueprint(
     Safely register a Flask blueprint.
     """
 
-
     if blueprint.name in app.blueprints:
 
         logger.warning(
@@ -46,7 +48,6 @@ def register_blueprint(
         )
 
         return
-
 
 
     if url_prefix:
@@ -69,6 +70,9 @@ def register_blueprint(
     )
 
 
+# ==========================================================
+# Application Blueprint Registry
+# ==========================================================
 
 def register_blueprints(
     app: Flask,
@@ -90,9 +94,7 @@ def register_blueprints(
     """
 
 
-
     modules = [
-
 
         # =====================================
         # Control Plane
@@ -103,12 +105,10 @@ def register_blueprints(
             "intelligence_control_plane_bp",
         ),
 
-
         (
             "app.routes.intelligence_execution",
             "intelligence_execution_bp",
         ),
-
 
 
         # =====================================
@@ -120,24 +120,20 @@ def register_blueprints(
             "intelligence_api_bp",
         ),
 
-
         (
             "app.routes.api.v1.ioc",
             "ioc_api_bp",
         ),
-
 
         (
             "app.routes.api.v1.graph",
             "graph_api_bp",
         ),
 
-
         (
             "app.routes.api.v1.graph_intelligence",
             "graph_intelligence_api_bp",
         ),
-
 
 
         # =====================================
@@ -150,16 +146,14 @@ def register_blueprints(
         ),
 
 
-
         # =====================================
-        # Sentinel DNA AI SOC Gateway
+        # AI SOC Gateway
         # =====================================
 
         (
             "app.api.agent_api",
             "agent_bp",
         ),
-
 
 
         # =====================================
@@ -172,7 +166,6 @@ def register_blueprints(
         ),
 
 
-
         # =====================================
         # Reporting
         # =====================================
@@ -181,7 +174,6 @@ def register_blueprints(
             "app.routes.api.v1.report",
             "report_api_bp",
         ),
-
 
 
         # =====================================
@@ -194,7 +186,6 @@ def register_blueprints(
         ),
 
 
-
         # =====================================
         # Autonomous Intelligence
         # =====================================
@@ -204,24 +195,20 @@ def register_blueprints(
             "autonomous_api_bp",
         ),
 
-
         (
             "app.routes.api.v1.orchestration",
             "orchestration_api_bp",
         ),
-
 
         (
             "app.routes.api.v1.correlation",
             "correlation_api_bp",
         ),
 
-
         (
             "app.routes.api.v1.campaign",
             "campaign_api_bp",
         ),
-
 
         (
             "app.routes.api.v1.threat_actor",
@@ -231,9 +218,7 @@ def register_blueprints(
     ]
 
 
-
     loaded_blueprints = []
-
 
 
     for module_name, attribute_name in modules:
@@ -263,6 +248,11 @@ def register_blueprints(
             )
 
 
+            logger.info(
+                "Blueprint loaded successfully: %s",
+                blueprint.name,
+            )
+
 
         except ModuleNotFoundError:
 
@@ -270,7 +260,6 @@ def register_blueprints(
                 "Optional blueprint not found: %s",
                 module_name,
             )
-
 
 
         except AttributeError:
@@ -282,7 +271,6 @@ def register_blueprints(
             )
 
 
-
         except Exception as exc:
 
             logger.exception(
@@ -292,14 +280,14 @@ def register_blueprints(
             )
 
 
-
     logger.info(
         "Blueprint registration completed. Loaded: %s",
         loaded_blueprints,
     )
 
 
-
-# Backward compatibility
+# ==========================================================
+# Backward Compatibility
+# ==========================================================
 
 register_all_blueprints = register_blueprints

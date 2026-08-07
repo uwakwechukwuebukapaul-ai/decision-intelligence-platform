@@ -12,7 +12,9 @@ from app.intelligence.agents import (
 
 
 class ThreatIntelligenceAgent(BaseAgent):
+
     def __init__(self):
+
         super().__init__(
             name="Threat Intelligence Agent",
             version="1.0.0",
@@ -21,11 +23,17 @@ class ThreatIntelligenceAgent(BaseAgent):
             ],
         )
 
-    def execute(self, payload):
+
+    def execute(
+        self,
+        payload,
+    ):
+
         return {
             "analysis": "IOC investigation completed",
             "ioc": payload.get("ioc"),
         }
+
 
 
 def test_agent_execution_success():
@@ -38,6 +46,7 @@ def test_agent_execution_success():
 
     executor = AgentExecutor(registry)
 
+
     job = IntelligenceJob(
         "threat_intelligence",
         {
@@ -45,14 +54,18 @@ def test_agent_execution_success():
         },
     )
 
+
     result = executor.execute(job)
 
+
     assert result["status"] == "completed"
+
 
     assert (
         result["agent"]
         == "Threat Intelligence Agent"
     )
+
 
     assert (
         job.status
@@ -60,19 +73,25 @@ def test_agent_execution_success():
     )
 
 
+
 def test_agent_execution_failure():
 
     registry = AgentRegistry()
 
+
     executor = AgentExecutor(registry)
+
 
     job = IntelligenceJob(
         "unknown_capability"
     )
 
+
     result = executor.execute(job)
 
+
     assert result["status"] == "failed"
+
 
     assert (
         job.status
