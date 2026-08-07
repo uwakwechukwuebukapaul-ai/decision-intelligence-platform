@@ -1,69 +1,111 @@
 """
-Default Intelligence Engines
-
-Loads built-in Sentinel DNA intelligence
-capabilities.
+Default Sentinel DNA Intelligence Engines
 """
+
 
 
 class RiskEngine:
 
+
     def execute(
         self,
         payload,
+        context=None,
     ):
 
-        severity = payload.get(
-            "severity",
-            "unknown",
-        )
+        score = 30
+
+
+        if context:
+
+            if len(context.iocs) > 0:
+
+                score += 40
+
+
+            if len(context.evidence) > 0:
+
+                score += 20
+
+
 
         return {
-            "risk_level": severity,
-            "score": 80 if severity == "high" else 30,
+
+            "risk_score": score,
+
+            "case_id":
+                context.case_id
+                if context else None
+
         }
+
 
 
 
 class ThreatClassifier:
 
+
     def execute(
         self,
         payload,
+        context=None,
     ):
 
         return {
-            "classification": "malicious",
-            "confidence": 0.90,
+
+            "classification":
+                "malicious",
+
+            "ioc_count":
+                len(context.iocs)
+                if context else 0
+
         }
+
 
 
 
 class MitreEngine:
 
+
     def execute(
         self,
         payload,
+        context=None,
     ):
 
         return {
-            "techniques": [
+
+            "techniques":[
                 "T1566"
             ],
+
+            "evidence_reviewed":
+                len(context.evidence)
+                if context else 0
+
         }
+
 
 
 
 class IOCEnrichmentEngine:
 
+
     def execute(
         self,
         payload,
+        context=None,
     ):
 
         return {
-            "reputation": "suspicious",
+
+            "ioc_count":
+                len(context.iocs)
+                if context else 0
+
         }
+
 
 
 
