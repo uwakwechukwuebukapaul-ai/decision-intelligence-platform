@@ -6,11 +6,11 @@ actions and outcomes.
 """
 
 from dataclasses import dataclass, field
-from datetime import datetime, UTC
+from datetime import UTC, datetime
 from typing import Any
 
 
-@dataclass
+@dataclass(slots=True)
 class AgentExperience:
     """
     Represents an agent action and outcome.
@@ -21,8 +21,7 @@ class AgentExperience:
     outcome: dict[str, Any]
 
     timestamp: str = field(
-        default_factory=lambda:
-        datetime.now(UTC).isoformat()
+        default_factory=lambda: datetime.now(UTC).isoformat()
     )
 
 
@@ -31,10 +30,9 @@ class AgentMemory:
     Stores intelligence agent experiences.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
 
         self.experiences: list[AgentExperience] = []
-
 
     def remember(
         self,
@@ -42,38 +40,47 @@ class AgentMemory:
         action: str,
         outcome: dict[str, Any],
     ) -> AgentExperience:
+        """
+        Store an agent experience.
+        """
 
         experience = AgentExperience(
-            agent_name,
-            action,
-            outcome,
+            agent_name=agent_name,
+            action=action,
+            outcome=outcome,
         )
 
-        self.experiences.append(
-            experience
-        )
+        self.experiences.append(experience)
 
         return experience
-
 
     def history(
         self,
         agent_name: str | None = None,
     ) -> list[AgentExperience]:
+        """
+        Return stored experiences.
+        """
 
         if agent_name is None:
-            return self.experiences
-
+            return list(self.experiences)
 
         return [
-            item
-            for item in self.experiences
-            if item.agent_name == agent_name
+            experience
+            for experience in self.experiences
+            if experience.agent_name == agent_name
         ]
 
-
     def count(self) -> int:
+        """
+        Return total number of experiences.
+        """
 
-        return len(
-            self.experiences
-        )
+        return len(self.experiences)
+
+    def clear(self) -> None:
+        """
+        Remove all stored experiences.
+        """
+
+        self.experiences.clear()

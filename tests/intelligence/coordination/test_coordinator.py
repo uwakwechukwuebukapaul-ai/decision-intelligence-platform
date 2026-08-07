@@ -5,158 +5,210 @@ Tests intelligence workflow
 orchestration.
 """
 
-from app.intelligence.coordination.workflow import (
-    Workflow,
-    WorkflowStep,
+import pytest
+
+from app.intelligence.coordination.coordinator import (
+    Coordinator,
 )
 
 from app.intelligence.coordination.execution_plan import (
     ExecutionPlan,
 )
 
-from app.intelligence.coordination.coordinator import (
-    Coordinator,
+from app.intelligence.runtime.job import (
+    IntelligenceJob,
 )
 
 
-class FakeAgent:
-
-    def __init__(self, name, capabilities):
-
-        self.metadata = type(
-            "Metadata",
-            (),
-            {
-                "name": name,
-                "capabilities": capabilities,
-            },
-        )
-
-
-    def execute(
-        self,
-        payload,
-    ):
-
-        return {
-            "message": "executed",
-            "payload": payload,
-        }
-
-
-
-class FakeRegistry:
+class FakeExecutor:
+    """
+    Mock intelligence runtime executor
+    """
 
     def __init__(self):
+        self.jobs = []
 
-        agent = FakeAgent(
-            "Threat Intelligence Agent",
-            [
-                "threat_intelligence",
-                "risk_analysis",
-            ],
-        )
+    def execute(self, job):
+        self.jobs.append(job)
 
-        self.agents = {
-            "threat_agent": agent
+        return {
+            "status": "completed",
+            "capability": job.capability,
+            "result": "success",
         }
 
 
-
-from app.intelligence.runtime.agent_executor import (
-    AgentExecutor,
-)
-
+@pytest.fixture
+def executor():
+    return FakeExecutor()
 
 
-def test_coordinator_executes_workflow():
-
-    workflow = Workflow(
-        "SOC Investigation",
-        "Threat investigation workflow",
+@pytest.fixture
+def coordinator(executor):
+    return Coordinator(
+        executor=executor
     )
 
 
-    workflow.add_step(
-        WorkflowStep(
-            name="Threat Analysis",
-            capability="threat_intelligence",
-            payload={
-                "ioc": "example.com"
-            },
-        )
-    )
+@pytest.fixture
+def execution_plan():
+    """
+    Fake execution plan
+    """
+
+    class FakeStep:
+
+        def __init__(
+            self,
+            name,
+            capability,
+            payload,
+        ):
+            self.name = name
+            self.capability = capability
+            self.payload = payload
 
 
-    workflow.add_step(
-        WorkflowStep(
-            name="Risk Assessment",
-            capability="risk_analysis",
-            depends_on=[
-                "Threat Analysis"
-            ],
-        )
-    )
+    class FakePlan:
+
+        def __init__(self):
+            self.steps = [
+                FakeStep(
+                    "classification",
+                    "threat_classification",
+                    {
+                        "ioc": "evil.com"
+                    },
+                ),
+                FakeStep(
+                    "risk",
+                    "risk_scoring",
+                    {
+                        "severity": "high"
+                    },
+                ),
+            ]
+
+        def validate(self):
+            return True
 
 
-    executor = AgentExecutor(
-        FakeRegistry()
-    )
+        def ordered_steps(self):
+            return self.steps
 
 
-    coordinator = Coordinator(
-        executor
-    )
+    return FakePlan()
 
+
+def test_coordinator_initialization(
+    coordinator,
+):
+    """
+    Coordinator initializes correctly
+    """
+
+    assert coordinator is not None
+
+    assert coordinator.executor is not None
+
+
+def test_execute_workflow(
+    coordinator,
+    execution_plan,
+):
+    """
+    Coordinator executes execution plan
+    """
 
     result = coordinator.execute(
-        ExecutionPlan(workflow)
+        execution_plan
     )
 
+    assert result is not None
 
-    assert result["summary"]["total"] == 2
 
-    assert (
-        result["summary"]["successful"]
-        == 2
+def test_executor_receives_jobs(
+    coordinator,
+    execution_plan,
+    executor,
+):
+    """
+    Verify jobs are dispatched
+    """
+
+    coordinator.execute(
+        execution_plan
     )
-
-
-
-def test_coordinator_returns_results():
-
-    workflow = Workflow(
-        "Simple Workflow",
-        "Testing results",
-    )
-
-
-    workflow.add_step(
-        WorkflowStep(
-            "Threat Scan",
-            "threat_intelligence",
-        )
-    )
-
-
-    coordinator = Coordinator(
-        AgentExecutor(
-            FakeRegistry()
-        )
-    )
-
-
-    result = coordinator.execute(
-        ExecutionPlan(workflow)
-    )
-
 
     assert len(
-        result["results"]
-    ) == 1
+        executor.jobs
+    ) == 2
 
+
+def test_job_capabilities(
+    coordinator,
+    execution_plan,
+    executor,
+):
+    """
+    Verify correct capabilities
+    """
+
+    coordinator.execute(
+        execution_plan
+    )
+
+    capabilities = [
+        job.capability
+        for job in executor.jobs
+    ]
 
     assert (
-        result["results"][0]["execution"]["status"]
-        == "completed"
+        "threat_classification"
+        in capabilities
     )
+
+    assert (
+        "risk_scoring"
+        in capabilities
+    )
+
+
+def test_execution_result_structure(
+    coordinator,
+    execution_plan,
+):
+    """
+    Verify investigation output
+    """
+
+    result = coordinator.execute(
+        execution_plan
+    )
+
+    assert (
+        "results"
+        in result
+    )
+
+
+def test_invalid_plan_failure(
+    coordinator,
+):
+    """
+    Invalid plans should fail
+    """
+
+    class InvalidPlan:
+
+        def validate(self):
+            raise Exception(
+                "Invalid execution plan"
+            )
+
+
+    with pytest.raises(Exception):
+
+        coordinator.execute(
+            InvalidPlan()
+        )

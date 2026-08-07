@@ -1,10 +1,9 @@
 """
-Sentinel DNA Reporting Intelligence Package
+Sentinel DNA Investigation Reporting
 """
 
-from app.intelligence.reporting.report_engine import ReportEngine
-from app.intelligence.reporting.report_schema import InvestigationReport
-
+from .report_engine import ReportEngine
+from .report_schema import InvestigationReport
 
 __all__ = [
     "ReportEngine",

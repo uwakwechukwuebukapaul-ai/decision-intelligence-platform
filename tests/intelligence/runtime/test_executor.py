@@ -1,39 +1,96 @@
 """
-Tests for Intelligence Executor
+Runtime Executor Tests
 """
 
-from app.intelligence.runtime import IntelligenceJob
-from app.intelligence.runtime.executor import IntelligenceExecutor
+import pytest
+
+from app.intelligence.runtime.registry import (
+    CapabilityRegistry,
+)
+
+from app.intelligence.runtime.executor import (
+    IntelligenceExecutor,
+)
+
+from app.intelligence.runtime.job import (
+    IntelligenceJob,
+)
 
 
-def threat_handler(payload):
+class FakeEngine:
 
-    return {
-        "analysis":
-            "Threat intelligence completed",
-        "payload":
-            payload
-    }
+    def __init__(self):
+        self.calls = []
 
 
+    def execute(
+        self,
+        payload,
+    ):
 
-def test_executor_success():
+        self.calls.append(payload)
 
-    executor = IntelligenceExecutor()
+        return {
+            "analysis": "complete"
+        }
 
 
-    executor.register_capability(
-        "threat_intelligence",
-        threat_handler
+@pytest.fixture
+def registry():
+
+    registry = CapabilityRegistry()
+
+    engine = FakeEngine()
+
+    registry.register(
+        "risk_scoring",
+        engine,
+    )
+
+    return registry, engine
+
+
+
+@pytest.fixture
+def executor(registry):
+
+    registry, _ = registry
+
+    return IntelligenceExecutor(
+        registry
+    )
+
+
+
+def test_capability_registration(
+    registry,
+):
+
+    registry, _ = registry
+
+    assert registry.has(
+        "risk_scoring"
+    )
+
+
+
+def test_executor_runs_job(
+    registry,
+):
+
+    registry, engine = registry
+
+
+    executor = IntelligenceExecutor(
+        registry
     )
 
 
     job = IntelligenceJob(
-        "threat_intelligence",
-        {
-            "ioc":
-                "example.com"
-        }
+        capability="risk_scoring",
+        payload={
+            "severity": "high"
+        },
     )
 
 
@@ -44,25 +101,64 @@ def test_executor_success():
 
     assert result["status"] == "completed"
 
-    assert job.status == "completed"
+    assert len(
+        engine.calls
+    ) == 1
 
 
 
-def test_executor_unknown_capability():
-
-    executor = IntelligenceExecutor()
-
+def test_unknown_capability(
+    executor,
+):
 
     job = IntelligenceJob(
-        "unknown_capability"
+        capability="unknown",
+        payload={}
+    )
+
+
+    with pytest.raises(
+        ValueError
+    ):
+
+        executor.execute(
+            job
+        )
+
+
+
+def test_failed_execution(
+    registry,
+):
+
+    class BrokenEngine:
+
+        def execute(self, payload):
+            raise Exception(
+                "engine failed"
+            )
+
+
+    registry, _ = registry
+
+
+    registry.register(
+        "broken",
+        BrokenEngine()
+    )
+
+
+    executor = IntelligenceExecutor(
+        registry
     )
 
 
     result = executor.execute(
-        job
+        IntelligenceJob(
+            capability="broken",
+            payload={}
+        )
     )
 
 
     assert result["status"] == "failed"
-
-    assert job.status == "failed"

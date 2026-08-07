@@ -1,94 +1,62 @@
 """
-Intelligence Executor
+Intelligence Runtime Executor
 
-Executes intelligence jobs
-through capability routing.
+Executes intelligence jobs through
+registered capabilities.
 """
 
-from .capability_router import CapabilityRouter
+from .registry import CapabilityRegistry
 
 
 class IntelligenceExecutor:
+    """
+    Executes IntelligenceJob objects.
+    """
 
     def __init__(
         self,
-        router: CapabilityRouter | None = None,
+        registry: CapabilityRegistry,
     ):
-
-        self.router = (
-            router
-            or CapabilityRouter()
-        )
-
-
-    def register_capability(
-        self,
-        capability: str,
-        handler,
-    ):
-
-        self.router.register(
-            capability,
-            handler
-        )
+        self.registry = registry
 
 
     def execute(
         self,
         job,
     ):
+        """
+        Execute intelligence job.
+        """
 
-        job.start()
-
-        handler = self.router.resolve(
+        handler = self.registry.resolve(
             job.capability
         )
 
 
         if handler is None:
-
-            job.fail()
-
-            return {
-                "status": "failed",
-                "reason":
-                    f"No handler registered for {job.capability}"
-            }
+            raise ValueError(
+                f"Unknown capability: {job.capability}"
+            )
 
 
         try:
 
-            result = handler(
+            result = handler.execute(
                 job.payload
             )
 
-            job.complete()
 
             return {
-
-                "status":
-                    "completed",
-
-                "job":
-                    job.to_dict(),
-
-                "result":
-                    result
+                "status": "completed",
+                "capability": job.capability,
+                "result": result,
             }
 
 
         except Exception as error:
 
-            job.fail()
-
             return {
-
-                "status":
-                    "failed",
-
-                "error":
-                    str(error),
-
-                "job":
-                    job.to_dict()
+                "status": "failed",
+                "capability": job.capability,
+                "error": str(error),
             }
