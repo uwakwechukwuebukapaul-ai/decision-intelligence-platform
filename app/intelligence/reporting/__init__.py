@@ -1,11 +1,12 @@
 """
-Sentinel DNA Investigation Reporting
+Investigation Reporting Package
 """
 
-from .report_engine import ReportEngine
-from .report_schema import InvestigationReport
+from .report_generator import (
+    ReportGenerator,
+)
+
 
 __all__ = [
-    "ReportEngine",
-    "InvestigationReport",
+    "ReportGenerator",
 ]
