@@ -1,17 +1,22 @@
 """
 Sentinel DNA Agent Registry
 
-Controls available AI investigation agents.
+Central registry for AI SOC agents.
 """
+
+from __future__ import annotations
+
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 class AgentRegistry:
 
-
     def __init__(self):
 
         self.agents = {}
-
 
 
     def register(
@@ -19,8 +24,14 @@ class AgentRegistry:
         agent
     ):
 
-        self.agents[agent.name] = agent
+        name = agent.__class__.__name__
 
+        self.agents[name] = agent
+
+        logger.info(
+            "Registered AI agent: %s",
+            name
+        )
 
 
     def get(
@@ -28,16 +39,9 @@ class AgentRegistry:
         name
     ):
 
-        return self.agents.get(name)
-
-
-
-    def list_agents(self):
-
-        return list(
-            self.agents.keys()
+        return self.agents.get(
+            name
         )
-
 
 
     def run_agent(
@@ -58,4 +62,13 @@ class AgentRegistry:
 
         return agent.analyze(
             investigation
+        )
+
+
+    def list_agents(
+        self
+    ):
+
+        return list(
+            self.agents.keys()
         )
